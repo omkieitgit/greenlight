@@ -1,0 +1,92 @@
+
+<panel  title="Time Tracking Accounting" (valueChange)='panelExpand($event)'>
+        <div class="parent-loader">
+                <!-- Loader DIV -->
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <!-- Loader DIV -->
+                <form [formGroup]="accountingTrackingForm">
+                        <!-- one row start-->
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Date</label>
+                                        <my-date-picker name="working_date" [options]="myDatePickerOptions" formControlName="working_date" #working_date (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                        <div *ngIf="f.working_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                <div *ngIf="f.working_date.errors.required">Date is required</div>
+                                        </div> 
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Start Time</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="start_time" [ngClass]="{ 'is-invalid': submitted && f.start_time.errors }" #start_time (change)="getDiffTime(working_date.selectionDayTxt,$event.target.value,end_time.value)"/>   
+                                        <div *ngIf="f.start_time.errors" class="invalid-feedback">
+                                                <div *ngIf="f.start_time.errors.required">Start time is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">End Time</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="end_time" [ngClass]="{ 'is-invalid': submitted && f.end_time.errors }" #end_time  (change)="getDiffTime(working_date.selectionDayTxt,start_time.value,$event.target.value)" />   
+                                        <div *ngIf="f.end_time.errors" class="invalid-feedback">
+                                                <div *ngIf="f.end_time.errors.required">End Time is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Total Time</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="total_time" [ngClass]="{ 'is-invalid': submitted && f.total_time.errors }" />   
+                                        <div *ngIf="f.total_time.errors" class="invalid-feedback">
+                                                <div *ngIf="f.total_time.errors.required">Total is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button (click) ="validateForm(this.accountingTrackingForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                </div>
+                        </div>
+                </form> 
+                						
+                <div class="table-responsive m-t-10 table-fixed-header">
+                        <table class="table table-bordered table-condensed">
+                                <thead>
+                                        <tr>
+                                                <th>Name</th>
+                                                <th>Date</th>
+                                                <th>Start Time</th>
+                                                <th>End Time</th>
+                                                <th>Total Time</th>
+                                                <th>Action</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        <tr *ngFor="let tracking of accountingTracking">
+                                                <td>{{tracking.user.first_name + ' '+ tracking.user.last_name }}</td>
+                                                <td>{{tracking.working_date | date:'MM/dd/YYYY'}}</td>
+                                                <td>{{tracking.working_date+' '+tracking.start_time |date:'H:mm:ss' }}</td>
+                                                <td>{{tracking.working_date+' '+tracking.end_time |date:'H:mm:ss' }}</td>
+                                                <td>{{ tracking.working_date+' '+tracking.total_time |date:'H:mm:ss' }}</td>
+                                                <td class="p-5">
+                                                        <a href="javascript:;" (click)="removeaccountingTracking(tracking.id)">
+                                                                <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                        </a>
+                                                        <a href="javascript:;" (click)="editaccountingTracking(tracking)">
+                                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                        </a>
+                                                </td>
+                                        </tr>
+                                </tbody>
+                        </table>
+
+                        <table class="table table-bordered table-condensed">
+                                <tr>
+                                  <th>Name</th>
+                                  <th>Total Time</th>
+                                </tr>
+                                <tbody>
+                                        <tr *ngFor="let summery of accountingSummery">
+                                                <th>{{summery?.user?.first_name+' '+summery?.user?.last_name}}</th>
+                                                <th>{{ summery?.total_time}}</th>
+                                        </tr>  
+                                </tbody>
+                               
+                        </table>
+                </div>
+                        
+        </div>
+</panel>

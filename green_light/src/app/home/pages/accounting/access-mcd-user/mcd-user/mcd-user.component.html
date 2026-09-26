@@ -1,0 +1,28 @@
+<panel title="MCD Access Users" (valueChange)='panelExpand($event)'>
+        <div class="parent-loader">
+                <div *ngIf="!loaded"  class="child-loader"><span class="spinner-small "></span></div>
+        </div>
+        <app-create-mcd-user *ngIf="loaded" [property_id]="property_id" [buyerList]="buyerList" (mcdUserDetail)="addMcdUserInfo($event)"></app-create-mcd-user>
+        <div *ngIf="loaded" class="table-responsive m-t-10">
+                <table class="table table-bordered table-condensed">
+                        <tr>
+                                <th>Name</th>
+                                <th class="text-center">Action</th>
+                        </tr>
+                        <tbody>
+                                <tr *ngFor="let user of mcdUserList">
+                                        <td>{{user?.user?.first_name +' '+user?.user?.last_name}}</td>
+                                        <td class="p-5 align-center text-center">
+                                                <ng-container *ngIf="!viewAccessOnly">
+                                                        <a href="javascript:;" (click)="!loading && removeUser(user.id)">
+                                                                <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                        </a>
+                                                </ng-container>
+                                                
+                                        </td>
+
+                                </tr>
+                        </tbody>
+                </table>
+        </div>
+</panel>

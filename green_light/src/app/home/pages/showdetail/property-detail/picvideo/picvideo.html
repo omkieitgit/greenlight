@@ -1,0 +1,198 @@
+<div class="estate-property">
+  <!-- begin col-6 -->
+  <div class="col-lg-12 p-0">
+    <!-- begin panel -->
+    <panel (valueChange)='panelExpand($event)' title="Property Map, Pictures, Video">
+         <div  class="parent-loader">
+            <!-- Loader DIV -->
+            <div *ngIf="loadingMessage"  class="child-loader"><span class="spinner-small "></span></div>
+            <!-- Loader DIV -->
+            <div class="form-group row m-b-0"> 
+              <div class="col-md-8">
+                  <form [formGroup]="latLongForm" *ngIf="geoFlag" class="row m-b-10">
+                    <div class="col-md-2">
+                      <label class="col-form-label">Latitude</label>  
+                    </div>
+                    <div class="col-md-3">
+                      <input type="text" formControlName="latitude" class="form-control m-b-0" />
+                    </div>
+                    <div class="col-md-2">
+                        <label class="col-form-label">Longitude</label>  
+                      </div>
+                      <div class="col-md-3">
+                        <input type="text" formControlName="longitude" class="form-control m-b-0" />
+                      </div>
+                    <div class="col-md-2 mt-3 mt-md-0">
+                        <button type="button" *hideElement="true"  (click)="validateForm(this.latLongForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+                          <i *ngIf="loading_lat" class="fa fa-spin fa-spinner"></i>
+                        </button>
+                    </div>
+                </form>
+              </div>
+            </div>
+            <fieldset>
+                         
+                <form [formGroup]="propertyPicForm"  *ngIf="!propErr">
+
+                   <legend> </legend>
+                  <div class="form-group row m-b-0">   
+                      <div class="col-md-8">
+
+                        <div class="row m-t-5">
+                    
+                          <div class="col-md-3">
+                            <label class="col-form-label">Choose Picture</label>
+                          </div>
+                          <div class="col-md-3  mt-3 mt-md-0">
+                              <input type="file" [ngClass]="{ 'is-invalid': f.image_file.hasError('required') }" class="form-control m-b-0" #fileUploading class="form-control btn btn-sm btn-primary" value="Choose File" name="image_file"  multiple (change)="uploadHandler($event)">     
+                                <div *ngIf="f.image_file.hasError('required')" class="error_message">File is required</div>     
+                          </div>
+        
+                          <div class="col-md-3  mt-3 mt-md-0">
+                            <select formControlName="picture_type" [ngClass]="{ 'is-invalid': f.picture_type.hasError('required') }" class="form-control m-b-0" >
+                                <option value="">Select Category</option> 
+                                <option [value]="property.key" *ngFor="let property of property_pic_category_list | keyvalue">{{property.value}}</option>
+                              </select>  
+                              <div *ngIf="f.picture_type.hasError('required')" class="error_message">Pic type is required</div> 
+                          </div>
+        
+                          <div class="col-md-3  mt-3 mt-md-0">
+                            <input type="button" formControlName="upload" class="form-control m-b-0 btn btn-sm btn-primary" (click)="fileUploader(fileUploading, $event)" value="Upload" />
+                          </div>
+        
+                        </div>
+
+                        <div class="row  m-t-5">
+                          <div class="col-md-3">
+                            <label class="col-form-label">Google Map URL</label>  
+                            <span [appLink]="picData.google_map_url"></span>
+                          </div>
+                          <div class="col-md-9">
+                            <input type="text" formControlName="google_map_url" class="form-control m-b-0" />
+                            <!-- <div *ngIf="f.google_map_url.hasError('required')" class="error_message">Map url is required</div>   -->
+                            <div [innerHtml]="iframe_html"></div>           
+                          </div>              
+                        </div>
+      
+                        <div class="row m-t-5">
+                              <div class="col-md-3">
+                                <label class="col-form-label">Image URL</label> 
+                                <span *ngIf="p_image_url" [appLink]="picData.image_url"></span>  
+                              </div>
+                              <div class="col-md-9">
+                              <input type="text" formControlName="image_url" class="form-control m-b-0"  /> 
+                              <!-- <div *ngIf="f.image_url.hasError('required')" class="error_message">Image url is required</div>   -->
+                              </div>                    
+                      </div>
+                      <div class="row m-t-5">
+                        <div class="col-md-3">
+                          <label class="col-form-label">Video URL</label>                           
+                        </div>
+                        <div class="col-md-6">
+                          <input type="text" formControlName="video_url" class="form-control m-b-0" />  
+                          <!-- <div *ngIf="f.video_url.hasError('required')" class="error_message">Video url is required</div>  -->
+                        </div>
+                        <div class="col-md-3  mt-3 mt-md-0">
+                            <select formControlName="video_type" [ngClass]="{ 'is-invalid': submitted && f.video_type.errors }" class="form-control m-b-0" >
+                              <option value="">Select Type</option> 
+                              <option value="Youtube">Youtube</option>
+                              <option value="Vimeo">Vimeo </option>
+                              <option value="Dailymotion">Dailymotion</option>
+                          </select>
+                          <div *ngIf="f.video_type.hasError('required')" class="error_message">Video type is required</div>  
+                        </div>
+                      </div>
+                      <div class="row m-t-5">
+                        <div class="col-md-8">
+                          <div *ngIf="f.google_map_url.hasError('required') && f.image_url.hasError('required') && f.video_url.hasError('required')" class="error_message">Map, Image Or Video url (any one) is required</div>  
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-10"></div>
+                        <div class="col-md-2  mt-3 ">
+                            <button *hideElement="true" class="form-control m-b-0 btn btn-sm btn-primary" (click)="saveUrls()">
+                              Save
+                              <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                            </button>
+                        </div> 
+                      </div>
+                    </div>
+                   
+                  </div>
+                  <legend>
+                    <a *ngIf="lat && lng" href="https://www.google.com/maps/search/{{lat}},{{lng}}/data=!3m1!1e3" target="_blank">
+                      Click Here For Google Map
+                    </a>
+                  </legend>  
+                  <div class="form-group row m-b-0">   
+                    <div class="col-lg-12 property-map">
+                      <ngb-tabset type="pills">
+                          <ngb-tab>
+                            <ng-template ngbTabTitle>
+                              <span class="d-sm-none"><strong>MAP</strong></span>
+                              <span class="d-sm-block d-none"><strong>MAP</strong></span>
+                              </ng-template>
+                              <ng-template ngbTabContent  class="estate_content" *ngIf="load_map">
+                                <app-here-map lat="{{lat}}" lng="{{lng}}" width="100%" height="500px" data_info="{{map_data.address}}"></app-here-map>
+                              </ng-template>
+                          </ngb-tab>
+                          <ngb-tab>
+                            <ng-template ngbTabTitle>
+                              <span class="d-sm-none"><strong>PICTURE</strong></span>
+                              <span class="d-sm-block d-none"><strong>PICTURE</strong></span>
+                              </ng-template>
+                            <ng-template ngbTabContent  class="estate_content">
+                              <ng-container *ngIf="pic_list_count">
+                                <button class="btn btn-sm btn-primary m-b-5 m-r-5"  (click)="selectAllPictures()" title="Remove Picture" alt="Remove Picture">
+                                  {{selectedText}}
+                                </button>
+                                <button class="btn btn-sm btn-primary m-b-5"  (click)="removeMultipImages()" title="Remove Picture" alt="Remove Picture">
+                                  Deleted All
+                                </button>
+                              </ng-container>
+                              <div class="row col-md-12 _gallery" *ngIf="pic_list_count">
+                                
+                                <div class="card _card_picture" *ngIf="p_image_url">
+                                   
+                                    <button class="btn btn-sm btn-danger _hide_button"  (click)="removeUrlImg(p_image_url)" title="Remove Picture" alt="Remove Picture">
+                                      <i class="fa fa-trash-alt f-10 " aria-hidden="true"></i>
+                                    </button>
+                                    <img class="prop_pic" src="{{p_image_url}}" (click)="openImageUrl()" width="100px" />
+                                    <br/> Image Url
+                                </div>
+                                <div class="card _card_picture m-r-10 position-relative" *ngFor="let pic of pic_list; let i=index">
+                                  <input type="checkbox" class="position-absolute" value="{{pic.id}}" />
+                                  <button class="btn btn-sm btn-danger _hide_button"  (click)="removeImage(pic)" title="Remove Picture" alt="Remove Picture">
+                                    <i class="fa fa-trash-alt f-10 " aria-hidden="true"></i>
+                                  </button>
+                                  <img onerror="this.onerror=null;this.src='../../../assets/img/no-image.gif';" class="img-thumbnail" src="{{pic.url}}" (click)="open(i)" />
+                                </div>
+                              </div>
+                            </ng-template>
+                          </ngb-tab>
+                          <ngb-tab>
+                            <ng-template ngbTabTitle>
+                              <span class="d-sm-none"><strong>VIDEO</strong></span>
+                              <span class="d-sm-block d-none"><strong>VIDEO</strong></span>
+                              </ng-template>
+                            <ng-template ngbTabContent>
+                              <div class="m-5">                          
+                                <div *ngIf="iframe_video_html != null " class="prop_video" [innerHtml]="iframe_video_html"></div> 
+                              </div>
+                            </ng-template>
+                          </ngb-tab>
+                      </ngb-tabset>
+                    </div>
+                  </div>
+                </form>
+                
+            </fieldset>
+        </div>
+        
+       
+    </panel>
+    <!-- end panel -->
+  </div>
+  <!-- end col-12 -->
+</div>
+<!-- row end -->

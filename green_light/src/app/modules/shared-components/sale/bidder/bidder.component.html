@@ -1,0 +1,235 @@
+<panel title="Bidder {{bidder_count}} &nbsp;&nbsp;&nbsp;&nbsp; {{bidderData?.name_upset_bidder}} &nbsp; {{bidderData?.amount_of_bid}} &nbsp; {{bidderData?.last_date_to_next_upset_bid| date:'MM/dd/yyyy'  }}" [removeBtn]="1" (removePannel)="removeBidder($event)">
+  <!-- one row start-->
+  <fieldset>
+      <legend>Bidder</legend>
+      <form [formGroup]="bidderForm" *ngIf="!propErr" [appDisableElement]="bidderForm" class="parent-loader">
+        <!-- Loader DIV -->
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <!-- Loader DIV -->
+
+        <input type="hidden" formControlName="bidder_id" />
+        <div class="form-group row m-b-20">         
+          <div class="col-md-2">
+            <label class="col-form-label">Name of Upset Bidder</label>
+            <input formControlName="name_upset_bidder" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.name_upset_bidder.errors }" appOnBlurSave (updatedValue)="autoSave($event)" />
+            <div *ngIf="f.name_upset_bidder.errors" class="invalid-feedback">
+              <div *ngIf="f.name_upset_bidder.errors.required">Name of Upset Bidder is required</div>
+            </div>                   
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Address Of Upset Bidder</label>
+            <input formControlName="address"  type="text" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />                  
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">City Of Upset Bidder</label>
+            <input formControlName="city"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>                  
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Upset bidder Zipcode</label>
+            <input formControlName="zipcode"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>                  
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Phone</label>
+            <input formControlName="phone"  type="text" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>                  
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">E-mail</label>
+            <input formControlName="email"  type="text" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>                  
+          </div>
+        </div>
+
+        <fieldset>
+          <legend>UPST Report</legend>
+          <div class="form-group row m-b-5">
+            <div class="col-md-2">
+              <label class="col-form-label">Amount of New Upset Bid </label>
+              <input formControlName="amount_of_bid" (keyup)="calculateBidderAmount();"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>              
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">Bid Date</label>
+                <my-date-picker style="position:relative" [options]="myDatePickerOptions" formControlName="last_date_to_upset_bid" [ngClass]="{ 'is-invalid': submitted && f.last_date_to_upset_bid.errors }" (dateChanged)="onDateChanged($event,last_date_to_upset_bid)" #last_date_to_upset_bid placeholder="MM/DD/YYYY"></my-date-picker>
+                <div *ngIf="f.last_date_to_upset_bid.errors" class="invalid-feedback">
+                  <div *ngIf="f.last_date_to_upset_bid.errors.required">Bid  is required</div>
+                </div> 
+            </div> 
+            <div class="col-md-2">
+              <label class="col-form-label">Last Day for Next Upset Bid</label>
+              <my-date-picker name="last_date_to_next_upset_bid" style="position:relative" [options]="myDatePickerOptions" formControlName="last_date_to_next_upset_bid" [ngClass]="{ 'is-invalid': submitted && f.last_date_to_next_upset_bid.errors }" (dateChanged)="onDateChanged($event,last_date_to_next_upset_bid)" #last_date_to_next_upset_bid placeholder="MM/DD/YYYY"></my-date-picker>
+              <div *ngIf="f.last_date_to_next_upset_bid.errors" class="invalid-feedback">
+                <div *ngIf="f.last_date_to_next_upset_bid.errors.required">LDUB  is required</div>
+              </div> 
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Deposit with the Clerk</label>
+              <input formControlName="deposit_clerk"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>              
+            </div>
+            <div class="col-md-2">
+              <strong>CMA/ARV:</strong> ${{ cmaArv }} <br/>
+              <label class="col-form-label">Min. Amount of Next UB</label>
+              <input formControlName="min_amt_nxt_ub" (keyup)="calculateMinBidderAmount();" type="text" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />              
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label" style="font-size:9px;">Amount of Deposit For Next Min. UB</label>
+              <input formControlName="deposit_amt_nxt_ub"  type="text" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />              
+            </div>
+          </div>
+
+          <div class="form-group row m-b-5">
+            <div class="col-md-2">
+              <label class="col-form-label">Name of Attorney or Agent</label>
+              <input formControlName="attorney_name" type="text" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>                  
+            </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Address of Attorney or Agent</label>
+                <input formControlName="attorney_address"  type="text" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />              
+              </div>  
+              <div class="col-md-2">
+                <label class="col-form-label">City of Attorney or Agent</label>
+                <input formControlName="attorney_city"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>              
+              </div>  
+              
+              <div class="col-md-2">
+                <label class="col-form-label">Zipcode</label>
+                <input formControlName="attorney_zipcode"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>              
+              </div> 
+              
+              <div class="col-md-2">
+                <label class="col-form-label">Phone Number</label>
+                <input formControlName="attorney_phone"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>              
+              </div> 
+              <div class="col-md-2">
+                  <label class="col-form-label">Date of Filling</label>
+                  <my-date-picker style="position:relative" [options]="myDatePickerOptions" formControlName="filling_date" [ngClass]="{ 'is-invalid': submitted && f.filling_date.errors }" (dateChanged)="onDateChanged($event,filling_date)" #filling_date  placeholder="MM/DD/YYYY"></my-date-picker>
+                  <div *ngIf="f.filling_date.errors" class="invalid-feedback">
+                    <div *ngIf="f.filling_date.errors.required">Bid Date is required</div>
+                  </div> 
+              </div>
+          </div>
+          <!-- one row end -->
+          <div class="form-group row m-b-5 m-t-5">
+            <div class="col-md-2">
+              <label class="col-form-label">Notes</label>
+            </div>
+            <div class="col-md-10">
+                <textarea autosize [minRows]="4" formControlName="bidder_notes" [ngClass]="{ 'is-invalid': submitted && f.bidder_notes.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"></textarea>
+                <div *ngIf="f.bidder_notes.errors" class="invalid-feedback">
+                  <div *ngIf="f.bidder_notes.errors.required">Notes is required</div>
+                </div>                  
+            </div>
+          </div>
+          <!-- one row start-->
+          <div class="form-group row m-b-20">         
+            <div class="col-md-2">
+              <label class="col-form-label">IM By</label>
+              <div class="input-group">
+                <input type="text" formControlName="im_by" #im_by class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />
+                <div class="input-group-append" (click)="im_by_user(im_by)">
+                  <span class="input-group-text">
+                    <i class="fa fa-user"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">IM By Date</label>
+                <my-date-picker name="im_date" [options]="myDatePickerOptions" [disabled]="imDate" formControlName="im_date" [ngClass]="{ 'is-invalid': submitted && f.im_date.errors }" (dateChanged)="onDateChanged($event,im_date)" #im_date placeholder="MM/DD/YYYY"></my-date-picker>
+            </div> 
+            <div class="col-md-2">
+              <label class="col-form-label">Auction</label>
+                <input formControlName="auction"  type="text" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>                  
+            </div>
+
+            <div class="col-md-2">
+              <label class="col-form-label">NOS Name</label>
+              <div class="input-group">
+                <input type="text" formControlName="nos_by" #nos_by class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+                <div class="input-group-append" (click)="nos_user(nos_by)">
+                  <span class="input-group-text">
+                    <i class="fa fa-user"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Nos Date</label>
+              <my-date-picker [options]="myDatePickerOptions" [disabled]="nosDate" formControlName="nos_date" [ngClass]="{ 'is-invalid': submitted && f.nos_date.errors }" (dateChanged)="onDateChanged($event,nosDateInput)" #nosDateInput  placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">IM Checked By</label>
+              <div class="input-group">
+                <input type="text" formControlName="im_checked_by" #im_checked_by class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />
+                <div class="input-group-append" (click)="im_checked_by_user(im_checked_by)">
+                  <span class="input-group-text">
+                    <i class="fa fa-user"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+          <div class="form-group row m-b-20">
+            <div class="col-md-2">
+              <label class="col-form-label">IM Checker Date</label>
+                <my-date-picker name="im_checker_date" [disabled]="imCheckedDate"  [options]="myDatePickerOptions"  formControlName="im_checker_date" [ngClass]="{ 'is-invalid': submitted && f.im_checker_date.errors }" (dateChanged)="onDateChanged($event,im_checker_date)" #im_checker_date placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+          </div>
+
+
+          <div class="form-group row m-b-20">
+            <div class="col-md-2">
+              <label class="col-form-label">&nbsp;</label> 
+              <div class="checkbox checkbox-css">
+                  <input formControlName="deputy_csc"  type="checkbox" id="deputy_csc{{saleDateId}}_{{bidder_count}}" value="" >
+                  <label for="deputy_csc{{saleDateId}}_{{bidder_count}}">Deputy CSC</label>
+              </div>
+            </div> 
+            <div class="col-md-2">
+              <label class="col-form-label">&nbsp;</label> 
+                <div class="checkbox checkbox-css">
+                  <input formControlName="assistant_csc" type="checkbox" id="assistant_csc{{saleDateId}}_{{bidder_count}}" value="" >
+                  <label for="assistant_csc{{saleDateId}}_{{bidder_count}}">Assistant CSC</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">&nbsp;</label> 
+                <div class="checkbox checkbox-css">
+                  <input formControlName="clerk_superior_court" type="checkbox" id="clerk_superior_court{{saleDateId}}_{{bidder_count}}" value="" >
+                  <label for="clerk_superior_court{{saleDateId}}_{{bidder_count}}">Clerk Of Superior Court</label>
+                </div>
+            </div>
+          </div>
+
+          <div class="form-group row m-b-20">         
+            <div class="col-md-10">&nbsp;</div>
+            <div class="col-md-2">
+              <label class="col-form-label">&nbsp;</label> 
+              <input type="hidden" formControlName="sale_id" />
+              <button *hideElement="true" (click)="validateBidderForm(this.bidderForm)" class="form-control m-b-0 btn btn-sm btn-primary" >
+                Save Bidder {{bidder_count}}
+                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+              </button>
+            </div> 
+          </div>
+
+        </fieldset>
+        
+        <!-- one row start-->
+
+        <app-document 
+              [document_type_list]="document_type"
+              [property_id]="property_id" 
+              [document_info]="bidderData.document_bidder" 
+              document_url="bidder_document" 
+              doc_primary_key="id" 
+              [bidder_id]="bidder_id"
+              [doc_count_id]="bidder_count"></app-document>
+        
+              
+      </form>
+  <!-- one row end -->
+</fieldset>
+</panel>
+
+
+  

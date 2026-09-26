@@ -1,0 +1,150 @@
+
+<app-attention-warning></app-attention-warning>
+<!-- begin page-header -->
+<div class="row">
+        <h1 class="page-header">Welcome {{first_name}} {{last_name}} ! Choose what you want to do:</h1>
+</div>
+<!-- end page-header -->
+
+<!-- begin row -->
+<div class="row col-md-12 dashboard p-0">
+    <div class="card-deck">
+        <div class="card" *ngIf="isNotSearchTabAccess">
+            <div class="card-body" [routerLink]="['/home/search']" (keyup.enter)="tiggerUrl('/home/search')">
+                <h5 class="card-title"><i class="fa fa-search"></i> SEARCH</h5>
+                
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/search']" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" *hideElement="true" >
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-plus"></i> CASE INPUT</h5>
+                
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/quickinput']" class="btn btn-primary">Go</a>
+                    </div>
+            </div>
+        </div>
+        
+        <div class="card" *wholesale_buyer="true">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-boxes"></i> BUYER</h5>
+                
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/homebuyer']"  class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" *wholesale_buyer="true">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-boxes"></i> Guidance</h5>
+                
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/guide']"  class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-money-bill-alt"></i> BUY IT REQUESTS </h5>
+                <div class="stats-bottom">
+                    <a href="javascript:;" [routerLink]="['/home/buy-it']" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div> -->
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-shopping-bag"></i>  MY FAVORITE </h5>
+                
+                <div class="stats-bottom">
+                    <a href="javascript:;" [routerLink]="['/home/my-favourite']" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-bell"></i>  SHOW ALARM   </h5>
+                
+                <div class="stats-bottom">
+                    <a href="javascript:;" [routerLink]="['/home/show-alarm']" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+        <div class="card" *hideElement="true" >
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-file"></i> REPORT</h5>
+                
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/report']" class="btn btn-primary">Go</a>
+                    </div>
+            </div>
+        </div>
+        <div *ngIf="isAaReportAccess" class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-file"></i>COUNTY REPORT</h5>
+                
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/report/county']" class="btn btn-primary">Go</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div  class="row col-md-12 dashboard p-0 m-t-20">
+    <div class="card-deck">
+       
+
+         <div *accounting="true" class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-file"></i> ACCOUNTING MAIN</h5>
+                
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/accounting']" class="btn btn-primary">Go</a>
+                    </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-car"></i> VEHICLE INPUT</h5>
+                
+                <div class="stats-bottom">
+                    <a href="javascript:;" [routerLink]="['/home/vehicle']" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="user_role=='admin'" class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-book"></i> REDEMPTIONS</h5>
+                
+                <div class="stats-bottom">
+                    <a href="javascript:;" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="user_role=='admin'" class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-file-alt"></i> SUBTO'S</h5>
+                
+                <div class="stats-bottom">
+                    <a href="javascript:;" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+        <div *accounting="true" class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-list"></i>LISTING</h5>
+                
+                <div class="stats-bottom">
+                    <a href="javascript:;" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- end row -->
+      

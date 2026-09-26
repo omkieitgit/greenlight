@@ -1,0 +1,50 @@
+<h3 mat-dialog-title>Tradesman User</h3>
+<mat-dialog-content>
+        <form [formGroup]="tradesmanUserForm">
+                <div class="form-group row m-b-5" >
+                        <div class="col-md-2">
+                                <label class="col-form-label">Name</label>
+                        </div>
+                        <div class="col-md-6">
+                                <input type="text" class="form-control m-b-0" formControlName="name" [ngClass]="{ 'is-invalid': submitted && tradesmanUserForm.get('name').errors }" />   
+                                <div *ngIf="tradesmanUserForm.get('name').errors" class="invalid-feedback">
+                                        <div *ngIf="tradesmanUserForm.get('name').errors.required">Name is required</div>
+                                </div>
+                        </div>
+                        <div class="col-md-2">
+                                <button (click) ="validateForm(this.tradesmanUserForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                        </div>
+                </div>
+        </form>
+
+        <div class="table-responsive m-t-10">
+                <table class="table table-bordered table-condensed">
+                        <tr>
+                          <th>Name</th>
+                          <th>Action</th>
+                        </tr>
+                        <tbody>
+                          <tr *ngFor="let user of tradesmanUserList">
+                            <td>{{user?.username}}</td>
+                            <td class="p-5">
+                                    <!-- <a href="javascript:;" (click)="removeTradesmanTracking(tracking.id)">
+                                            <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                    </a> -->
+                                    <a href="javascript:;" (click)="editTradesmanUser(user)">
+                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                    </a>
+                            </td>
+
+                          </tr>
+                        </tbody>
+                </table>
+        </div>
+                
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button  (click)="!loading && closeDialog()">Close</button>
+</mat-dialog-actions>
+

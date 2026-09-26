@@ -1,0 +1,116 @@
+<panel title="Client Renovation Budget" (valueChange)='panelExpand($event)'>
+    <fieldset>
+        <legend>Client Renovation Budget</legend>
+        <div  class="form-group col-md-12 m-b-0 m-t-5 parent-loader">
+            <!-- Loader DIV -->
+            <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+            <!-- Loader DIV -->
+            <form *ngIf="propErr" [appDisableElement]="propertyForm" [formGroup]="clientRenovationBudgetForm">
+                <div class="">
+                    <div class="form-group row">
+                    <div class="col-md-3">
+                        <label class="col-form-label">Client Budget for renovation</label>    
+                    </div>
+                    <div class="col-md-3">
+                            <input formControlName="client_budget_renovation" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.client_budget_renovation.errors }" >
+                            <div *ngIf="f.client_budget_renovation.errors" class="invalid-feedback">
+                                <div *ngIf="f.client_budget_renovation.errors.required">Client Budget is required</div>
+                            </div> 
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-form-label">Added Budget for renovation</label>    
+                    </div>
+                    <div class="col-md-3">
+                        <input formControlName="budget_renovation" type="text"puposttpupostt class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.budget_renovation.errors }">
+                        <div *ngIf="f.budget_renovation.errors" class="invalid-feedback">
+                            <div *ngIf="f.budget_renovation.errors.required">Added budget is required</div>
+                        </div> 
+                    </div>
+                   
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label">Estimated days to finish</label>    
+                        </div>
+                        <div class="col-md-3">
+                            <input formControlName="est_day_finish" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.est_day_finish.errors }">
+                            <div *ngIf="f.est_day_finish.errors" class="invalid-feedback">
+                                <div *ngIf="f.est_day_finish.errors.required">Estimated days is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Lender Funds for renovation</label>    
+                        </div>
+                        <div class="col-md-3">
+                            <input formControlName="lender_fund_renovation" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.lender_fund_renovation.errors }">
+                            <div *ngIf="f.lender_fund_renovation.errors" class="invalid-feedback">
+                                <div *ngIf="f.lender_fund_renovation.errors.required">Lender Funds is required</div>
+                            </div> 
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        
+                       
+                        <div class="col-md-3">
+                            <label class="col-form-label">Estimated budget for full renovation</label>    
+                        </div>
+                        <div class="col-md-3">
+                            <input  formControlName="est_budge_renovation" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.est_budge_renovation.errors }">
+                            <div *ngIf="f.est_budge_renovation.errors" class="invalid-feedback">
+                                <div *ngIf="f.est_budge_renovation.errors.required">Estimated budget is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Actual Budget for full renovation</label>    
+                        </div>
+                        <div class="col-md-3">
+                            <input   formControlName="actual_budget_renovation" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.actual_budget_renovation.errors }">
+                            <div *ngIf="f.actual_budget_renovation.errors" class="invalid-feedback">
+                                <div *ngIf="f.actual_budget_renovation.errors.required">Full renovation is required</div>
+                            </div>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label">Renovation Start</label>    
+                        </div>
+                        <div class="col-md-3">
+                            <my-date-picker name="renovation_start" [options]="myDatePickerOptions" formControlName="renovation_start" (dateChanged)="onDateChanged($event,renovation_finish)" #renovation_start class="" placeholder="MM/DD/YYYY"></my-date-picker>
+                            <div *ngIf="f.renovation_start.errors" class="invalid-feedback">
+                                <div *ngIf="f.renovation_start.errors.required">Renovation Start is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-form-label">Renovation Finish</label>    
+                        </div>
+                        <div class="col-md-3">
+                            <my-date-picker name="renovation_finish" [options]="myDatePickerOptions" formControlName="renovation_finish" (dateChanged)="onDateChanged1($event,renovation_start)" #renovation_finish class="" placeholder="MM/DD/YYYY"></my-date-picker>
+                            <div *ngIf="f.renovation_finish.errors" class="invalid-feedback">
+                                <div *ngIf="f.renovation_finish.errors.required">Renovation Finish is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-md-3">
+                            <label class="col-form-label">Actual days until finish</label>    
+                        </div>
+                        <div class="col-md-3">
+                            <input formControlName="actual_days_finish" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.actual_days_finish.errors }">
+                            <div *ngIf="f.actual_days_finish.errors" class="invalid-feedback">
+                                <div *ngIf="f.actual_days_finish.errors.required">Actual days is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-4"></div>
+                        <div class="col-md-2">
+                            <button *hideElement="true" (click) ="validateForm(this.clientRenovationBudgetForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </fieldset>
+  </panel>
+  
+  
+  

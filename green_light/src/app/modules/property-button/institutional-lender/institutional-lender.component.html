@@ -1,0 +1,155 @@
+<h3>Get an Institutional Lender</h3>
+<mat-dialog-content class="parent-loader">
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <form [formGroup]="institutionalLenderForm" class="parent-loader">
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <div class="">
+            <div class="form-group row m-b-0">
+                <div class="col-md-4">
+                <label class="col-form-label">Your Cell Phone Number</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="contact_number" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.contact_number.errors }">
+                <div *ngIf="f.contact_number.errors" class="invalid-feedback">
+                    <div *ngIf="f.contact_number.errors.required">Please enter contact number.</div>
+                </div>
+            </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-8">
+                <label class="col-form-label">What type of lender they are looking for?</label>
+                </div>
+            </div>
+            <div  class="form-group row m-b-0"  formArrayName="items">
+            <div  class="col-md-6" [formGroupName]="i"  *ngFor="let lenderType of institutionalLenderForm.get('items')['controls']; let i = index;">
+                <div class="checkbox checkbox-css">              
+                    <input type="checkbox"  formControlName="checkbox" id="{{ lenderType.controls.id.value }}"  >    
+                    <label for="{{ lenderType.controls.id.value }}">{{ lenderType.controls.text.value }}</label>         
+                </div>         
+            </div>
+            <div  class="col-md-6 invalid-feedback" style="display:block" *ngIf="!institutionalLenderForm.controls.what_type_lender.valid && submitted">
+                Please select at least one lender type.
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-4">
+                <label class="col-form-label">Note</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-10">
+                    <textarea autosize [minRows]="5" formControlName="notes" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" class="form-control m-b-0"></textarea>
+                    <div *ngIf="f.notes.errors" class="invalid-feedback">
+                    <div *ngIf="f.notes.errors.required">Please enter note.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-4">
+                <label class="col-form-label">Current credit score?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="credit_score" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" >
+                <div *ngIf="f.credit_score.errors" class="invalid-feedback">
+                    <div *ngIf="f.credit_score.errors.required">Current credit score?.</div>
+                </div>
+            </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-12">
+                <label class="col-form-label">How many fix n flip transactions have you completed over the past 2 years?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="hown_many_fix_n_flip" class="form-control" type="text">
+            </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-12">
+                <label class="col-form-label">How many rental properties do you currently own? How many have you purchased over the past 2 years?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="retal_currently_own" class="form-control" type="text">
+            </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-12">
+                <label class="col-form-label">What location(s) are you acquiring properties to either fix n flip or buy/hold.?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="location_acquiring" class="form-control" type="text">
+            </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-12">
+                <label class="col-form-label">How much cash on hand do you have in the bank?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="cash_in_hand" class="form-control" type="text">
+            </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-12">
+                <label class="col-form-label">Value of retirement accounts including 401K, IRA, Stcoks, Mutual Funds,
+                    Money Market, Home Equity Lines, Bonds, Cash from Insurance policy, money markets, etcs. Please be
+                    specific as to the value of each investment type.</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="gal_401k" class="form-control" type="text">
+            </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-12">
+                <label class="col-form-label">Any bankruptcies, short sales or foreclosure? If so, how long ago.?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="bankruptcies" class="form-control" type="text">
+            </div>
+            </div>
+            <div class="form-group row m-b-10">
+                <div class="col-md-12">
+                    <label class="col-form-label">How many properties do you have under rehab currently? Purchase price? Rehab
+                    costs? "As is" value? After repair value?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="rehab_currently" class="form-control" type="text">
+            </div>
+            </div>
+            <div class="form-group row m-b-10">
+                <div class="col-md-12">
+                    <label class="col-form-label">Real estate goals over the next 12 months?</label>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input formControlName="gal_real_estate_12" class="form-control" type="text">
+            </div>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-raised-button mat-dialog-close>Close</button>
+    <button mat-button mat-raised-button class="btn-primary" (click)="validateForm(this.institutionalLenderForm)">
+        Save
+        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+    </button>
+</mat-dialog-actions>
+

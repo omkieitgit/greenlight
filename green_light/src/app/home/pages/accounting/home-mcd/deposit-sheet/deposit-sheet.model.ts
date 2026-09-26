@@ -1,0 +1,23 @@
+export class DepositSheetModel{
+        id:number;
+        deposit_date:string|number;
+        transaction:string;
+        in_amount_bidding:number;
+        out_amount_bidding:number;
+        running_balance:number;
+        checksum:number;
+        bidding:number;
+        etienne:number;
+        avignon:number;
+        mike_tripp:number;
+        larochelle:number;
+        marseille:number;
+        llc_bank_ac:number;
+        fee:number;
+        cash_check:number;
+        llc_name:string;
+        sp_number:string;
+        county:string;
+        deposit_link:string;
+        withdrawal_link:string;
+}

@@ -1,0 +1,29 @@
+
+<app-attention-warning></app-attention-warning>
+
+<div class="estate_content search_box">
+    <!-- <form [formGroup]="searchForm" style="width:100%" (keyup.enter)="seachProperty(this.searchForm)">  -->
+        <!-- begin tabs -->
+        <ngb-tabset>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <span class="d-md-inline">Quick Search</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <quicksearch></quicksearch>
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab>
+                <ng-template ngbTabTitle>
+                    <span class=" d-md-inline">Advanced Search</span>
+                </ng-template>
+                <ng-template ngbTabContent>
+                    <advancedsearch></advancedsearch>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+        <!-- end tabs -->
+    <!-- </form> -->
+  
+    
+</div>

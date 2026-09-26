@@ -1,0 +1,96 @@
+<h3 mat-dialog-title>Send Invite</h3>
+<mat-dialog-content class="parent-loader">
+  <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+  <form [formGroup]="sendInviteForm" class="form-group">
+    <div>
+        <div class="form-group row">
+            <div class="col-md-2">To</div>
+            <div class="col-md-10 _navbar_search">
+                <!-- <tag-input formControlName="user_ids"  [placeholder]="'Enter name'"  [secondaryPlaceholder]="'Enter name'" [onlyFromAutocomplete]="true" [identifyBy]="'id'" [displayBy]="'name'">
+                    <tag-input-dropdown [minimumTextLength]="3" [autocompleteObservable]='requestAutocompleteItems' [identifyBy]="'id'" [displayBy]="'name'">
+                        <ng-template let-item="item" let-index="index">
+                            {{ item.name }} 
+                        </ng-template>
+                    </tag-input-dropdown>
+                </tag-input> -->
+
+                <mat-form-field appearance="outline" class="example-chip-list">
+                  <mat-chip-list #chipList aria-label="User selection">
+                    <mat-chip
+                      *ngFor="let user of user_list"
+                      [selectable]="selectable"
+                      [removable]="removable"
+                      (removed)="remove(user)">
+                      {{user.name}}
+                      <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input
+                      placeholder="Enter Name"
+                      #userInput
+                      formControlName="user_ids"
+                      [matAutocomplete]="auto"
+                      [matChipInputFor]="chipList"
+                      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                      (matChipInputTokenEnd)="add($event)">
+                  </mat-chip-list>
+
+
+                  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                     <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                      {{option.name}}
+                      </mat-option>
+                      <mat-option *ngIf="searchLoading">
+                        <mat-spinner diameter="30" value="100"></mat-spinner>
+                      </mat-option>
+                      <mat-option *ngIf="noResult">
+                        No Result Found
+                      </mat-option>
+                  </mat-autocomplete>
+                  <mat-icon  matSuffix color="primary" class="search-property md-18">
+                    <i class="fa fa-search"></i>
+                  </mat-icon>
+                </mat-form-field>
+                  
+              <!-- Please enter multiple name separated by comma(,) -->
+              <div *ngIf="submitted && f.user_ids.errors" class="invalid-feedback" style="display:block">
+                <div *ngIf="f.user_ids.errors.required">Name is required</div>
+                <div *ngIf="!f.user_ids.errors.required">Name do not valid</div>
+              </div> 
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">Subject</div>
+            <div class="col-md-10">
+              <input class="form-control"  formControlName="subject" type="text" [ngClass]="{ 'is-invalid': submitted && f.subject.errors }">
+              <div *ngIf="f.subject.errors" class="invalid-feedback">
+                <div *ngIf="f.subject.errors.required">Subject is required</div>
+              </div>
+            </div>     
+            
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">Message</div>
+            <div class="col-md-10">
+              <textarea class="form-control"  formControlName="message" style="min-height: 96px;" [ngClass]="{ 'is-invalid': submitted && f.message.errors }"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2">&nbsp;</div>
+          <div class="col-md-10">          
+            <div class="checkbox checkbox-css">               
+              <input type="checkbox" id="sendInviteIs_All_Invite" formControlName="is_all_invite" [checked]="sendInviteFor" (change)="sendInviteFor = !sendInviteFor" >    
+              <label for="sendInviteIs_All_Invite">Send invite to All</label>         
+            </div>
+          </div>
+        </div>
+         
+    </div>
+    
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button mat-raised-button class="btn-primary" (click)="validateForm(this.sendInviteForm)">
+    Send<i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+  </button>
+</mat-dialog-actions>

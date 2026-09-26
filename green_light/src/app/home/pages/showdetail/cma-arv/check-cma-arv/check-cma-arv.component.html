@@ -1,0 +1,384 @@
+
+<panel (valueChange)='panelExpand($event)' title="{{cma_title}} &nbsp;&nbsp;&nbsp;&nbsp; {{cma_arv_info?.specific_demand?'SSD: '+cma_arv_info?.specific_demand:'' }} {{ cma_arv_info?.general_demand?'&nbsp; &nbsp; GSD: '+cma_arv_info?.general_demand:''}} {{ cma_arv_info?.recommended_cma_arv?'&nbsp;&nbsp; CMA/ARV: '+cma_arv_info?.recommended_cma_arv:''}}  {{cma_arv_info?.wholetail_value?'&nbsp; &nbsp; Wholetail Value: '+cma_arv_info?.wholetail_value:''}} {{cma_arv_info?.user?'&nbsp; &nbsp;Comp By: '+cma_arv_info?.user?.first_name+' '+cma_arv_info?.user?.last_name:''}} {{cma_arv?.date?'&nbsp; &nbsp;Date:'+cma_arv?.date:''}}"  [collapse]="collapse"  [appHideContent]="cmaArvForm"  (checkContentEvent)="showHidePanel($event)">
+    
+  <form [formGroup]="cmaArvForm" *ngIf="!propErr"  class="parent-loader" [appDisableElement]="cmaArvForm" [cma_arv_type]="cma_arv_type" >
+      <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+      <!-- one row start-->
+      <fieldset>
+        <legend>
+            <b>{{cma_title}}</b>
+            <button *ngIf="sqftCalBtn" class="pull-right btn btn-sm btn-primary" (click)="sqftCalculation()">Conversion Calculator</button>
+        </legend>
+          <!-- one row end -->
+          <input type="hidden" formControlName="id" />
+          <input type="hidden" formControlName="info_added_by" /> 
+          <!-- one row start-->
+          <div class="form-group row m-b-5">
+            <div class="col-md-1">
+              <label class="col-form-label">Specific Supply & Demand</label>
+            </div>
+            <div class="col-md-2">
+              <input type="text" formControlName="specific_demand" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.specific_demand.errors }"/>            
+              <div *ngIf="f.specific_demand.errors" class="invalid-feedback">
+                <div *ngIf="f.specific_demand.errors.required">Required field</div>
+              </div>
+            </div>
+            
+            
+            <div class="col-md-1">
+              <label class="col-form-label">General Supply & Demand</label>
+            </div>
+            <div class="col-md-2">
+              <input type="text" formControlName="general_demand" class="form-control m-b-0"   [ngClass]="{ 'is-invalid': submitted && f.general_demand.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/> 
+              <div *ngIf="f.general_demand.errors" class="invalid-feedback">
+                <div *ngIf="f.general_demand.errors.required">Required field</div>
+              </div>         
+            </div>
+            
+              <div class="col-md-1">
+                <label class="col-form-label"><a href="javascript:;" (click)="daysOnMarket()">Average Days on Market</a></label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="days_on_market" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.days_on_market.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)" />
+                <div *ngIf="f.days_on_market.errors" class="invalid-feedback">
+                    <div *ngIf="f.days_on_market.errors.required">Required field</div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                <label class="col-form-label">Phase of Renovation</label>
+              </div>
+              <div class="col-md-2">
+                  <select formControlName="phase_renovation" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.phase_renovation.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)">
+                      <option value="">Select</option>
+                      <option value="0">N/A</option>
+                      <option value="p1-">P1-</option>
+                      <option value="p1">P1</option>
+                      <option value="p1+">P1+</option>
+                      <option value="p2-">P2-</option>
+                      <option value="p2">P2</option>
+                      <option value="p2+">P2+</option>
+                      <option value="P3-">P3-</option>
+                      <option value="P3">P3</option>
+                      <option value="P3+">P3+</option>
+                  </select>
+                  <div *ngIf="f.phase_renovation.errors" class="invalid-feedback">
+                      <div *ngIf="f.phase_renovation.errors.required">Required field</div>
+                    </div> 
+              </div>
+          </div>
+                
+          <!-- one row end -->
+          <div class="form-group row m-b-5">
+              <div class="col-md-1">
+                  <label class="col-form-label">Price/sq.ft.on Sale Comps</label>
+              </div>
+              <div class="col-md-2">
+                <div class="input-group input-daterange">
+                    <input type="text" class="form-control" formControlName="price_sqft_sale_comps_from" [ngClass]="{ 'is-invalid': submitted && f.price_sqft_sale_comps_from.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)">
+                    <span class="input-group-addon">to</span>
+                    <input type="text" class="form-control" formControlName="price_sqft_sale_comps_to" [ngClass]="{ 'is-invalid': submitted && f.price_sqft_sale_comps_to.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)">
+                  </div>
+                  <div *ngIf="submitted" class="invalid-feedback" style="display:block">
+                      <div *ngIf="f.price_sqft_sale_comps_from.errors" style="float:left;padding-right: 40px;">
+                        <div *ngIf="f.price_sqft_sale_comps_from.errors.required">Required field</div>
+                      </div>
+                      <div *ngIf="f.price_sqft_sale_comps_to.errors">
+                        <div *ngIf="f.price_sqft_sale_comps_to.errors.required">Required field</div>
+                      </div>
+                  </div>
+                  
+              </div>
+              <div class="col-md-1">
+                <label class="col-form-label">Sale Comps & SSD Maps</label>
+                
+              </div>
+              <div class="col-md-2">
+                  <span [appLink]="f?.ssd_sale_comps.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="ssd_sale_comps" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.ssd_sale_comps.errors }"  appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>          
+                  <div *ngIf="f.ssd_sale_comps.errors" class="invalid-feedback">
+                    <div *ngIf="f.ssd_sale_comps.errors.required">Required field</div>
+                  </div> 
+              </div>
+              <div class="col-md-1">
+                  <label class="col-form-label">GSD Sale Comps Maps</label>
+              </div>
+              <div class="col-md-2">
+                  <span [appLink]="f.gsd_sale_comps.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="gsd_sale_comps" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.gsd_sale_comps.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                  <div *ngIf="f.gsd_sale_comps.errors" class="invalid-feedback">
+                    <div *ngIf="f.gsd_sale_comps.errors.required">Required field</div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                  <label class="col-form-label">Rent GSD</label>
+              </div>
+              <div class="col-md-2">
+                  <input type="text" formControlName="rent_gsd" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.rent_gsd.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                  <div *ngIf="f.rent_gsd.errors" class="invalid-feedback">
+                    <div *ngIf="f.rent_gsd.errors.required">Rent GSD is required</div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="form-group row m-b-5">
+              <div class="col-md-1">
+                <label class="col-form-label">Price/sq.ft on Sold Comps</label>
+              </div>
+              <div class="col-md-2">
+                  <div class="input-group input-daterange">
+                      <input type="text" formControlName="price_sqft_sold_comps_from" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.price_sqft_sold_comps_from.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>            
+                      <span class="input-group-addon">to</span>
+                      <input type="text" formControlName="price_sqft_sold_comps_to" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.price_sqft_sold_comps_to.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>            
+                  </div>
+                  <div *ngIf="submitted" class="invalid-feedback" style="display:block">
+                    <div *ngIf="f.price_sqft_sold_comps_from.errors" style="float:left;padding-right: 40px;">
+                        <div *ngIf="f.price_sqft_sold_comps_from.errors.required">Required field</div>
+                    </div>
+                    <div *ngIf="f.price_sqft_sold_comps_to.errors">
+                      <div *ngIf="f.price_sqft_sold_comps_to.errors.required">Required field</div>
+                    </div>
+                  </div>
+                
+              </div>
+              <div class="col-md-1">
+                <label class="col-form-label">Sold Comps & SSD Maps</label>
+              </div>
+
+
+              <div class="col-md-2">
+                  <span [appLink]="f.ssd_sold_comps.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="ssd_sold_comps" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.ssd_sold_comps.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                  <div *ngIf="f.ssd_sold_comps.errors" class="invalid-feedback">
+                    <div *ngIf="f.ssd_sold_comps.errors.required">Required field</div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                <label class="col-form-label">GSD Sold Comps Maps</label>
+              </div>
+              <div class="col-md-2">
+                  <span [appLink]="f.gsd_sold_comps.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="gsd_sold_comps" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.gsd_sold_comps.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                  <div *ngIf="f.gsd_sold_comps.errors" class="invalid-feedback">
+                    <div *ngIf="f.gsd_sold_comps.errors.required">Required field</div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                <label class="col-form-label">Rental Comps & Map</label>
+              </div>
+              <div class="col-md-2">
+                <span [appLink]="f.rental_comps_map.value"  [align]="pull-left"></span>
+                <input type="text" formControlName="rental_comps_map" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.rental_comps_map.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                <div *ngIf="f.rental_comps_map.errors" class="invalid-feedback">
+                    <div *ngIf="f.rental_comps_map.errors.required">Required field</div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="form-group row m-b-5">
+              <div class="col-md-1">
+                <label class="col-form-label">P1 Value</label>
+              </div>
+              <div class="col-md-2">
+                  <input type="text" formControlName="p1_value" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.p1_value.errors }" (change)="calculatePVal($event,'p1_value')" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/> 
+                  <div *ngIf="f.p1_value.errors" class="invalid-feedback">
+                      <div *ngIf="f.p1_value.errors.required">Required field</div>
+                    </div>
+              </div>
+              <div class="col-md-1">
+                <label class="col-form-label">P2 Value</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="p2_value" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.p2_value.errors }" (change)="calculatePVal($event,'p2_value')" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                <div *ngIf="f.p2_value.errors" class="invalid-feedback">
+                  <div *ngIf="f.p2_value.errors.required">Required field</div>
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                <label class="col-form-label">P3 Value</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="p3_value" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.p3_value.errors }" (change)="calculatePVal($event,'p3_value')" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                <div *ngIf="f.p3_value.errors" class="invalid-feedback">
+                  <div *ngIf="f.p3_value.errors.required">Required field</div>
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                  <label class="col-form-label">Rents Zestimate</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="rents_zestimate" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.rents_zestimate.errors }"  appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                <div *ngIf="f.rents_zestimate.errors" class="invalid-feedback">
+                    <div *ngIf="f.rents_zestimate.errors.required">Required field</div>
+                  </div>
+              </div>
+
+          </div>
+
+          
+          <div class="form-group row m-b-10">
+              <div class="col-md-1">
+                  <label class="col-form-label">P1 ADOM</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="p1_adom" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.p1_adom.errors }"  appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/> 
+                <div *ngIf="f.p1_adom.errors" class="invalid-feedback">
+                    <div *ngIf="f.p1_adom.errors.required">Required field</div>
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                  <label class="col-form-label">P2 ADOM</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="p2_adom" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.p2_adom.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                <div *ngIf="f.p2_adom.errors" class="invalid-feedback">
+                    <div *ngIf="f.p2_adom.errors.required">Required field</div>
+                  </div>
+              </div>
+              <div class="col-md-1">
+                  <label class="col-form-label">P3 ADOM</label>
+              </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="p3_adom" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.p3_adom.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                <div *ngIf="f.p3_adom.errors" class="invalid-feedback">
+                  <div *ngIf="f.p3_adom.errors.required">Required field</div>
+                </div>
+              </div>
+
+              <div class="col-md-1">
+                  <label class="col-form-label">Rental Rate</label>
+                </div>
+              <div class="col-md-2">
+                <input type="text" formControlName="rental_rate" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.rental_rate.errors }"  appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                <div *ngIf="f.rental_rate.errors" class="invalid-feedback">
+                  <div *ngIf="f.rental_rate.errors.required">Required field</div>
+                </div>
+              </div>
+
+          </div>
+
+          <div class="form-group row m-b-10">
+              <div class="col-md-1">
+                <label class="col-form-label">Comp URL 1</label>
+              </div>
+              <div class="col-md-2">
+                  <span [appLink]="f.comp_url_1.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="comp_url_1" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.comp_url_1.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>            
+                  <div *ngIf="f.comp_url_1.errors" class="invalid-feedback">
+                    <div *ngIf="f.comp_url_1.errors.required">Required field</div>
+                  </div>
+              </div>
+
+              <div class="col-md-1">
+                <label class="col-form-label">Comp URL 2</label>
+              </div>
+              <div class="col-md-2">
+                  <span [appLink]="f.comp_url_2.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="comp_url_2" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.comp_url_2.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                  <div *ngIf="f.comp_url_2.errors" class="invalid-feedback">
+                    <div *ngIf="f.comp_url_2.errors.required">Required field</div>
+                  </div>
+              </div>
+
+              <div class="col-md-1">
+                <label class="col-form-label">Comp URL 3</label>
+              </div>
+              <div class="col-md-2">
+                  <span [appLink]="f.comp_url_3.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="comp_url_3" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.comp_url_3.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                  <div *ngIf="f.comp_url_3.errors" class="invalid-feedback">
+                    <div *ngIf="f.comp_url_3.errors.required">Required field</div>
+                  </div>
+              </div>
+
+              <div class="col-md-1">
+                <label class="col-form-label">Comp URL 4</label>
+              </div>
+              <div class="col-md-2">
+                  <span [appLink]="f.comp_url_4.value" [align]="pull-left"></span>
+                  <input type="text" formControlName="comp_url_4" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.comp_url_4.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                  <div *ngIf="f.comp_url_4.errors" class="invalid-feedback">
+                    <div *ngIf="f.comp_url_4.errors.required">Required field</div>
+                  </div>
+              </div>
+          </div>
+
+          <div class="form-group row m-b-10">
+              <div class="col-md-1">
+                  <label class="col-form-label">Recommended CMA/ARV</label>
+                </div>
+                <div class="col-md-2">
+                  <input type="text" formControlName="recommended_cma_arv" class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.recommended_cma_arv.errors }" appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>            
+                  <div *ngIf="f.recommended_cma_arv.errors" class="invalid-feedback">
+                    <div *ngIf="f.recommended_cma_arv.errors.required">Required field</div>
+                  </div>
+              </div>
+
+              <div class="col-md-1">
+                  <label class="col-form-label">Wholetail Value</label>
+                </div>
+                <div class="col-md-2">
+                    <input type="text" formControlName="wholetail_value" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.wholetail_value.errors }"  appOnBlurSave (updatedValue)="saveCmaArvInfo($event)"/>
+                    <div *ngIf="f.wholetail_value.errors" class="invalid-feedback">
+                      <div *ngIf="f.wholetail_value.errors.required">Required field</div>
+                    </div>
+              </div>
+
+              <div class="col-md-1">
+                  <label class="col-form-label">{{cma_arv_type.replace('_', ' ') | titlecase }}</label>
+                </div>
+                <div class="col-md-2">
+                    <div class="input-group">
+                        <input type="text" #userName formControlName="user_id" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }" />
+                      <div class="input-group-append"  (click)="cma_user(userName)" >
+                        <span class="input-group-text">
+                          <i class="fa fa-user"></i>
+                        </span>
+                      </div>
+                      <div *ngIf="f.user_id.errors" class="invalid-feedback">
+                        <div *ngIf="f.user_id.errors.required">Required field</div>
+                      </div>
+                    </div>
+              </div>
+              <div class="col-md-1">
+                  <label class="col-form-label">DATE</label>
+                </div>
+                <div class="col-md-2">
+                    <my-date-picker [disabled]="disabled_date" [options]="myDatePickerOptions" formControlName="date" (dateChanged)="onDateChanged($event)" class="" placeholder="MM/DD/YYYY" ></my-date-picker>
+                    <div *ngIf="f.date.errors && submitted" class="invalid-feedback" style="display: block;">
+                      <div *ngIf="f.date.errors.required">Required field</div>
+                    </div>
+              </div>
+          </div>
+          <!-- one row start-->
+          
+          <!-- one row start-->
+          <div class="form-group row m-b-5">
+            <div [ngClass]="[cma_arv_type=='third_dca' && cma_arv_type=='third_dca' && isFinalCheck?'col-md-8':'col-md-10']"></div>
+            <div *ngIf="cma_arv_type=='third_dca' && isFinalCheck">
+                <label class="col-form-label">&nbsp;</label>
+                <button  *hideBtnElement="cma_arv_type" (click)="final_check();" class="form-control btn btn-sm btn-primary pull-right">
+                    ADD CMA/ARV
+                </button>
+            </div>
+            <div class="col-md-1">
+              <label class="col-form-label">&nbsp;</label>
+              <app-common-notes [note_name]="notes_btn.note_name" [noteSetting]="notes_btn" (updateNotesDetail)="updatedNotes($event)"></app-common-notes>
+            </div> 
+  
+            <div class="col-md-1">
+              <label class="col-form-label">&nbsp;</label>
+              <button  *hideBtnElement="cma_arv_type" (click)="validateForm(this.cmaArvForm)" class="form-control m-b-0 btn btn-sm btn-primary">
+                  Save <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+              </button>
+            </div>  
+                     
+          </div>
+          <app-common-notes [note_name]="notes_detail.note_name" [noteSetting]="notes_detail" [resetFormSubject]="resetFormSubject.asObservable()"></app-common-notes>
+          
+          <!-- one row end -->
+      </fieldset>
+  </form>
+</panel>

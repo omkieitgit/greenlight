@@ -1,0 +1,115 @@
+<panel [collapse]='false' (valueChange)='panelExpand($event)' title="VEHICLE INPUT">
+        <form [formGroup]="vehicleInfoForm">
+                <div class="form-group row m-b-10">
+                        
+                        <div class="col-md-2">
+                                <label class="col-form-label">Vehicle Year</label>
+                                <input type="text"  class="form-control m-b-0 my-class"  formControlName="vehicle_year" [ngClass]="{ 'is-invalid': submitted && vehicleInfoForm.get('vehicle_year').errors }" />
+                                <div *ngIf="vehicleInfoForm.get('vehicle_year').errors" class="invalid-feedback">
+                                        <div *ngIf="vehicleInfoForm.get('vehicle_year').errors.required">Vehicle Year is required</div>
+                                </div>
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Vehicle Make</label>
+                                <select class="form-control" formControlName="vehicle_make"  [ngClass]="{ 'is-invalid': submitted && vehicleInfoForm.get('vehicle_make').errors }">
+                                        <option value="">Select Vehicle Make</option>
+                                        <option [value]="vehicleMake.key" *ngFor="let vehicleMake of vehicle_make_info | keyvalue">{{vehicleMake.value}}</option>
+                                </select> 
+                                <div *ngIf="vehicleInfoForm.get('vehicle_make').errors" class="invalid-feedback">
+                                        <div *ngIf="vehicleInfoForm.get('vehicle_make').errors.required">Vehicle Make is required</div>
+                                </div> 
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Vehicle ID #</label>
+                                <input type="text"  class="form-control m-b-0 my-class"   formControlName="vehicle_id"   [ngClass]="{ 'is-invalid': submitted && vehicleInfoForm.get('vehicle_id').errors }"/>
+                                <div *ngIf="vehicleInfoForm.get('vehicle_id').errors" class="invalid-feedback">
+                                        <div *ngIf="vehicleInfoForm.get('vehicle_id').errors.required">Vehicle ID is required</div>
+                                </div> 
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Registered Owner 1</label>
+                                <input type="text"  class="form-control m-b-0 my-class"   formControlName="registered_owner_1" />
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Registered Owner 2</label>
+                                <input type="text"  class="form-control m-b-0 my-class"  formControlName="registered_owner_2"  />
+                        </div>
+                </div>
+
+                <div class="form-group row m-b-10">
+                        <div class="col-md-3">
+                                <label class="col-form-label">Vehicle total Unpaid County Taxes</label>
+                        </div>
+                        <div class="col-md-2">
+                                <input type="text"  class="form-control m-b-0 my-class"  formControlName="county_tax"  />   
+                        </div>
+                        <div class="col-md-1">
+                                <label class="col-form-label">Year</label>
+                        </div>
+                        <div class="col-md-2">
+                                <input type="text"  class="form-control m-b-0 my-class"  formControlName="year"  />   
+                        </div>
+                </div>
+                <div class="form-group row m-b-10">
+                        <div class="col-md-2">
+                                <label class="col-form-label">Vehicle Condition</label>
+                        </div>
+                        <div class="col-md-8">
+                                <textarea  class="form-control m-b-0 my-class" formControlName="vehicle_condition" ></textarea>   
+                        </div>
+                </div>
+                <div class="form-group row m-b-10">
+                        <div class="col-md-2 m-r-20">
+                                <input type="file"  class="form-control m-b-0" #fileUploading class="form-control btn btn-sm btn-primary" value="Choose File" name="property_file"  multiple (change)="uploadHandler($event)">     
+                        </div> 
+                        <div class="col-md-1">
+                                <button type="button" class="form-control m-b-0 btn btn-sm btn-primary" value="Save" (click) ="validateForm(this.vehicleInfoForm,fileUploading)" >
+                                        Save
+                                           <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                                </button>
+                        </div>
+                </div>
+                
+                <div *ngIf="vehicleInfo" class="table-responsive m-t-10  m-b-10 table-fixed-header">
+                        <table class="table table-bordered table-condensed">
+                                <thead>
+                                        <tr>
+                                                <th>Vehicle Year</th>
+                                                <th>Vehicle Make</th>
+                                                <th>Vehicle ID #</th>
+                                                <th>Registered Owner 1</th>
+                                                <th>Registered Owner 2</th>
+                                                <th>Unpaid County Taxes</th>
+                                                <th>Year</th>
+                                                <th>Condition</th>
+                                                <th>Document</th>
+                                                <th>Action</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                  <tr *ngFor="let vehicle of vehicleInfo">
+                                    <td style="white-space: nowrap;">{{vehicle.vehicle_year}}</td>
+                                    <td style="white-space: nowrap;">{{ vehicle_make_info[vehicle.vehicle_make] }}</td>
+                                    <td>{{vehicle.vehicle_id}}</td>
+                                    <td>{{vehicle.registered_owner_1}}</td>
+                                    <td>{{vehicle.registered_owner_2}}</td>
+                                    <td>{{ vehicle.county_tax }}</td>
+                                    <td>{{vehicle.year}}</td>
+                                    <td>{{vehicle.vehicle_condition}}</td>
+                                    <td class="break"><a *ngIf="vehicle?.url" href="{{vehicle?.url}}" target="_blank" [title]="vehicle?.url">View</a></td>
+                                    <td class="p-5">
+                                            <!-- <a href="javascript:;" (click)="removeDepositSheet(deposit.id)">
+                                                    <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                            </a> -->
+                                            <a href="javascript:;" (click)="editVehicleInfo(vehicle)">
+                                                <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                            </a>
+                                    </td>
+                                    
+                                  </tr>
+                                </tbody>
+                        </table>
+                </div>
+              
+        </form>
+</panel>

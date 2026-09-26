@@ -1,0 +1,74 @@
+<app-attention-warning></app-attention-warning>
+<div class="card row">
+        <form [formGroup]="WorkprofileForm"  class="parent-loader">
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <div class="form-group row m-b-5 p-t-20 p-10">
+                        <div *ngIf="workProfileResponse" class="col-md-6">
+                                <div class="form-group row m-b-10">
+                                        <div class="col-md-4">
+                                                <label class="col-form-label">User List</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                                <select formControlName="user_id" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }" (change)="userDetail($event)" >
+                                                        <option *ngFor="let user of WPuserList" [value]="user.id"> {{user.name }} </option>
+                                                </select>
+                                                <div *ngIf="f.user_id.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.user_id.errors.required">Required field</div>
+                                                </div>
+                                        </div>
+                                </div>
+
+                                <div class="form-group row m-b-10">
+                                        <div class="col-md-4">
+                                                <label class="col-form-label">Team</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                                <select  formControlName="work_profile_team" class="form-control m-b-0" (change)="teamDetail($event.target.value)" [ngClass]="{ 'is-invalid': submitted && f.work_profile_team.errors }">
+                                                        <option *ngFor="let team of workProfileResponse.pay_rates  | keyvalue" [value]="team.key"> {{team.key | replace:'_':' '}} </option>
+                                                </select>
+                                                <div *ngIf="f.work_profile_team.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.work_profile_team.errors.required">Required field</div>
+                                                </div>
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group row m-b-10">
+                                        <div class="col-md-7"></div>
+                                        <div class="col-md-3">
+                                                <button type="button"  (click)="validateForm(WorkprofileForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+                                                </button>
+                                        </div>
+                                </div>
+                                
+                       </div>
+                       <div class="col-md-6">
+                                <div class="form-group row m-b-5">
+                                        <div class="col-md-12">
+                                                <div *ngIf="userRoles" class="table-responsive">
+                                                        <table class="table table-bordered table-condensed">
+                                                                <tbody>
+                                                                        <tr *ngFor="let role of userRoles  | keyvalue">
+                                                                                <td>{{role.key | replace:'_':' ' | titlecase }}</td>
+                                                                                <td><strong>${{role.value }}</strong></td>
+                                                                        </tr>
+                                                                </tbody>
+                                                        
+                                                        </table>
+                                                </div> 
+
+                                                <div *ngIf="workProfileResponse" class="table-responsive">
+                                                        <table class="table table-bordered table-condensed">
+                                                                <tbody>
+                                                                        <tr *ngFor="let text of workProfileResponse.text  | keyvalue">
+                                                                                <td>{{text.value }}</td>
+                                                                        </tr>
+                                                                </tbody>
+                                                        
+                                                        </table>
+                                                </div>   
+                                        </div>       
+                                </div>   
+                       </div>   
+                </div>
+        </form>
+</div>

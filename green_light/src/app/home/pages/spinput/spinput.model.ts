@@ -1,0 +1,29 @@
+export class SpInputModel {
+    state: string = null;
+    county: string = null;
+    range: number = null;
+    case_number: string = null;
+    mortgagor_grantor_1: string = null;
+    mortgagor_grantor_2: string = null;
+    sale_type: string = null;
+    instrument: string = null;
+    book: string = null;
+    page: string = null;
+    str: string = null;
+    sale_place: string = null;
+    sale_date: string = null;
+    sale_time: string = null;
+    opening_bid: number = null;
+    parcel_id: number = null;
+    propety_address: string = null;
+    city: string = null;
+    zipcode: string = null;
+    trustee_address: string = null;
+    trustee_url: string = null;
+    hoa_name: string = null;
+    account_number: string = null;
+    legal_notice: string = null;
+    legal_notice_url: string = null;
+    nos: string = null;
+    nos_date: string = null;
+}

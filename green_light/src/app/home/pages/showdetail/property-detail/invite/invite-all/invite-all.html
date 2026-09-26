@@ -1,0 +1,48 @@
+<h3>Invite All</h3>
+<mat-dialog-content class="parent-loader">
+<div class="estate-property invite_height">
+  <div  *ngIf="loader" class="loading">
+      <img src="assets/img/loading.gif" />
+  </div>
+  
+  <table class="table" *ngIf="!loader">
+    <thead class="thead-striped">
+      <tr>
+        <!-- <th scope="col">House Id</th> -->
+        <th scope="col">Address</th>
+        <th scope="col">Subject</th>
+        <th scope="col">Message</th>
+        <th scope="col">From Name</th>
+        <th scope="col">To Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Date</th>
+        <th scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody *ngIf="records" >
+      <tr *ngFor="let record of records">
+        <!-- <th scope="row">{{record.house_id}}</th> -->
+        <td>{{record.address}}</td>
+        <td>{{record.invitee_subject}}</td>
+        <td>{{record.invitee_message}}</td>
+        <td>{{record?.invitee_from?.first_name}}&nbsp;{{record?.invitee_from?.last_name}}</td>
+        <td>{{record?.invitee_to?.first_name}}&nbsp;{{record?.invitee_to?.last_name}}</td>
+        <td>{{record.invitee_email}}</td>
+        <td>{{record.created_at*1000 | date:'MM/dd/yyyy'}}</td>
+        <td><a href="javascript:;" (click)="deleteInvite(record.invitations_info_id);">Delete</a></td>
+      </tr>    
+    </tbody>
+    <tfoot *ngIf="moreBtn">
+        <tr>
+          <td colspan="9" align="center">
+            <button  mat-button (click)="getloadmorepages()" >More</button>
+          </td>
+        </tr>
+    </tfoot>
+  </table>
+  
+</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

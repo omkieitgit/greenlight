@@ -1,0 +1,125 @@
+
+  <panel title="Wholesale Buyer {{whole_sale_buyer_count}}" id="wholesale_homebuyer_{{wholesale_buyer_id}}">
+    <form [formGroup]="homeBuyersForm" class="parent-loader" [appDisableElement]="homeBuyersForm">
+      <div *ngIf="loading || remove_loading"  class="child-loader"><span class="spinner-small "></span></div>
+      <fieldset>
+        <input type="hidden" formControlName="wholesale_buyer_n_id"/>
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label class="col-form-label">Name WB {{whole_sale_buyer_count}}</label>
+            <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && homeBuyersForm.controls.name.errors}" />
+            <div *ngIf="homeBuyersForm.controls.name.errors" class="invalid-feedback clr-bth" >
+                <div *ngIf="homeBuyersForm.controls.name.errors.required">Name is required</div>
+            </div>
+          </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Email WB {{whole_sale_buyer_count}}</label>
+          <input type="text" formControlName="email" class="form-control"  [ngClass]="{ 'is-invalid': submitted && homeBuyersForm.controls.email.errors}"/>
+          <div *ngIf="homeBuyersForm.controls.email.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="homeBuyersForm.controls.email.errors.required">Email is required</div>
+              <div *ngIf="homeBuyersForm.controls.email.errors.email">Email is not valid</div>
+          </div>
+        </div>
+          <div class="col-md-8">
+            <label class="col-form-label">Receive updates every</label>
+            <div class="row">
+            <div class="radio radio-css flt-l">
+              <input class="_receive_update" type="radio" formControlName="receive_update"  id="hb_sthb_receive_update1_1_{{whole_sale_buyer_count}}" value="1" [checked]="wholesale?.receive_update==1">
+              <label class="w5" for="hb_sthb_receive_update1_1_{{whole_sale_buyer_count}}">1 Week</label>
+            </div>
+            <div class="radio radio-css flt-l ml-4">
+              <input class="_receive_update" type="radio" formControlName="receive_update"  id="hb_sthb_receive_update1_2_{{whole_sale_buyer_count}}" value="2" [checked]="wholesale?.receive_update==2">
+              <label class="w5" for="hb_sthb_receive_update1_2_{{whole_sale_buyer_count}}">2 Week</label>
+            </div>
+            <div class="radio radio-css flt-l ml-4">
+              <input class="_receive_update" type="radio" formControlName="receive_update" id="hb_sthb_receive_update1_3_{{whole_sale_buyer_count}}" value="3" [checked]="wholesale?.receive_update==3">
+              <label class="w5" for="hb_sthb_receive_update1_3_{{whole_sale_buyer_count}}">3 Week</label>
+            </div>
+            <div class="radio radio-css flt-l ml-4">
+              <input class="_receive_update" type="radio" formControlName="receive_update" id="hb_sthb_receive_update1_4_{whole_sale_buyer_count}}" value="4" [checked]="wholesale?.receive_update==4">
+              <label class="w5" for="hb_sthb_receive_update1_4_{{whole_sale_buyer_count}}">4 Week</label>
+            </div>
+            <div class="radio radio-css flt-l ml-4">
+              <input class="_receive_update" type="radio" formControlName="receive_update" id="hb_sthb_receive_update1_5_{{whole_sale_buyer_count}}" value="5" [checked]="wholesale?.receive_update==5">
+              <label class="w5" for="hb_sthb_receive_update1_5_{{whole_sale_buyer_count}}">5 Week</label>
+            </div>
+            <div class="radio radio-css flt-l ml-4">
+              <input class="_receive_update" type="radio" formControlName="receive_update" id="hb_sthb_receive_update1_6_{{whole_sale_buyer_count}}" value="6" [checked]="wholesale?.receive_update==6">
+              <label class="w5" for="hb_sthb_receive_update1_6_{{whole_sale_buyer_count}}">6 Week</label>
+            </div>
+            <div class="radio radio-css flt-l ml-4">
+              <input class="_receive_update" type="radio" formControlName="receive_update" id="hb_sthb_receive_update1_0_{{whole_sale_buyer_count}}" value="0" [checked]="wholesale?.receive_update==0" >
+              <label class="w5" for="hb_sthb_receive_update1_0_{{whole_sale_buyer_count}}">None</label>
+            </div>
+            </div>  
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label class="col-form-label">Amount In WB {{whole_sale_buyer_count}}</label>
+          </div>
+          <div class="col-md-2">
+            <input type="text" formControlName="est_amount" class="form-control" readonly  />
+          </div>
+          <div class="col-md-2">
+            <input type="text" #act_amount (keyup)="calcActAmt(act_amount.value)" formControlName="act_amount" class="form-control" />            
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label class="col-form-label">% of 50% WB {{whole_sale_buyer_count}}</label>
+          </div>
+          <div class="col-md-2">
+            <input type="text" formControlName="est_percent" class="form-control" readonly />            
+          </div>
+          <div class="col-md-2">
+            <input type="text" formControlName="act_percent" class="form-control" />            
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2">
+            <label class="col-form-label">Profit WB {{whole_sale_buyer_count}}</label>
+          </div>
+          <div class="col-md-2">
+            <input type="text" formControlName="est_profit" class="form-control" readonly />            
+          </div>
+          <div class="col-md-2">
+            <input type="text" #act_profit [ngClass]="{'text-danger': 0 > actProfileAmount ,'text-success': actProfileAmount >= 0}" formControlName="act_profit" class="form-control" />            
+          </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+              <label class="col-form-label">Payoff Amount WB {{whole_sale_buyer_count}}</label>
+            </div>
+            <div class="col-md-2">
+              <input type="text" formControlName="est_payoff_amount" class="form-control" readonly />            
+            </div>
+            <div class="col-md-2">
+              <input type="text" formControlName="act_payoff_amount" class="form-control"  />            
+            </div>
+            <div class="col-md-4"></div>
+            <div class="col-md-1">
+              <div class="col-form-label flt-l">&nbsp;</div>
+              <div class="clr-bth">
+                  <button type="button" class="form-control btn btn-sm btn-primary" (click)="validateForm(this.homeBuyersForm)" value="Save" >
+                    Save <i class="fa fa-save"></i>
+                    <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                  </button>
+              </div>
+            </div>
+
+            <div class="col-md-1 ">
+              <div class="col-form-label flt-l">&nbsp;</div>
+              <div class="clr-bth">
+                <button type="button" class="form-control btn btn-sm btn-danger" (click)="deleteWholesaleDetails(this.homeBuyersForm)" value="Remove" >
+                  Remove <i class="fa fa-trash"></i>
+                  <i *ngIf="remove_loading" class="fa fa-spin fa-spinner"></i>
+                </button>
+              </div>
+            </div>
+        </div>
+        <!-- one row start-->
+    <!-- one row end -->
+      </fieldset>
+    </form>
+  </panel>

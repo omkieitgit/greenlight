@@ -1,0 +1,28 @@
+
+<app-attention-warning></app-attention-warning>
+
+<div class=" card row" >
+    <div class="card-body row justify-content-center">
+        <div class="col-md-4">
+      <form [formGroup]="changeRoleForm" class="margin-bottom-0">
+            <div class="form-group row m-b-20">
+                <label class="col-form-label col-md-4">Change Role</label>
+                <div class="col-md-8">
+                    <select formControlName="role_id" class="form-control">
+                      <option  *ngFor="let user of user_roles" value="{{this.user.id}}" >
+                          {{this.user.role_string}}
+                      </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row m-b-20">
+                <div class="col-md-8"></div>
+                <div class="col-md-4">
+                  <button type="submit" class="form-control m-b-0 btn btn-sm btn-primary" (click)="validateForm(this.changeRoleForm)">Submit</button>
+                </div>
+            </div>
+        </form>
+            
+      </div>
+    </div>
+</div>

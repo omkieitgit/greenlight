@@ -1,0 +1,186 @@
+<h3 mat-dialog-title>Buy It</h3>
+<mat-dialog-content class="parent-loader">
+  <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+  <form [formGroup]="buyItForm"  class="parent-loader">
+    <div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-12">
+              <label class="col-form-label">1. Did you drive the property or are you willing to take the risk of buying blind?</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.did_you_buy.errors }">
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="did_you_buy" id="did_you_buy_yes" value="yes" checked />  
+                <label for="did_you_buy_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="did_you_buy" id="did_you_buy_no" value="no"  />
+                <label for="did_you_buy_no">No</label>
+              </div>
+              <div *ngIf="f.did_you_buy.errors" class="invalid-feedback">
+                <div *ngIf="f.did_you_buy.errors.required">Please select risk.</div>
+              </div>
+          </div>
+        </div>
+
+        <!-- <div class="form-group row m-b-0">
+            <div class="col-md-12">
+              <label class="col-form-label">2. Did you get as many pictures as possible of the home?</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.did_you_picture.errors }">
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="did_you_picture" id="did_you_picture_yes" value="yes" checked />  
+                <label for="did_you_picture_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="did_you_picture" id="did_you_picture_no" value="no"  />
+                <label for="did_you_picture_no">No</label>
+              </div>
+              <div *ngIf="f.did_you_picture.errors" class="invalid-feedback">
+                <div *ngIf="f.did_you_picture.errors.required">Please select picture.</div>
+              </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="form-group row m-b-0">
+            <div class="col-md-12">
+              <label class="col-form-label">3. Please submit the amount that you feel is needed for repairs.</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.please_submit.errors }">
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="please_submit" id="please_submit_yes" value="yes" checked />  
+                <label for="please_submit_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="please_submit" id="please_submit_no" value="no"  />
+                <label for="please_submit_no">No</label>
+              </div>
+              <div *ngIf="f.please_submit.errors" class="invalid-feedback">
+                <div *ngIf="f.please_submit.errors.required">Please select repairs amount.</div>
+              </div>
+          </div>
+        </div> -->
+
+        <!-- <div class="form-group row m-b-0">
+            <div class="col-md-4">
+              <label class="col-form-label">Repair Cost</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4">
+              <input formControlName="buyit_repair_cost" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.buyit_repair_cost.errors }">
+              <div *ngIf="f.buyit_repair_cost.errors" class="invalid-feedback">
+                <div *ngIf="f.buyit_repair_cost.errors.required">Please enter Repair Cost.</div>
+              </div>
+          </div>
+        </div> -->
+        <!-- sdfdffffs -->
+        <div class="form-group row m-b-0">
+            <div class="col-md-12">
+              <label class="col-form-label">2. Please insert your estimation of the ARV value.</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4">
+              <input formControlName="buyit_estimation_arv_value" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.buyit_estimation_arv_value.errors }">
+              <div *ngIf="f.buyit_estimation_arv_value.errors" class="invalid-feedback">
+                <div *ngIf="f.buyit_estimation_arv_value.errors.required">Please enter estimation ARV value.</div>
+              </div>
+          </div>
+        </div>
+
+        <div class="form-group row m-b-0">
+            <div class="col-md-12">
+              <label class="col-form-label">3. What is the highest amount you are willing to offer or bid to get this property?</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4">
+              <input formControlName="highest_offer_bid" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.highest_offer_bid.errors }">
+              <div *ngIf="f.highest_offer_bid.errors" class="invalid-feedback">
+                <div *ngIf="f.highest_offer_bid.errors.required">Please enter highest amount.</div>
+              </div>
+          </div>
+        </div>
+
+        <!-- <div class="form-group row m-b-0">
+            <div class="col-md-12">
+              <label class="col-form-label">6. Do you have your money or financing in place?</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.do_money_finance.errors }"> 
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="do_money_finance" id="do_money_finance_yes" value="yes" checked />  
+                <label for="do_money_finance_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="do_money_finance" id="do_money_finance_no" value="no"  />
+                <label for="do_money_finance_no">No</label>
+              </div>
+              <div *ngIf="f.do_money_finance.errors" class="invalid-feedback">
+                <div *ngIf="f.do_money_finance.errors.required">Please select financing in place.</div>
+              </div>
+          </div>
+        </div> -->
+        <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">4. Designation?</label>
+          </div>
+        </div>
+        <div class="form-group row m-b-0" [ngClass]="{ 'is-invalid': submitted && f.designation.errors }">
+              <div *ngFor="let design of designation; let i=index">
+                <div class="col-md-4">
+                  <div class="checkbox checkbox-css">
+                    <input  type="checkbox" id="{{design.value}}" [value]="design.value" (change)="onCheckboxChange($event)"  />
+                    <label for="{{design.value}}">{{design.name}}</label>
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="submitted && f.designation.errors?.required" [ngStyle]="{'display':f.designation.errors?.required?'block':'none'}" class="invalid-feedback col-md-12">
+                <div>Please select Designation.</div>
+              </div>
+        </div>
+
+        <div class="form-group row m-b-0">
+            <div class="col-md-4">
+              <label class="col-form-label">Note</label>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-10">
+                <textarea autosize [minRows]="5" formControlName="notes" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" class="form-control m-b-0"></textarea>
+                <div *ngIf="f.notes.errors" class="invalid-feedback">
+                  <div *ngIf="f.notes.errors.required">Please enter note.</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-12">
+              <strong>NOTE:</strong> 
+              <p *ngIf="f.designation.value.includes('buyer')">As a <strong>Buyer</strong>, you take a priority of being able to control the deal and get it. You assume the risk of loss on the deal when you take it down. You are the one who manages the purchase, financing, funding, and renovations. As a Buyer, any money you bring to the table is your skin in the deal. The Estates will manage any decisions on litigation. The Estates will manage Resale of the Property by working directly with the Agent/Broker. The Estates will manage pricing, billing, and listing of the Air BNB and communications with the guest prior to booking. Anyone can bid on the property at foreclosure sale.</p>
+              <p *ngIf="f.designation.value.includes('subto')">If you are <strong>Sub To Negotiator</strong>, you are required attend the majority of the Sub To Meetups. Also you need be able to show that you can go deep on the way you work the deals. You need to be able to show that you can manage the deals you hit buy it on. </p>
+              <p *ngIf="f.designation.value.includes('lender')">As a <strong>Lender</strong>, you can hit buy it if you may be willing to lend on the property. The Buyer will contact you if they need you to fund the deal. There is no priority for Lenders so, it is strongly recommended that you get to know the Buyers, that you can build strong relationships with.</p>
+              Timbra, LLC does not in any manner promise you exclusivity on any bid or acquisition. Any party may bid on any property independently of Timbra, LLC or User and another User of Timbra, LLC software may bid on any property independently of User and/or User's Acquisition Assistant. Hence, this Agreement in no way places any restrictions on either party concerning their right to bid on any particular property. However if you bid on a property or negotiate on a property using the strategies taught you to by Timbra LLC, clients or affiliates then you will still owe an assignment fee if you circumvent the company and bid on a property or negotiate a deal of any type. The Buy it button is used to give priority to who can approach the owner of the home regarding the purchase of their home or some other workout strategy. We do not want several people going to the door and bothering people. Please be respectful of people and their homes and privacy.
+              <label class="col-form-label">Note:Buy it order will not be sent without the 6 yes answers, repair costs, and your notes on the home being filled out.</label>
+            </div>
+        </div>
+        
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <div class="form-group row m-b-0 text-left">
+    <!-- <div class="col-md-12">
+    </div> -->
+  </div>
+  <button mat-button mat-dialog-close>Close</button>
+  <button mat-button mat-raised-button class="btn-primary" (click)="validateForm(this.buyItForm)">
+    Save<i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+  </button>
+</mat-dialog-actions>

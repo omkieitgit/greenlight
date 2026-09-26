@@ -1,0 +1,232 @@
+
+.overflow-scroll {
+  overflow: scroll;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+.sidebar .sub-menu {
+  display: block;
+}
+.page-sidebar-minified .sidebar .sub-menu {
+  display: none;
+}
+.angular-calendar-inline {
+  margin: 0 -1px -1px;
+}
+.angular-calendar-inline .cal-month-view .cal-day-cell.cal-today {
+  background: none;
+}
+.angular-calendar-inline .cal-month-view .cal-day-cell.cal-today .cal-day-number {
+  background: #2e353c;
+  color: #fff !important;
+}
+.angular-calendar-inline .cal-month-view .cal-day-cell,
+.angular-calendar-inline .cal-month-view .cal-cell-top {
+  min-height: initial;
+}
+.angular-calendar-inline .cal-month-view .cal-header .cal-cell:hover,
+.angular-calendar-inline .cal-month-view .cal-cell-row:hover {
+  background: none;
+}
+.angular-calendar-inline .cal-month-view .cal-day-number {
+  font-size: 12px !important;
+  font-weight: 600;
+  opacity: 1.0;
+  color: #2d353c;
+  margin-right: 3px;
+  margin-bottom: 3px;
+  margin-top: 20px;
+  min-width: 20px;
+  min-height: 20px;
+  border-radius: 40px;
+  text-align: center;
+  line-height: 20px;
+}
+.angular-calendar-inline .cal-month-view .cal-day-cell.cal-weekend .cal-day-number {
+  color: #b6c2c9;
+}
+.angular-calendar-inline .cal-month-view .cal-header .cal-cell {
+  font-size: 10px;
+  text-transform: uppercase;
+  color: #2d353c;
+  padding: 5px 10px;
+}
+.angular-calendar-inline .cal-month-view .cal-day-badge {
+  text-indent: 20px;
+  width: 5px;
+  height: 5px;
+  min-width: 3px;
+  padding: 0;
+  overflow: hidden;
+  position: absolute;
+  bottom: 25px;
+  margin: 0;
+  right: 11px;
+  background: #ff5b57;
+}
+.angular-calendar-inline .cal-month-view .cal-cell-top,
+.angular-calendar-inline .cal-month-view .cal-cell {
+  position:relative;
+}
+.angular-calendar-inline .cal-month-view .cal-events {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+.angular-calendar-inline .cal-month-view .cal-event {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 1px;
+  background: #e1e1e1;
+}
+.fc-event,
+.fc-event-dot {
+  background: #2e353c;
+}
+.fc-unthemed .fc-divider,
+.fc-unthemed .fc-list-heading td,
+.fc-unthemed .fc-popover .fc-header {
+  background: #e8ecf1;
+  color: #242a30;
+  font-weight: 600;
+}
+.fc-list-table td {
+  padding: 5px 10px;
+}
+.mobile-scroll {
+  overflow: scroll;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+
+/* Styling for the Slim Loading Progress Bar container */
+.slim-loading-bar {
+  position: fixed;
+  margin: 0;
+  padding: 0;
+  top: 50px;
+  left: 0;
+  right: 0;
+  z-index: 99999;
+}
+.top .slim-loading-bar {
+  top: 0;
+}
+
+/* Styling for the Slim Loading Progress Bar itself */
+.slim-loading-bar-progress {
+  margin: 0;
+  padding: 0;
+  z-index: 99998;
+  background-color: #00acac !important;
+  height: 3px !important;
+  opacity: 0;
+  -webkit-transition: all 0.15s ease-in-out;
+  -moz-transition: all 0.15s ease-in-out;
+  -o-transition: all 0.15s ease-in-out;
+  transition: all 0.15s ease-in-out;
+}
+
+
+/* Countdown Timer */
+.timer .count-down.medium .digital {
+  font-size: 36px;
+  color: #fff;
+}
+
+/* Ng Datepicker */
+.ngb-dp-weekday[_ngcontent-c6] {
+  color: #2e353c !important;
+  font-size: 11px;
+  font-weight: bold;
+  font-style: initial !important;
+}
+.ngb-dp-header[_ngcontent-c3],
+.ngb-dp-weekdays[_ngcontent-c6] {
+  background-color: #f2f3f4!important;
+}
+[_nghost-c3].dropdown-menu {
+  border: none;
+}
+[_nghost-c3].dropdown-menu:focus {
+  outline: none !important;
+}
+.ngb-dp-week[_ngcontent-c6] {
+  margin-bottom: 4px !important;
+}
+[_nghost-c7] > select[_ngcontent-c7] {
+  font-size: 12px !important;
+}
+
+/* Tags Input */
+.tags-input__tag[_ngcontent-c3] {
+    padding: 2px 24px 3px 7px!important;
+    font-size: 12px !important;
+    margin: 2px 5px 2px 0 !important;
+    line-height: 16px !important;
+}
+.tags-input__tag-remove-btn[_ngcontent-c3] {
+    font-size: 18px !important;
+    margin-right: -20px !important;
+    margin-left: 5px !important;
+    margin-top: 0 !important;
+}
+
+/* header */
+.header .navbar-nav>li>.dropdown-menu {
+  position: absolute;
+}
+.dropdown-menu-right.dropdown-menu {
+  right: 0 !important;
+  left: auto !important;
+}
+
+/* Sidebar Minified Menu */
+.page-sidebar-minified .sidebar .nav li:hover > div > .sub-menu {
+  display: block;
+  position: fixed;
+  margin-left: 60px;
+  margin-top: -40px;
+  width: 220px;
+  background: #242a31;
+  z-index: 1020;
+  padding: 9px 0 9px 39px;
+}
+.page-sidebar-minified .sidebar .nav .sub-menu li {
+  position: relative;
+}
+.page-sidebar-minified .sidebar .nav .sub-menu li:hover > div > .sub-menu {
+  margin: 0px;
+  left: 100%;
+  top: -9px;
+  position: absolute;
+}
+.page-sidebar-minified .sidebar .sub-menu > li:first-child:before {
+  top: 11px;
+  height: 2px;
+  width: 30px;
+  left: -39px;
+}
+.page-sidebar-minified .sidebar .sub-menu > li:first-child + li:before {
+  top: -10px;
+}
+.page-sidebar-minified .sidebar .sub-menu > li:first-child + li:last-child:before {
+  height: auto;
+  bottom: 10px;
+}
+.page-sidebar-minified .sidebar .nav .sub-menu > li > a .caret {
+  position: initial;
+  margin: 0;
+}
+.page-sidebar-minified .sidebar .sub-menu > li:before,
+.page-sidebar-minified .sidebar .sub-menu > li > a:after,
+.page-sidebar-minified .sidebar .sub-menu > li.has-sub > a:before {
+  background: #2d353c;
+}

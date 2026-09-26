@@ -1,0 +1,69 @@
+<h3>{{export_type}} Property</h3>
+<form  [formGroup]="exportTypeForm" >
+    <div>
+      <div  *ngIf="!emailType" class="form-group row m-b-15">
+          <div class="col-md-4">
+              <label class="col-form-label">{{export_type}}</label>
+          </div>
+          <div class="col-md-6">
+              <select formControlName="type" class="form-control" [ngClass]="{'is-invalid': submitted && f.type.errors }">
+                  <option value="url">{{export_type}} URL</option>
+                  <!-- <option value="export_custom">Custom Export</option> -->
+                  <option value="40_details">{{export_type}} 40 Details</option>
+                  <option value="email_acquistion_info">{{export_type}} Acquistion Info</option>
+              </select>
+              <div *ngIf="f.type.errors" class="invalid-feedback">
+                <div *ngIf="f.type.errors.required">{{export_type}} type is required</div>
+              </div>
+          </div>
+      </div>
+      
+      <div *ngIf="emailType">
+          <div class="form-group row m-b-15">
+            <div class="col-md-4">
+              <label class="col-form-label">To</label>
+            </div>
+            <div class="col-md-6">
+              <input type="text" class="form-control" formControlName="to" [ngClass]="{'is-invalid': submitted && f.to.errors }"/>
+              <div *ngIf="f.to.errors" class="invalid-feedback">
+                <div *ngIf="f.to.errors.required">To is required</div>
+                <div *ngIf="f.to.errors.email">Email is invalid</div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row m-b-15">
+              <div class="col-md-4">
+                  <label class="col-form-label">Subject</label>
+                </div>
+                <div class="col-md-6">
+                  <input type="text" class="form-control" formControlName="subject" [ngClass]="{'is-invalid': submitted && f.subject.errors }"/>
+                  <div *ngIf="f.subject.errors" class="invalid-feedback">
+                    <div *ngIf="f.subject.errors.required">Subject is required</div>
+                  </div>
+                </div>
+          </div>
+          
+          <div class="form-group row m-b-15">
+              <div class="col-md-4">
+                  <label class="col-form-label">Message</label>
+                </div>
+                <div class="col-md-6">
+                  <textarea class="form-control" formControlName="message" [ngClass]="{'is-invalid': submitted && f.message.errors }"></textarea>
+                  <div *ngIf="f.message.errors" class="invalid-feedback">
+                    <div *ngIf="f.message.errors.required">Message is required</div>
+                  </div>
+                </div>
+          </div>
+      </div>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <div *ngIf="!emailType">
+            <button mat-button (click)="exportType()">{{export_type}}</button>
+        </div>
+        <div *ngIf="emailType">
+            <button mat-button (click)="send(this.exportTypeForm)">Send</button>
+        </div>
+        
+      </mat-dialog-actions>
+    </div>
+  </form>

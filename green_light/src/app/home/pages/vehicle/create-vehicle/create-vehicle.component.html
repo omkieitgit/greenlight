@@ -1,0 +1,78 @@
+<app-attention-warning></app-attention-warning>
+<panel [collapse]='false' (valueChange)='panelExpand($event)' title="SALE INFO">
+        <form  [formGroup]="vehicleSaleInfoForm" >
+                <div class="form-group row">
+                        <div class="col-md-2">
+                                <label class="col-form-label">State</label>
+                                <!-- appOnBlurSave (updatedValue)="autoSave($event)" -->
+                                <select class="form-control" formControlName="state" appOnBlurSave (updatedValue)="autoSave($event)" >
+                                        <option value="">Select State</option>
+                                        <option [value]="state.key" *ngFor="let state of states | keyvalue">{{state.value}}</option>
+                                </select>  
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">County</label>
+                                <input type="text" formControlName="county"  class="form-control m-b-0 my-class"   appOnBlurSave (updatedValue)="autoSave($event)" />
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Case #</label>
+                                <input type="text"  formControlName="case_number" class="form-control m-b-0 my-class"  appOnBlurSave (updatedValue)="autoSave($event)"  />
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Sale Type</label>
+                                <!-- [ngClass]="{ 'is-invalid': submitted && f.sale_type.errors }"  appOnBlurSave (updatedValue)="autoSave($event)" -->
+                                <select formControlName="sale_type"  class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" >
+                                        <option value="">Select Sale Type</option>
+                                        <option [value]="sale_opt.key" *ngFor="let sale_opt of sale_type_option | keyvalue | sort:'value'">{{sale_opt.value}}</option>
+                                </select>        
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Sale Date</label>
+                                <my-date-picker [options]="myDatePickerOptions"  formControlName="sale_date"  (dateChanged)="onDateChanged($event,dateInput)" #dateInput class="" placeholder="MM/DD/YYYY"></my-date-picker>
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Sale Time</label>
+                                <input type="text" formControlName="sale_time"  class="form-control m-b-0 my-class"   appOnBlurSave (updatedValue)="autoSave($event)" />
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <div class="col-md-2">
+                                <label class="col-form-label">Sale Location</label>
+                                <input type="text" formControlName="sale_location"  class="form-control m-b-0 my-class"  appOnBlurSave (updatedValue)="autoSave($event)"  />   
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Trustee</label>
+                                <input type="text" formControlName="trustee"  class="form-control m-b-0 my-class"  appOnBlurSave (updatedValue)="autoSave($event)"  />   
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Petitioner</label>
+                                <input type="text" formControlName="petitioner"  class="form-control m-b-0 my-class"   appOnBlurSave (updatedValue)="autoSave($event)" />   
+                        </div>
+
+                        <ng-container formArrayName="respondent_info_data">
+                                <div  class="col-md-2" [formGroupName]="i"  *ngFor="let priceObj of vehicleSaleInfoForm.get('respondent_info_data')['controls']; let i = index;">
+                                      <label class="col-form-label">Respondent {{i+1}}</label>
+                                      <input type="hidden"  formControlName="id" class="form-control m-b-0 my-class"  />   
+                                      <input type="text"  formControlName="respondent" class="form-control m-b-0 my-class"  />   
+                                </div>
+                        </ng-container>
+
+                        <div class="col-md-2">
+                                <label class="col-form-label">&nbsp;</label>
+                                <button type="button" (click)="addMoreRespondent()" class="form-control m-b-0 btn btn-sm btn-primary" value="Add More Respondent"  >
+                                        Add More Respondent
+                                        <!-- <i *ngIf="loading" class="fa fa-spin fa-spinner"></i> -->
+                                </button>
+                        </div>
+                        <div class="col-md-1">
+                                <label class="col-form-label">&nbsp;</label>
+                                <button type="button" class="form-control m-b-0 btn btn-sm btn-primary" value="Save" (click) ="validateForm(this.vehicleSaleInfoForm)" >
+                                        Save <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                                </button>
+                        </div>
+                </div>
+        </form>
+
+        
+</panel>

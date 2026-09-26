@@ -1,0 +1,52 @@
+
+<app-attention-warning></app-attention-warning>
+<!-- begin page-header -->
+<!-- <div class="row">
+        <h1 class="page-header">Welcome {{first_name}} {{last_name}} ! Choose what you want to do:</h1>
+</div> -->
+<!-- end page-header -->
+
+<!-- begin row -->
+
+<div *accounting="true" class="row col-md-12 dashboard p-0 m-t-20">
+    <div class="card-deck">
+         <div  class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-file"></i> Deposit spreadsheet</h5>
+                <!-- <p class="card-text">
+                        If you want to see <br/>Deposit spreadsheet <br/>in the system Click this
+                </p> -->
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/accounting/deposit']" class="btn btn-primary">Go</a>
+                    </div>
+            </div>
+         </div>
+         <div  class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="fa fa-file"></i> 1099 Form List</h5>
+                    <div class="stats-bottom">
+                            <a href="javascript:;" [routerLink]="['/home/accounting/msc-list']" class="btn btn-primary">Go</a>
+                        </div>
+                </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-file"></i> Re Schedule</h5>
+                <div class="stats-bottom">
+                        <a href="javascript:;" [routerLink]="['/home/accounting/reschedule']" class="btn btn-primary">Go</a>
+                    </div>
+            </div>
+        </div> 
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fa fa-bell"></i>PAYROLL</h5>
+                <div class="stats-bottom">
+                    <a href="javascript:;" class="btn btn-primary">Go</a>
+                </div>
+            </div>
+        </div>       
+    </div>
+</div>
+
+<!-- end row -->
+      

@@ -1,0 +1,280 @@
+<div class="estate-property" >
+        <div class="col-lg-12 p-0">
+            <div class="form-group row m-b-20 m-t-5">
+                <div class="col-md-12">
+                </div>
+                <div class="col-md-12">
+                  <app-common-notes [note_name]="buyer_notes"></app-common-notes>
+                </div>
+            </div>
+        </div>
+
+        <div *ngIf="!loader"  class="child-loader"><span class="spinner-small "></span></div>
+        <div *ngIf="loader" class="form-group row m-b-0">
+                <div class="col-md-12">
+                        
+                        <div class="form-group row m-b-10">
+                                <div class="col-md-2"><label class="col-form-label">Owner 1:</label></div>
+                                <div class="col-md-2">
+                                        <ng-container *ngIf="(propertyDetail?.owner_info && propertyDetail?.owner_info[0]?.full_name && propertyDetail?.owner_info[0]?.phone); else ownerNameInfoIsExist">
+                                                {{ propertyDetail?.owner_info[0]?.full_name+' '+propertyDetail?.owner_info[0]?.phone }}
+                                        </ng-container>
+                                        <ng-template #ownerNameInfoIsExist>
+                                                <ng-container *ngIf="propertyDetail?.owner_info[0]?.full_name; else ownerOneIsNotExist">
+                                                        {{propertyDetail?.owner_info[0]?.full_name}}
+                                                </ng-container>
+                                        </ng-template>
+                                        <ng-template #ownerOneIsNotExist> NA</ng-template>
+                                </div>
+                                <div class="col-md-2"><label class="col-form-label">County Value:</label></div>
+                                <div class="col-md-2">{{ propertyDetail?.county_value }} </div>
+                                <div class="col-md-2"><label class="col-form-label">CMA/ARV:</label></div>
+                                <div class="col-md-2">{{ propertyDetail?.recommended_cma_arv }} </div>
+                                
+                        </div>
+                        
+                        <div class="form-group row m-b-10">
+                                <ng-container *ngIf="propertyDetail?.owner_info[1]?.full_name">
+                                        <div class="col-md-2"><label class="col-form-label">Owner 2:</label></div>
+                                        <div class="col-md-2">
+                                                <ng-container *ngIf="(propertyDetail?.owner_info && propertyDetail?.owner_info[1]?.full_name && propertyDetail?.owner_info[1]?.phone);  else ownerSecondNameInfoExist">
+                                                        {{ propertyDetail?.owner_info[1]?.full_name+' '+propertyDetail?.owner_info[1]?.phone }}
+                                                </ng-container>
+                                                <ng-template #ownerSecondNameInfoExist>
+                                                        <ng-container *ngIf="propertyDetail?.owner_info[1]?.full_name; else ownerSecondInfoNotExist">
+                                                                {{propertyDetail?.owner_info[1]?.full_name}}
+                                                        </ng-container>
+                                                </ng-template>
+                                                <ng-template #ownerSecondInfoNotExist> NA</ng-template>
+                                </div>
+
+                                </ng-container>
+                                
+                                <div class="col-md-2"><label class="col-form-label">Sale Type:</label></div>
+                                <div class="col-md-2">{{ sale_type[propertyDetail?.last_sale_details?.sale_type] }} </div>
+                                <div class="col-md-2"><label class="col-form-label">Opening Bid:</label></div>
+                                <div class="col-md-2">{{ propertyDetail?.last_sale_details?.opening_bid }} </div>
+                                
+                        </div>
+                        <div class="form-group row m-b-10">
+                               <div class="col-md-2"><label class="col-form-label">Winning Bid:</label></div>
+                                <div class="col-md-2">{{ propertyDetail?.last_sale_details?.last_bidder?.winning_bid }} </div>
+                        </div>
+
+                        <ng-container *ngIf="firstLien">
+                                <div class="form-group row m-b-0">
+                                        <div class="col-md-4"><label class="col-form-label">Lien 1:</label></div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                        <div class="col-md-2"><label class="col-form-label">Monthly Payment:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.first_liens?.amortization_monthly_payment }} </div>
+                                        <div class="col-md-2"><label class="col-form-label">Loan Estimated Balance:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.first_liens?.amortization_loan_estimate_balance }} </div>
+                                        <div class="col-md-2"><label class="col-form-label">Total Debt w/ Attorney fees:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.first_liens?.total_est_debt }} </div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                        <div class="col-md-2"><label class="col-form-label">Estimated Excess Funds:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.first_liens?.es_excess_funds }} </div>
+                                </div>
+
+                        </ng-container>
+                        
+                        <ng-container *ngIf="secondLien">
+                                <div class="form-group row m-b-0">
+                                        <div class="col-md-4"><label class="col-form-label">Lien 2:</label></div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                        <div class="col-md-2"><label class="col-form-label">Monthly Payment:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.second_liens?.amortization_monthly_payment }} </div>
+                                        <div class="col-md-2"><label class="col-form-label">Loan Estimated Balance:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.second_liens?.amortization_loan_estimate_balance }} </div>
+                                        <div class="col-md-2"><label class="col-form-label">Total Debt w/ Attorney fees:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.second_liens?.total_est_debt }} </div>
+                                </div>
+                                <div class="form-group row m-b-10">
+                                        <div class="col-md-2"><label class="col-form-label">Estimated Excess Funds:</label></div>
+                                        <div class="col-md-2">{{ propertyDetail?.second_liens?.es_excess_funds }} </div>
+                                </div>
+                        </ng-container>
+                      
+                       
+                        <div class="form-group row m-b-10">
+                                <div class="col-md-2"><label class="col-form-label">HOA Name:</label></div>
+                                <div class="col-md-2">{{ propertyDetail?.hoa_liens?.hoa_name }}  </div>
+                                <div class="col-md-2"><label class="col-form-label">HOA Lien:</label></div>
+                                <div class="col-md-2">{{ propertyDetail?.hoa_liens?.hoa_lien_amount }}</div>
+                                <div class="col-md-2"><label class="col-form-label">Property Taxes Owed:</label></div>
+                                <div class="col-md-2">{{ propertyDetail?.assessment[0]?.total_property_taxes_owed }} </div>
+                        </div>
+                        <form [formGroup]="subToForm">
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Strategy</label>
+                                        </div>
+                                        <div class="col-md-2">
+                                                <ng-container #strategy_option *ngFor="let strategy of property_config.strategy_option | keyvalue; let i = index">
+                                                        <div *ngIf="i < 2" class="checkbox checkbox-css">               
+                                                                <input  type="checkbox" id="strategy_{{strategy.key}}" [checked]="strategy.value[1]" [value]="strategy.key" (change)="onCheckboxChange($event)"  >    
+                                                                <label for="strategy_{{strategy.key}}">{{strategy.value[0]}}</label>         
+                                                        </div>
+                                                </ng-container>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                                <ng-container #strategy_option *ngFor="let strategy of property_config.strategy_option | keyvalue; let i = index">
+                                                        <div *ngIf="i>1 &&  i<4"  class="checkbox checkbox-css">               
+                                                                <input  type="checkbox" id="strategy_{{strategy.key}}" [checked]="strategy.value[1]" [value]="strategy.key" (change)="onCheckboxChange($event)"  >    
+                                                                <label for="strategy_{{strategy.key}}">{{strategy.value[0]}}</label>         
+                                                        </div>
+                                                </ng-container>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                                <ng-container #strategy_option *ngFor="let strategy of property_config.strategy_option | keyvalue; let i = index">
+                                                        <div *ngIf="i>3 &&  i<6" class="checkbox checkbox-css">               
+                                                                <input  type="checkbox" id="strategy_{{strategy.key}}" [checked]="strategy.value[1]" [value]="strategy.key" (change)="onCheckboxChange($event)"  >    
+                                                                <label for="strategy_{{strategy.key}}">{{strategy.value[0]}}</label>         
+                                                        </div>
+                                                </ng-container>
+                                        </div>
+                                        <div class="col-md-2">
+                                                <ng-container #strategy_option *ngFor="let strategy of property_config.strategy_option | keyvalue; let i = index">
+                                                        <div *ngIf="i>5 &&  i<7" class="checkbox checkbox-css">               
+                                                                <input  type="checkbox" id="strategy_{{strategy.key}}" [checked]="strategy.value[1]" [value]="strategy.key" (change)="onCheckboxChange($event)"  >    
+                                                                <label for="strategy_{{strategy.key}}">{{strategy.value[0]}}</label>         
+                                                        </div>
+                                                </ng-container>
+                                        </div>
+                                        
+                                </div>
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-4">
+                                                <label class="col-form-label">AFTER FORECLOSURE IF WINNING BIDDER (THE ESTATES)</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                                <ng-container *ngFor="let foreclosure of property_config.subto_after_foreclosure | keyvalue">
+                                                        <div class="checkbox checkbox-css">               
+                                                                <input type="checkbox" id="foreclosure_{{foreclosure.key}}"  [checked]="foreclosure.value[1]" [value]="foreclosure.key" (change)="onForeclosureCheckboxChange($event)">    
+                                                                <label for="foreclosure_{{foreclosure.key}}">{{foreclosure.value[0]}}</label>         
+                                                        </div>
+                                                </ng-container>
+                                        </div>
+                                        
+                                </div>
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-4">
+                                                <label class="col-form-label">{{ propertyDetail?.state |uppercase }} SUBTO  CHECKLIST</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                                <ng-container *ngFor="let checklist of property_config.checklist_option | keyvalue">
+                                                        <div class="checkbox checkbox-css">               
+                                                                <input type="checkbox" id="checklist_{{checklist.key}}"  [checked]="checklist.value[1]" [value]="checklist.key" (change)="onChecklistCheckboxChange($event)">    
+                                                                <label for="checklist_{{checklist.key}}">{{checklist.value[0]}}</label>         
+                                                        </div>
+                                                </ng-container>
+                                        </div>
+                                        
+                                </div>
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-10"></div>
+                                        <div class="col-md-1">
+                                                <button type="button"  (click)="validateForm(this.subToForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+                                                        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                                                </button>
+                                        </div>
+                                </div>
+
+                        </form>
+
+                        <!-- <div class="form-group row m-t-20">
+                                <div class="col-md-12">
+                                        <label class="col-form-label">{{ propertyDetail?.state |uppercase }} SUBTO DOCUMENT CHECKLIST</label>
+                                </div> 
+                        </div>
+                        <app-document 
+                                [document_type_list]="property_config.subto_document" 
+                                [property_id]="property_id" 
+                                [document_info]="isubToInfo?.subtoDocuments?.subto"
+                                document_url="subto_document"
+                                documentType="subto" 
+                                [doc_count_id]="'subto'">
+                        </app-document>
+                        -->
+                        <!-- <ng-container *ngIf="subToInfo?.state=='SC'">
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-12">
+                                                <label class="col-form-label">SC BUY BACK STRATEGY DOCUMENT CHECKLIST</label>
+                                        </div> 
+                                </div>
+                                <app-document 
+                                        [document_type_list]="property_config.buy_back_strategy_document" 
+                                        [property_id]="property_id" 
+                                        [document_info]="subToInfo?.subtoDocuments?.buyBack"
+                                        document_url="subto_document"
+                                        documentType="buyBack" 
+                                        [doc_count_id]="'buyBack'">
+                                </app-document>
+        
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-12">
+                                                <label class="col-form-label">SC CIS STRATEGY DOCUMENT CHECKLIST</label>
+                                        </div> 
+                                </div>
+                                <app-document 
+                                        [document_type_list]="property_config.cis_strategy_document" 
+                                        [property_id]="property_id" 
+                                        [document_info]="subToInfo?.subtoDocuments?.cis"
+                                        document_url="subto_document"
+                                        documentType="cis" 
+                                        [doc_count_id]="'cis'">
+                                </app-document>
+        
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-12">
+                                                <label class="col-form-label">SC WALK AWAY STRATEGY DOCUMENT CHECKLIST</label>
+                                        </div> 
+                                </div>
+                                <app-document 
+                                        [document_type_list]="property_config.walk_away_strategy_document" 
+                                        [property_id]="property_id" 
+                                        [document_info]="subToInfo?.subtoDocuments?.walk"
+                                        document_url="subto_document"
+                                        documentType="walk" 
+                                        [doc_count_id]="'walk'"
+                                        >
+                                </app-document>
+                        </ng-container> -->
+                        
+                        <!-- <ng-container *ngIf="subToInfo?.state=='TX'">
+                                <div class="form-group row m-t-20">
+                                        <div class="col-md-12">
+                                                <label class="col-form-label">TX SUBTO DOCUMENT CHECKLIST</label>
+                                        </div> 
+                                </div>
+                                <app-document 
+                                        [document_type_list]="property_config.tx_subto_document" 
+                                        [property_id]="property_id" 
+                                        [document_info]="subToInfo?.subtoDocuments?.txSubto"
+                                        document_url="subto_document"
+                                        documentType="txSubto" 
+                                        [doc_count_id]="'txSubto'">
+                                </app-document>
+                        </ng-container> -->
+
+                        <!-- <div class="form-group row m-t-20">
+                                <div class="col-md-12">
+                                        <label class="col-form-label">{{ propertyDetail?.state |uppercase }} SUBTO DOCUMENT CHECKLIST</label>
+                                </div> 
+                        </div> -->
+                        <app-document *ngIf="contentLoad"
+                                [document_type_list]="property_config.all_state_subto_document_list" 
+                                [property_id]="property_id" 
+                                [document_info]="subToDocumentInfo"
+                                document_url="subto_document"
+                                documentType="allSubToDoc" 
+                                [doc_count_id]="'allSubToDoc'">
+                        </app-document>
+                </div>
+        </div>
+</div>

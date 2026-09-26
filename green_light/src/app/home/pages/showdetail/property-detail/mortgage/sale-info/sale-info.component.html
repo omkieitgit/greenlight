@@ -1,0 +1,131 @@
+<h3 mat-dialog-title>Sale Information</h3>
+<mat-dialog-content class="parent-loader">
+  <form  [formGroup]="saleInfoForm">
+      <!-- one row start-->
+    <div class="form-group row m-b-5">
+        <div class="col-md-2">
+          <label class="col-form-label">Sale Date</label>
+        </div>
+        <div class="col-md-4">
+          <div [ngClass]="{ 'is-invalid': submitted && saleInfoForm.get('sale_date').errors }">
+            <my-date-picker [options]="myDatePickerOptions" formControlName="sale_date" (dateChanged)="onDateChanged($event)" class="" placeholder="MM/DD/YYYY"></my-date-picker>
+            <div *ngIf="saleInfoForm.get('sale_date').errors && submitted" class="invalid-feedback" style="display: block;">
+              <div *ngIf="saleInfoForm.get('sale_date').errors.required">Sale Date is required</div>
+            </div> 
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Sale Status</label>
+        </div>
+          <div class="col-md-4">
+          <select formControlName="sale_status" [ngClass]="{ 'is-invalid': submitted &&  saleInfoForm.get('sale_status').errors }" class="form-control m-b-0" >
+              <option value="">Select Status</option>
+              <option [value]="sale_opt.key" *ngFor="let sale_opt of sale_status_option | keyvalue">
+              {{sale_opt.value}}</option></select>        
+        </div>
+    </div> 
+    <!-- one row end -->
+    
+    <!-- one row start-->
+
+    <div class="form-group row m-b-0">  
+      <div class="col-md-2"><label class="col-form-label">Opening Bid</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.opening_bid}}</div>
+
+      <div class="col-md-2"><label class="col-form-label">Sale Type</label></div>
+      <div class="col-md-4">
+        <select formControlName="sale_type" [ngClass]="{ 'is-invalid': submitted &&  saleInfoForm.get('sale_type').errors }" class="form-control m-b-0" >
+          <option value="">Select Sale Type</option>
+          <option [value]="saleType.key" *ngFor="let saleType of sale_type | keyvalue | sort:'value'">
+          {{saleType.value}}
+          </option>
+        </select>  
+      </div>  
+
+    </div>
+      <!-- one row end -->
+
+    <div class="form-group row m-b-0">
+      <div class="col-md-2"><label class="col-form-label">Case Number</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.case_number}}</div>
+
+      <div class="col-md-2"><label class="col-form-label">Sale Place</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.sale_place}}</div>
+    </div>
+      <!-- one row start-->
+
+    <div class="form-group row m-b-0">         
+      <div class="col-md-2"><label class="col-form-label">Sale Time</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.sale_time}}</div>
+
+      <div class="col-md-2"><label class="col-form-label">Trustee File #</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.trustee_file}}</div>
+    </div>    
+    <!-- one row end -->
+
+    <!-- one row start-->
+    <div class="form-group row m-b-0">  
+      <div class="col-md-2"><label class="col-form-label">Precinct</label></div>
+      <div class="col-md-4 form-control-plaintext">{{data.precinct}}</div>
+
+      <div class="col-md-2"><label class="col-form-label">Trustee Scraped</label></div>
+      <div class="col-md-4 form-control-plaintext">{{data.trustee_scraped}}</div>
+      
+    </div>
+    <!-- one row end -->
+    <div class="form-group row m-b-0">
+      <div class="col-md-2"><label class="col-form-label">Trustee</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.trustee}}</div>
+
+      <div class="col-md-2"><label class="col-form-label">Trustee URL</label></div>
+      <!-- <span [appLink]="saleData.trustee_url"></span>   -->
+      <div class="col-md-4  form-control-plaintext h-auto">{{data.trustee_url}}</div>
+    </div>
+
+    <!-- one row start-->
+
+    <div class="form-group row m-b-0">
+      
+      <div class="col-md-2"><label class="col-form-label">Trustee Address</label></div>
+      <div class="col-md-4  form-control-plaintext h-auto">{{data.trustee_address}}</div>
+
+      <div class="col-md-2"><label class="col-form-label">Trustee Phone</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.trustee_phone}}</div>
+    </div>
+    <!-- one row end -->
+
+    <div class="form-group row m-b-0">
+      <div class="col-md-2"><label class="col-form-label">Trustee Hours</label></div>
+      <div class="col-md-4  form-control-plaintext">{{data.trustee_hours}}</div>
+    </div>
+
+    <!-- one row start-->
+    <div class="form-group row m-t-5">         
+      <div class="col-md-4">
+          <label class="col-form-label">Notice of Foreclosure</label>
+      </div>
+    </div>
+    <div class="form-group row m-t-5">  
+      <div class="col-md-12">
+          {{data?.sale_descriptions?.notice_of_foreclosure}}
+      </div>
+    </div>
+
+  </form>
+  <!-- one row end -->
+  <div class="form-group row m-b-0" *ngIf="documentDataSale.length>0">
+    <div class="col-md-12">
+      <app-document-list [config]='config' [data]='documentDataSale' [columns]='columns'></app-document-list>
+    </div>
+  </div>
+
+</mat-dialog-content>
+
+<!-- one row start-->
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button  *hideElement="true" mat-button mat-raised-button class="btn btn-sm btn-primary" (click)="validatesaleInfoForm(saleInfoForm)">
+    Save  <!--<i *ngIf="loading" class="fa fa-spin fa-spinner"></i> -->
+    </button>
+</mat-dialog-actions>
+<!-- one row end-->

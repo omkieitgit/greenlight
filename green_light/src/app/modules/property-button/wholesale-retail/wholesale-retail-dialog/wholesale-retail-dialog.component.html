@@ -1,0 +1,55 @@
+<h3>ARP box </h3>
+<form  [formGroup]="wholesaleRetailForm" >
+    <div>
+      <div class="form-group row m-b-15">
+          <div class="col-md-4">
+              <label class="col-form-label">ARV</label>
+          </div>
+          <div class="col-md-6">
+                <input type="number" formControlName="arv"  class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.arv.errors }"/>
+                <div *ngIf="f.arv.errors" class="invalid-feedback">
+                    <div *ngIf="f.arv.errors.required">Please enter Arv.</div>
+                </div>
+          </div>
+      </div>
+      <div class="form-group row m-b-15">
+          <div class="col-md-4">
+              <label class="col-form-label">CMA/ARV (MR value)</label>
+          </div>
+          <div class="col-md-6">
+              <input type="number" formControlName="cma_arv" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.cma_arv.errors }"/>
+              <div *ngIf="f.cma_arv.errors" class="invalid-feedback">
+                    <div *ngIf="f.cma_arv.errors.required">Please enter cma/arv.</div>
+                </div>
+            </div>
+      </div>
+      <div class="form-group row m-b-15">
+          <div class="col-md-4">
+              <label class="col-form-label">Construction/Renovation Cost</label>
+          </div>
+          <div class="col-md-6">
+              <input type="number"  formControlName="renovation_cost" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.renovation_cost.errors }"/>
+              <div *ngIf="f.renovation_cost.errors" class="invalid-feedback">
+                    <div *ngIf="f.renovation_cost.errors.required">Please enter Renovation Cost.</div>
+                </div>
+            </div>
+      </div>
+      <div class="form-group row m-b-15">
+            <div class="col-md-4">
+                <label class="col-form-label">Page</label>
+            </div>
+            <div class="col-md-6">
+                <select formControlName="page_show" id="page_show" class="form-control">
+                    <option value="one">Page One</option>
+                    <option value="two">Page Two</option>
+                    <option selected="" value="both">Page Both</option>
+                </select>
+            </div>
+        </div>
+      
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button (click)="closeDialog()">Ok</button>
+      </mat-dialog-actions>
+    </div>
+  </form>

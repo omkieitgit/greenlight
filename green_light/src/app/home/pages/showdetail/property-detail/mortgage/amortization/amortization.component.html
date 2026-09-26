@@ -1,0 +1,44 @@
+
+
+<div class="col-lg-12" >
+  <table>
+      <thead>
+        <tr class='success'>
+          <th>Year</th>
+          <th>Month</th>
+          <th>Beginning Balance</th>
+          <th>Monthly Payment</th>
+          <th>Monthly Principle Payment</th>
+          <th>Monthly Interest Payment</th>
+          <th>Estimated Loan Balance</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let amortization of amortizationTable | paginate: { itemsPerPage: limit, currentPage: offset,totalItems:totalRecord }">
+          <td>{{amortization.year}}</td>
+          <td>{{amortization.month}}</td>
+          <td>{{amortization.bb}}</td>
+          <td>{{amortization.emi}}</td>
+          <td>{{amortization.pre_bb}}</td>
+          <td>{{amortization.int_dd}}</td>
+          <td>{{amortization.end_dd}}</td>
+        </tr>
+    </tbody>
+  </table>
+  <div class="pull-right">
+    <pagination-controls (pageChange)="offset=$event" directionLinks="true"
+    responsive="true"
+    previousLabel="Previous"
+    nextLabel="Next"
+    screenReaderPaginationLabel="Pagination"
+    screenReaderPageLabel="page"
+    screenReaderCurrentLabel="You're on page"></pagination-controls>
+  </div>
+</div>
+<div class="clearfix"></div>
+<div class="form-group row pdb-10">
+  <div class="col-md-10"></div>
+  <div class="col-md-2">
+    <button mat-button [mat-dialog-close]="true" class="form-control m-b-0 btn btn-sm btn-primary dialog_close">Cancel</button>
+  </div>
+</div>

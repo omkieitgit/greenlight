@@ -1,0 +1,8 @@
+<div *ngIf="mortgage_notes.length>0" class="form-group row m-b-0">
+    <fieldset>
+      <legend>Defective Lien!</legend>
+      <p class="col-md-12  m-b-5" *ngFor="let note of mortgage_notes">
+        {{note.notes}}  {{ note?.created_at*1000| date:'MM/dd/yyyy, h:mm a' }}
+      </p> 
+    </fieldset>
+  </div>

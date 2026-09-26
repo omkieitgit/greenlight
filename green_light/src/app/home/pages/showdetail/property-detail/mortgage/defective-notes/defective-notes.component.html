@@ -1,0 +1,25 @@
+<h3>What makes the document defective?</h3>
+<form [formGroup]="notesForm">
+  <div>
+    <div class="form-group row m-b-0">
+        <div class="col-md-8">
+          <label class="col-form-label buyit-que-heading">Note:</label>
+        </div>
+    </div>
+    <div class="form-group row m-b-0">
+        <div class="col-md-12">
+            <textarea formControlName="notes" class="form-control m-r-5" style="height:100px;" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }"></textarea>
+            <div *ngIf="f.notes.errors" class="invalid-feedback">
+                <div *ngIf="f.notes.errors.required">Note is required</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- one row start-->
+    <mat-dialog-actions align="end">
+        <button mat-button (click)="validateForm(this.notesForm)">Save</button>
+        <button mat-button mat-dialog-close>Close</button>
+    </mat-dialog-actions>
+    <!-- one row end-->
+  </div>
+</form>

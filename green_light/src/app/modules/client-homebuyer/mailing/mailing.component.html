@@ -1,0 +1,53 @@
+<panel title="Mailing" (valueChange)='panelExpand($event)'>
+    <form [formGroup]="mailingForm"  class="parent-loader">
+      <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+      <fieldset>
+        <legend>Emails</legend>
+        <div formArrayName="mailing_info_data">
+          <div  [formGroupName]="i"  *ngFor="let mailing of mailingForm.get('mailing_info_data')['controls']; let i = index;">
+            <div class="form-group row">
+              <input type="hidden" formControlName="id"> 
+              <div class="col-md-2">
+                <select formControlName="user_type" class="form-control m-b-0" (change)="getUserInfo($event)">
+                    <option value="0">Select Member</option> 
+                    <option [value]="mailing.key" *ngFor="let mailing of mailing_list | keyvalue">{{mailing.value}}</option>
+                </select> 
+                <div *ngIf="mailing.controls.user_type.errors && submitted" class="invalid-feedback">
+                  <div *ngIf="mailing.controls.user_type.errors.required">Member type is required</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <input type="text" class="form-control m-b-0" formControlName="email_id" [ngClass]="{'is-invalid': submitted && mailing.controls.email_id.errors }" />
+                <div *ngIf="mailing.controls.email_id.errors && submitted" class="invalid-feedback">
+                  <div *ngIf="mailing.controls.email_id.errors.required">Email id is required</div>
+                  <div *ngIf="mailing.controls.email_id.errors.email">Email id is invalid</div>
+                </div>
+              </div>
+              <div class="col-md-2">&nbsp;</div>
+              <div class="col-md-2" *ngIf="mailingForm.controls.mailing_info_data.length > 1">
+                <button class="btn btn-primary" (click)="removeMailingField(i, mailing.controls.id.value)">Remove</button>
+              </div>
+              <div  class="col-md-1" *ngIf="mailingForm.get('mailing_info_data')['controls'].length==i+1">
+                  <button class="pull-right form-control btn btn-sm btn-primary" (click)="addMailingInputField()">Add More</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
+     
+      <fieldset>
+          <div class="form-group row">
+            <div class="col-md-9"></div>
+            <div class="col-md-2">
+              <button class="pull-right form-control btn btn-sm btn-primary" (click)="sendEmailToUser()">Send Email</button>
+            </div>
+            <div class="col-md-1">
+                <button class="pull-right form-control btn btn-sm btn-primary" (click)="validateForm(mailingForm)">Save</button>
+            </div>
+          </div>
+      </fieldset>
+    </form>
+
+    <!-- <app-wholesale [property_id]="property_id" *ngIf="sthb_total"  [sthb_total]="sthb_total"></app-wholesale> -->
+</panel>

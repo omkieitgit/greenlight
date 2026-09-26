@@ -1,0 +1,9 @@
+<app-attention-warning></app-attention-warning>
+<div class="estate-property bg-white" >
+        <div class="col-lg-12 p-0" *ngIf="loadVehicleForm">
+                <app-vehicle-sale-info [vehicleSaleInfo]="vehicleInfo"></app-vehicle-sale-info>
+                <app-vehicle-info [vehicleId]="vehicleId" [vehicleInfo]="vehicleInfo?.vehicle_info"></app-vehicle-info>
+                <app-vehicle-nos [vehicleId]="vehicleId" [vehicleNosInfo]="vehicleInfo?.vehicle_nos_info"></app-vehicle-nos>
+                <app-vehicle-cma-arv [vehicleId]="vehicleId" [vehicleCmaArvInfo]="vehicleInfo?.vehicle_cma_arv_info"></app-vehicle-cma-arv>
+        </div>
+</div>

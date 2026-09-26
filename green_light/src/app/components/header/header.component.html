@@ -1,0 +1,182 @@
+<!-- begin #header -->
+<div id="header" class="header navbar navbar-default navbar-fixed-top navbar-small" style="z-index: 9999;">
+  
+    <!-- begin container -->
+    <div class="header-container" style="width: 100%;">
+
+        <!-- begin navbar-header -->
+        <div class="navbar-header">
+          <ng-container *ngIf="this.pageSidebarTwo">
+            <button type="button" class="navbar-toggle pull-left" (click)="mobileSidebarToggle()">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <button type="button" class="navbar-toggle pull-right" (click)="mobileRightSidebarToggle()">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+          </ng-container>
+          <span class="brand-text">
+            <div class="text-theme logo-text pull-left p-15" style="cursor: pointer;" [routerLink]="['/home/dashboard']">
+              <b style="font-size: 18px;">Greenlight Property Finder</b>
+              <!-- <a title="logo" alt="logo" >
+                Green Light Property Finder
+                <img  style="max-height: 50px;" src="../../../assets/img/logo.png" class="header_img"/>
+              </a> 
+              -->
+            </div>
+          </span>
+          <button type="button" class="navbar-toggle" (click)="mobileSidebarToggle()" *ngIf="!this.pageSettings.pageSidebarTwo && !this.pageSettings.pageWithoutSidebar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <button type="button" class="navbar-toggle p-0 m-r-0" (click)="mobileMegaMenuToggle()" *ngIf="this.pageSettings.pageMegaMenu">
+            <span class="fa-stack fa-lg text-inverse m-t-2">
+              <i class="far fa-square fa-stack-2x"></i>
+              <i class="fa fa-cog fa-stack-1x"></i>
+            </span>
+          </button>
+          <button type="button" class="navbar-toggle" (click)="mobileTopMenuToggle()" *ngIf="this.pageSettings.pageTopMenu && this.pageSettings.pageWithoutSidebar">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+        <!-- end navbar-header -->
+
+
+  <!-- begin mega-menu -->
+  <div class="collapse navbar-collapse pull-left" *ngIf="this.pageSettings.pageMegaMenu" [ngStyle]="{ 'display': (this.pageSettings.pageMegaMenu && this.pageSettings.pageMobileMegaMenuToggled) ? 'block' : '' }">
+      <ul class="nav navbar-nav">
+        <li class="dropdown dropdown-lg" ngbDropdown>
+          <a href="javascript:;" class="dropdown-toggle" ngbDropdownToggle><i class="fa fa-th-large fa-fw"></i> Mega <b class="caret"></b></a>
+          <div class="dropdown-menu dropdown-menu-lg" ngbDropdownMenu>
+            Mega menu content here
+          </div>
+        </li>
+        <li>
+          <a href="javascript:;">
+            <i class="fa fa-gem fa-fw"></i> Client
+          </a>
+        </li>
+        <li class="dropdown" ngbDropdown>
+          <a href="javascript:;" class="dropdown-toggle" ngbDropdownToggle>
+            <i class="fa fa-database fa-fw"></i> New <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu" ngbDropdownMenu>
+            <li><a href="javascript:;">Action</a></li>
+            <li><a href="javascript:;">Another action</a></li>
+            <li><a href="javascript:;">Something else here</a></li>
+            <li class="divider"></li>
+            <li><a href="javascript:;">Separated link</a></li>
+            <li class="divider"></li>
+            <li><a href="javascript:;">One more separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <!-- end mega-menu -->
+  
+    <!-- begin header-nav -->
+    <ul class="navbar-nav navbar-right">
+      <li [ngClass]="[ (this.pageSettings.pageLanguageBar) ? 'hidden-xs' : '' ]">
+
+          <form class="navbar-form" [formGroup]="searchProForm">
+            <div class="form-group _navbar_search">  
+                <mat-form-field appearance="outline">
+                  <input type="text" class="form-control" matInput  formControlName="search_property" [matAutocomplete]="auto" class="text-color">
+                  <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="searchProperty()">
+                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                      {{option.address}}
+                    </mat-option>
+                    <mat-option *ngIf="loading">
+                      <mat-spinner diameter="30" value="100"></mat-spinner>
+                    </mat-option>
+                    <mat-option *ngIf="noResult">
+                      No Result Found
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-icon  matSuffix color="primary" class="search-property md-18">
+                    <i class="fa fa-search"></i>
+                  </mat-icon>
+                </mat-form-field>
+            </div>
+          </form>
+
+        <!-- <form class="navbar-form">
+          <div class="form-group">
+            <input type="text" class="form-control" placeholder="Enter keyword" />
+            <button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>
+          </div>
+        </form> -->
+      </li>
+      <li class="dropdown" ngbDropdown>
+        <a href="javascript:;" ngbDropdownToggle class="dropdown-toggle f-s-14">
+          <i class="fa fa-bell"></i>
+          <span class="label">0</span>
+        </a>
+        <ul class="dropdown-menu media-list dropdown-menu-right" ngbDropdownMenu>
+          <li class="dropdown-header">NOTIFICATIONS (0)</li>
+          <li class="text-center width-300 p-b-10">
+            No notification found
+          </li>
+        </ul>
+      </li>
+      <li class="dropdown navbar-language" ngbDropdown *ngIf="this.pageSettings.pageLanguageBar">
+        <a href="javascript:;" class="dropdown-toggle" ngbDropdownToggle>
+          <span class="flag-icon flag-icon-us" title="us"></span>
+          <span class="name">EN</span> <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu p-b-0" ngbDropdownMenu>
+          <li class="arrow"></li>
+          <li><a href="javascript:;"><span class="flag-icon flag-icon-us" title="us"></span> English</a></li>
+          <li><a href="javascript:;"><span class="flag-icon flag-icon-cn" title="cn"></span> Chinese</a></li>
+          <li><a href="javascript:;"><span class="flag-icon flag-icon-jp" title="jp"></span> Japanese</a></li>
+          <li><a href="javascript:;"><span class="flag-icon flag-icon-be" title="be"></span> Belgium</a></li>
+          <li class="divider m-b-0"></li>
+          <li class="text-center"><a href="javascript:;">more options</a></li>
+        </ul>
+      </li>
+      <li class="dropdown navbar-user" ngbDropdown>
+        <a href="javascript:;" class="dropdown-toggle" ngbDropdownToggle>
+          <div class="image image-icon bg-black text-grey-darker">
+            <i class="fa fa-user"></i>
+          </div>
+          <span class="d-none d-md-inline">{{first_name}} {{last_name}}</span> <b class="caret"></b>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+          <a href="javascript:;" class="dropdown-item" [routerLink]="['/home/profile']">Edit Profile</a>
+          <a href="javascript:;" class="dropdown-item" [routerLink]="['/home/profile/change-password']">Change Password</a>
+          <a href="javascript:;" class="dropdown-item" [routerLink]="['/home/profile/change-role']">Change Role</a>
+          
+          <ng-container *ngIf="inviteSettingAccess">
+            <a href="javascript:;" class="dropdown-item" [routerLink]="['/home/profile/property_invite_setting']">Invite Setting</a>
+          </ng-container>
+          <ng-container *ngIf="user_info.current_role=='admin' || user_info.current_role=='sub_to'">
+            <a href="javascript:;" class="dropdown-item" [routerLink]="['/home/profile/subto-setting']">Subto Invite Setting</a>
+          </ng-container>
+          
+          <ng-container *ngIf="user_info.current_role=='admin'">
+            <a href="javascript:;" class="dropdown-item" [routerLink]="['/home/profile/workprofile']">Work</a>
+          </ng-container>
+          <div class="dropdown-divider"></div>
+          <a href="javascript:;" (click)="logout()" class="dropdown-item">Log Out</a>
+        </div>
+      </li>
+      <li class="divider d-none d-md-block" *ngIf="this.pageSidebarTwo"></li>
+      <li class="d-none d-md-block" *ngIf="this.pageSidebarTwo">
+        <a href="javascript:;" (click)="toggleSidebarRight()" class="f-s-14">
+          <i class="fa fa-th"></i>
+        </a>
+      </li>
+    </ul>
+    <!-- end header navigation right -->
+
+    </div>
+  
+
+</div>
+<!-- end #header -->

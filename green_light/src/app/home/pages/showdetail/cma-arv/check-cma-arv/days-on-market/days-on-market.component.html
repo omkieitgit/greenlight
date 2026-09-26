@@ -1,0 +1,45 @@
+<fieldset>
+  <legend mat-dialog-title>Days On Market</legend>
+  <mat-dialog-content class="parent-loader"  style="min-height:250px;">
+    <app-loader [loading]="loading"></app-loader>
+    <form *ngIf="showForm" [formGroup]="dayOnMarketForm" >
+      <!-- one row start--> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Enter Listed Date</label>
+          </div>
+          <div class="col-md-4">
+            <label class="col-form-label">Enter Sold Date</label>
+          </div>
+          <div class="col-md-4 text-right">
+            <label class="col-form-label text-right">Duration</label>
+          </div>
+      </div>
+
+      <div formArrayName="dom_info_data">
+        <div [formGroupName]="i"  *ngFor="let owner of dayOnMarketForm.get('dom_info_data')['controls']; let i = index;">
+          <div class="form-group row m-b-0">
+            <div class="col-md-4">
+              <my-date-picker  [options]="myDatePickerOptions" formControlName="enter_listed_date"  (dateChanged)="onDateChanged($event)"  (inputFieldChanged)="onInputFieldChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>                  
+            </div> 
+            <div class="col-md-4">
+              <my-date-picker [options]="myDatePickerOptions" formControlName="enter_sold_date"   (dateChanged)="onDateChanged($event)"  (inputFieldChanged)="onInputFieldChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>                  
+            </div>
+            <div class="col-md-4 text-right cal_days_{{i}}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div  class="form-group row m-b-0">
+        <div class="col-md-8"></div>
+        <div class="col-md-4 text-right total_avg"></div>
+      </div>
+      <!-- one row end -->
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+      <button mat-button (click)="addMoreField()">Add More</button>
+    <button mat-button (click)="saveInfo()">Save</button>
+    <button mat-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</fieldset>

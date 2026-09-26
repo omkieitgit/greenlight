@@ -1,0 +1,43 @@
+
+<form [formGroup]="mortgagePropTaxForm" *ngIf="!propErr"  class="parent-loader">
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <fieldset>
+      <!-- <legend>Mortgage, Other Liens & Property Taxes</legend> -->
+      <div class="form-group row m-b-0">   
+        <div class="col-md-2">
+          <label class="col-form-label">County ROD URL</label>
+          <span [appLink]="f.county_rod_ur.value"></span>  
+        </div> 
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0" formControlName="county_rod_ur"  [ngClass]="{ 'is-invalid': submitted && f.county_rod_ur.errors }" />
+          <div *ngIf="f.county_rod_ur.errors" class="invalid-feedback">
+            <div *ngIf="f.county_rod_ur.errors.required">County rod url is required</div>
+          </div>
+        </div>
+        <div class="col-md-2">
+            <div class="checkbox checkbox-css">               
+              <input type="checkbox" id="manual_search" formControlName="manual_search" (change)="manualSearch($event)">    
+              <label for="manual_search">Manual Search</label>         
+            </div> 
+        </div>             
+        <div class="col-md-2">
+          <div class="checkbox checkbox-css">               
+            <input type="checkbox" id="NoActiveMortLin" formControlName="no_active_mortgage_lien" (change)="noActiveLien($event)">    
+            <label for="NoActiveMortLin">No Active Mortgage Lien</label>         
+          </div>          
+        </div>
+        <div class="col-md-2" *hideElement="true">
+          <button type="button" (click)="validateForm(this.mortgagePropTaxForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+            <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+          </button>
+        </div>
+
+        <div class="col-md-2 text-right">
+          <label class="col-form-label" *ngIf="sale_info">
+            <a href="javascript:;" (click)="viewSaleInfo()">Current Sale Info</a>
+          </label>
+      </div> 
+      </div>
+    <!-- one row end -->
+    </fieldset>
+</form>

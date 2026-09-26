@@ -1,0 +1,531 @@
+<div class="m-t-10">
+  <panel [collapse]='collapse' title="{{ lienTitle[lien] }} &nbsp;&nbsp; &nbsp;&nbsp; {{ (lienData?.lender?'Lender: '+lienData?.lender:'') +'&nbsp; '+(lienData?.lien_amount?'Lien Amount: '+lienData?.lien_amount:'') +'&nbsp; '+(lienData?.date_recorded?'Recorded Date: '+lienData?.date_recorded:'') +'&nbsp; '+(lienData?.amortization_loan_estimate_balance?'EST Loan Balance: '+lienData?.amortization_loan_estimate_balance:'') }}" [appHideContent]="mortgageLienOneForm" (checkContentEvent)="showHidePanel($event)">
+      <form [formGroup]="mortgageLienOneForm" *ngIf="!propErr" [appDisableElement]="mortgageLienOneForm" class="parent-loader _property_info">
+          <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+          <fieldset>
+            <input type="hidden" formControlName="mortgage_id" />
+            <input type="hidden" formControlName="lien_type" />
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              
+              <div class="col-md-2">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="FirstLienForclos_{{lien}}" formControlName="lien_foreclosing" value="1">    
+                  <label for="FirstLienForclos_{{lien}}">{{lienTitle[lien]}} Foreclosing</label>         
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="NoStr_{{lien}}" formControlName="no_str_no_appt" (change)="noStr($event)">    
+                  <label for="NoStr_{{lien}}">No STR | No APPT</label>         
+                </div>
+              </div>        
+              <div class="col-md-2">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="DefectiveLien_{{lien}}" formControlName="defective_lien" (change)="defectiveLien($event)">    
+                  <label for="DefectiveLien_{{lien}}">Defective Lien</label>         
+                </div>
+              </div>
+              <div class="col-md-3">&nbsp;</div>
+              <div class="col-md-1">
+                <app-common-notes [note_name]="notes_btn.note_name" [noteSetting]="notes_btn" (updateNotesDetail)="updatedNotes($event)"></app-common-notes>
+              </div>
+               <div *ngIf="viewSaleInfoLink" class="col-md-2" >
+                  <label class="col-form-label" *ngIf="sale_info">
+                    <a href="javascript:;" (click)="viewSaleInfo()">View Notice of Foreclosure</a>
+                  </label>
+                </div>     
+                          
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-2">
+                <label class="col-form-label">Lender</label>
+                <input type="text" class="form-control m-b-0" formControlName="lender"  appOnBlurSave (updatedValue)="autoSave($event)" /> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Lien Amount</label>
+                <input type="text" class="form-control m-b-0" formControlName="lien_amount" appOnBlurSave (updatedValue)="autoSave($event)" /> 
+              </div> 
+              <div class="col-md-2">
+                  <label class="col-form-label">Date Recorded</label>
+                  <div class="position-relative">
+                    <my-date-picker name="date_recorded" [options]="myDatePickerOptions" formControlName="date_recorded"  (dateChanged)="onDateChanged($event,dateInput)" #dateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                  </div>
+              </div>
+              <div class="col-md-2">
+                  <label class="col-form-label">Instrument #</label>
+                  <input type="text" class="form-control m-b-0" formControlName="instrument" appOnBlurSave (updatedValue)="autoSave($event)" /> 
+              </div>
+
+              <div class="col-md-2">
+                <label class="col-form-label">DT Book/Page</label>
+                <input type="text" class="form-control m-b-0" formControlName="dt_book_page"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Assignment BP</label>
+                <input type="text" class="form-control m-b-0" formControlName="assignment_bp"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+                      
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-2">
+                <label class="col-form-label">Loan Type</label>
+                <select name="1stLien_loan_type" id="1stLien_loan_type" formControlName="loan_type"  class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)">
+                    <option value="0">Select Loan Type</option>
+                    <option [value]="loan.key" *ngFor="let loan of loan_type_list | keyvalue">{{loan.value}}</option>
+                </select>
+              </div>       
+              <div class="col-md-2">
+                <label class="col-form-label">Loan Term</label>
+                <input type="text" class="form-control m-b-0" formControlName="loan_term" appOnBlurSave (updatedValue)="autoSave($event)" /> 
+              </div> 
+              <div class="col-md-2">
+                <label class="col-form-label">Maturity Date</label>
+                <div class="position-relative">
+                  <my-date-picker name="maturity_date" [options]="myDatePickerOptions" formControlName="maturity_date"  (dateChanged)="onDateChanged($event,dateInputs)" #dateInputs placeholder="MM/DD/YYYY"></my-date-picker>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Right to Cure</label>
+                <input type="text" class="form-control m-b-0" formControlName="right_to_cure"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Trustee Fees</label>
+                <input type="text" class="form-control m-b-0" formControlName="trustee_fees"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div> 
+              <div class="col-md-2">
+                <label class="col-form-label">Trustee</label>
+                <input type="text" class="form-control m-b-0" formControlName="trustee"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+             
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-2" *ngIf="!noStrChecked">
+                <label class="col-form-label">STR Book/Page</label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="str_book_page"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div>
+              <div class="col-md-2" *ngIf="!noStrChecked">
+                <label class="col-form-label">STR Date</label>
+                <div class="position-relative">
+                  <my-date-picker name="str_date" [options]="myDatePickerOptions" formControlName="str_date"  (dateChanged)="onDateChanged($event,strDateInput)" #strDateInput placeholder="MM/DD/YYYY"></my-date-picker>                  
+                </div>
+              </div> 
+              <div class="col-md-2">
+                <label class="col-form-label">Loan Estimated Balance</label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="amortization_loan_estimate_balance" (change)="updateEsBalance($event)"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div>
+              
+              <div class="col-md-2">
+                <label class="col-form-label">
+                  <a *ngIf="mortgageLienOneForm.get('no_str_no_appt').value==0" href="javascript:;" (click)="estimated_late_payment()">
+                    Est Late Payments & Fees
+                  </a>
+                  <ng-container *ngIf="mortgageLienOneForm.get('no_str_no_appt').value==1" > Est Late Payments & Fees</ng-container>
+                </label>
+                <div class="position-relative">
+                    <input type="text" class="form-control m-b-0" formControlName="est_late_payment_and_fees"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">
+                  Total Estimated Debt w/ Late Payments & Attorney Fees $
+                </label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="total_est_debt"  appOnBlurSave (updatedValue)="autoSave($event)" /> 
+                </div>
+              </div> 
+              <div class="col-md-2">
+                <label class="col-form-label">
+                  CMA/ARV Value
+                </label>
+                <input type="text" class="form-control m-b-0" formControlName="cma_arv_value" disabled /> 
+              </div> 
+
+              <ng-container *ngIf="mortgageLienOneForm.get('no_str_no_appt').value==1">
+                <div class="col-md-2">
+                  <label class="col-form-label">Total Debt</label>
+                  <div class="position-relative">
+                    <input type="text" class="form-control m-b-0" formControlName="total_debt"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <label class="col-form-label">
+                    Rental Rate
+                  </label>
+                  <input type="text" class="form-control m-b-0" formControlName="rental_rate" disabled /> 
+                </div> 
+              </ng-container>
+
+            </div>
+            <!-- one row end -->
+            <div class="form-group row m-b-5">
+              <ng-container *ngIf="mortgageLienOneForm.get('no_str_no_appt').value==0">
+                <div class="col-md-2">
+                  <label class="col-form-label">Total Debt</label>
+                  <div class="position-relative">
+                    <input type="text" class="form-control m-b-0" formControlName="total_debt"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <label class="col-form-label">
+                    Rental Rate
+                  </label>
+                  <input type="text" class="form-control m-b-0" formControlName="rental_rate" disabled /> 
+                </div> 
+              </ng-container>
+              <div class="col-md-2">
+                <label class="col-form-label">
+                  Estimate Excess Funds
+                </label>
+                <input type="text" class="form-control m-b-0" formControlName="es_excess_funds" appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div> 
+            </div>
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-4">
+                  <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="ExhibitMatch_{{lien}}" formControlName="estimated_a_match" >    
+                  <label for="ExhibitMatch_{{lien}}">Exhibit A match w/ the Legal Description in the NOS</label>         
+                </div>
+              </div>
+              <div class="col-md-4">
+                  <div class="checkbox checkbox-css">               
+                    <input type="checkbox" id="DtNos_{{lien}}" formControlName="dt_nos" >    
+                    <label for="DtNos_{{lien}}">DT & NOS property address both match</label>         
+                  </div>
+              </div>  
+              <div class="col-md-3">
+                  <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="ReasonableAtt_{{lien}}" formControlName="reasonable_attorney_fees" value="1" >    
+                  <label for="ReasonableAtt_{{lien}}">Reasonable Attorney Fees</label>         
+                </div>
+              </div>               
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-6">
+                <div class="checkbox checkbox-css">              
+                  <input type="checkbox" id="amortization_{{lien}}" formControlName="amortization_calculation" [checked]="firstLienAmortization" (change)="firstLienAmortization = !firstLienAmortization" >    
+                  <label for="amortization_{{lien}}">AMORTIZATION View Calculation <a href="javascript:;" (click)="viewAmortizationCal()">View Calculation</a></label>         
+                </div>         
+              </div>                                
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5" *ngIf="firstLienAmortization">
+              <div class="col-md-2">
+                <label class="col-form-label">Annual Interest Rate %</label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="amortization_annual_interest"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Monthly Payment</label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="amortization_monthly_payment"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div> 
+              <div class="col-md-2">
+                <label class="col-form-label">Monthly Principal Payment</label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="amortization_monthly_principal_payment"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Monthly Interest Payment</label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="amortization_monthly_interest_payment"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Estimated Equity</label>
+                <div class="position-relative">
+                  <input type="text" class="form-control m-b-0" formControlName="est_equity"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                </div>
+              </div>
+              <div class="col-md-2">
+                  <label class="col-form-label">&nbsp;</label>
+                  <button class="form-control btn btn-sm btn-primary" (click)="amortizationCalculation(mortgageLienOneForm)">Calculate</button>           
+                </div>                
+            </div>
+            <!-- one row end -->
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-4">          
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="modificationAgg_{{lien}}" formControlName="modification_agreement" [checked]="firstLienMod" (change)="firstLienMod = !firstLienMod" >    
+                  <label for="modificationAgg_{{lien}}">MODIFICATION AGREEMENT (MOD)</label>         
+                </div>
+              </div>                                        
+            </div>
+            <!-- one row end -->
+            <div *ngIf="firstLienMod">
+              <!-- one row start-->       
+              <div class="form-group row m-b-5">
+                  <div class="col-md-2">
+                    <label class="col-form-label">Modification Book/Page</label>
+                    <div class="position-relative">
+                      <input type="text" class="form-control m-b-0" formControlName="modification_book_page"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Modification Date</label>
+                    <div class="position-relative">
+                        <my-date-picker name="modification_date" [options]="myDatePickerOptions" formControlName="modification_date"  (dateChanged)="onDateChanged($event,ModDateInput)" #ModDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                    </div>
+                  </div> 
+                  <div class="col-md-2">
+                    <label class="col-form-label">Modified Lien Amount</label>
+                    <div class="position-relative">
+                      <input type="text" class="form-control m-b-0" formControlName="modification_lien_amount"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Modified Loan Term</label>
+                    <div class="position-relative">
+                      <input type="text" class="form-control m-b-0" formControlName="modification_loan_term"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                    </div>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Modification Maturity Date</label>
+                    <div class="position-relative">
+                        <my-date-picker name="modification_maturity_date" [options]="myDatePickerOptions" formControlName="modification_maturity_date"  (dateChanged)="onDateChanged($event,MatDateInput)" #MatDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                      </div>
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">Annual Interest %</label>
+                      <div class="position-relative">
+                        <input type="text" class="form-control m-b-0 m-t-5" formControlName="modification_annual_interest"  appOnBlurSave (updatedValue)="autoSave($event)"/>             
+                      </div>
+                    </div>              
+              </div>
+              <!-- one row end -->
+              <!-- one row start-->       
+              <div class="form-group row m-b-5">
+                <div class="col-md-2">
+                  <label class="col-form-label">Monthly Payment $</label>
+                  <div class="position-relative">
+                    <input type="text" class="form-control m-b-0 m-t-5" formControlName="modification_monthly_payment"  appOnBlurSave (updatedValue)="autoSave($event)"/>          
+                  </div>
+                </div>
+                <div class="col-md-2">
+                    <label class="col-form-label">Loan Estimated Balance</label>
+                    <div class="position-relative">
+                      <input type="text" class="form-control m-b-0 m-t-5" formControlName="modification_loan_estimate_balance"  appOnBlurSave (updatedValue)="autoSave($event)"/>             
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <label class="col-form-label">Est Late Payments and Fees</label>
+                    <div class="position-relative">
+                      <input type="text" class="form-control m-b-0 m-t-5" formControlName="modification_est_late_payment_and_fees"  appOnBlurSave (updatedValue)="autoSave($event)"/>          
+                    </div>
+                </div>
+                <div class="col-md-2">
+                  <label class="col-form-label">
+                    Total Estimated Debt w/ Late Payments & Attorney Fees $
+                  </label>
+                  <div class="position-relative">
+                    <input type="text" class="form-control m-b-0" formControlName="total_est_debt"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                  </div>
+                </div> 
+                <div class="col-md-2">
+                  <label class="col-form-label">
+                    CMA/ARV Value
+                  </label>
+                  <input type="text" class="form-control m-b-0" formControlName="cma_arv_value" disabled /> 
+                </div> 
+                   
+              
+                <div class="col-md-2">
+                    <label class="col-form-label">&nbsp;</label>
+                    <button class="form-control btn btn-sm btn-primary" (click)="modificationCalculation(mortgageLienOneForm)">Calculate</button>           
+                  </div> 
+              </div>
+              <!-- one row end -->
+            </div>
+            
+        
+    
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-4">          
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="SubordinationAgg_{{lien}}" formControlName="subordination_agreement" [checked]="firstLienSub" (change)="firstLienSub = !firstLienSub" >    
+                  <label for="SubordinationAgg_{{lien}}">SUBORDINATION AGREEMENT (SUB/A)</label>         
+                </div>
+              </div>
+              <div class="col-md-4"></div>                                 
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5" *ngIf="firstLienSub">
+              <div class="col-md-2">
+                <label class="col-form-label">SUB/A Book/Page</label>
+                <input type="text" class="form-control m-b-0" formControlName="sub_a_book_page"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">SUB/A Date</label>
+                <div class="position-relative">
+                    <my-date-picker name="sub_a_date" [options]="myDatePickerOptions" formControlName="sub_a_date"  (dateChanged)="onDateChanged($event,subDateInput)" #subDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                  </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Lien Position</label>
+                <select class="form-control" formControlName="sub_lien_position" appOnBlurSave (updatedValue)="autoSave($event)">
+                  <option value="">Select Lien Position</option>
+                  <option value="1">Superior Lien</option>
+                  <option value="2">Infirior Lien</option>
+                </select>
+              </div>                    
+            </div>
+            <!-- one row end -->
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-4">          
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="firstLineForeclosureRes_{{lien}}" formControlName="foreclosure_result" [checked]="firstLienFor" (change)="firstLienFor = !firstLienFor" >    
+                  <label for="firstLineForeclosureRes_{{lien}}">FORECLOSURE RESULT</label>         
+                </div>
+              </div>
+              <div class="col-md-4"></div>                                 
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5" *ngIf="firstLienFor">
+              <div class="col-md-2">
+                <label class="col-form-label">TRDeed Instrument #</label>
+                <input type="text" class="form-control m-b-0" formControlName="trdeep_instrument"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">TRDeed Date</label>
+                <div class="position-relative">
+                  <my-date-picker [options]="myDatePickerOptions" formControlName="trdeed_date"  (dateChanged)="onDateChanged($event,TRdateInput)" #TRdateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Winning Bidder</label>
+                <input type="text" class="form-control m-b-0" formControlName="winning_bidder" appOnBlurSave (updatedValue)="autoSave($event)" /> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Winning Bid $</label>
+                <input type="text" class="form-control m-b-0" formControlName="winning_bid"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+                                 
+            </div>
+           
+            <app-common-notes [note_name]="notes_detail.note_name" [noteSetting]="notes_detail" [resetFormSubject]="resetFormSubject.asObservable()"></app-common-notes>
+            
+            <app-defective-notes-detail [property_id]="property_id" [lien_type]="lien"></app-defective-notes-detail>
+
+            <app-document 
+              [document_type_list]="property_document_type_list"
+              [property_id]="property_id" 
+              [document_info]="lienData.mortgage_liens_document" 
+              document_url="mortgage_lien_document" 
+              doc_primary_key="document_mortgage_id" 
+              [mortgage_id]="lienData.mortgage_id" 
+              [doc_count_id]="lien"></app-document>
+
+        
+          <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-2">
+                <label class="col-form-label">Property Signature</label>             
+              </div>
+              <div class="col-md-2">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="Owner1_{{lien}}" formControlName="property_owner_1" >    
+                  <label for="Owner1_{{lien}}">Owner 1</label>         
+                </div>
+              </div>
+              <div class="col-md-2">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="Owner2_{{lien}}" formControlName="property_owner_2" >    
+                  <label for="Owner2_{{lien}}">Owner 2</label>         
+                </div>
+              </div>
+              <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="Owner3_{{lien}}" formControlName="property_owner_3" >    
+                  <label for="Owner3_{{lien}}">Owner 3</label>         
+                </div>
+              </div>
+              <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="Owner4_{{lien}}" formControlName="property_owner_4" >    
+                  <label for="Owner4_{{lien}}">Owner 4</label>         
+                </div>
+              </div>                    
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <!-- <div class="col-md-4">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="CompanyCurrent_{{lien}}" formControlName="company_not_current" >    
+                  <label for="CompanyCurrent_{{lien}}">Company Not Current at time of Recording Deed of Trust</label>         
+                </div>             
+              </div> -->
+              <div class="col-md-2">   
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="DtcFirstCheck_{{lien}}" formControlName="dtc_first_check" >    
+                  <label for="DtcFirstCheck_{{lien}}">DTC - First Check</label>  
+                </div>
+                <div [innerHTML]="amortization.get_checked_info(lienData.check_by,1)"></div>  
+              </div>
+              <div class="col-md-2">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="DcaSecondCheck_{{lien}}" formControlName="dca_second_check" >    
+                  <label for="DcaSecondCheck_{{lien}}">DCA - Second Check</label>         
+                </div> 
+                <div [innerHTML]="amortization.get_checked_info(lienData.check_by,2)"></div>  
+
+              </div>
+              <div class="col-md-2">
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="DcaFinalCheck_{{lien}}" formControlName="dca_final_check" >    
+                  <label for="DcaFinalCheck_{{lien}}">DCA - Final Check</label>  
+                </div>
+                <div [innerHTML]="amortization.get_checked_info(lienData.check_by,3)"></div>  
+              </div> 
+            
+              <div  *hideElement="true" class="col-md-1 p-0">
+                <div *ngIf="lien==3 || lien==4">
+                    <button  *hideBtnElement="lien_type" class="form-control btn btn-sm btn-primary" (click)="addFourthLien()" >
+                      Add {{lien+1}}th Lien
+                    </button>
+                </div>
+              </div>  
+              <div class="col-md-4">&nbsp;</div>
+              <div class="col-md-1">
+                <div  *hideElement="true">
+                    <button type="button" *hideBtnElement="lien_type"  (click)="validateForm(this.mortgageLienOneForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+                      <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                    </button>
+                </div> 
+              </div>                    
+            </div>
+            <!-- one row end -->
+          </fieldset>
+      </form>
+  </panel>
+</div>

@@ -1,0 +1,23 @@
+<div class="row  m-t-10 estate_content d-flex justify-content-start" [ngClass]="{'_bottom_button col-md-12':scrollFlag }">
+  <!-- one row start-->
+    <!-- <button  (click)="openDialog('buyIt')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Buy It</button> -->
+    <button  (click)="contactRequest('lender')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">
+      Lender Request
+      <i *ngIf="lenderRequestLoader" class="fa fa-spin fa-spinner"></i>
+    </button>
+    <button  (click)="contactRequest('subto')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">
+      Contact Owner
+      <i *ngIf="contactOwnerLoader" class="fa fa-spin fa-spinner"></i>
+    </button>
+    <!-- <button  (click)="openDialog('passOnIt')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Pass On It</button> -->
+    <button  (click)="openDialog('areaInvite')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Area Invite</button>
+    <!-- <button  (click)="openDialog('getPicture')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Get Pictures</button> -->
+    <button  (click)="openDialog('institutionalLender')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Get an Institutional Lender</button>
+    <button  (click)="openDialog('titleSearch')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch" >Get A Title Search</button>
+    <!-- <button  (click)="openDialog('depositLender')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Get Deposit/Exclusive Lender</button> -->
+    <button  (click)="print_page()" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Print</button>
+    <!-- <button  (click)="get_insurance_quete()" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch" >Get Insurance quote
+      <i *ngIf="loading_quete" class="fa fa-spin fa-spinner"></i>
+    </button> -->
+  <!-- one row end-->
+</div>

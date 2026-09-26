@@ -1,0 +1,160 @@
+
+    <div class="form-group row m-b-0">
+        <div class="col-md-2 col-sm-12">
+            <div class="row m-b-10">
+                <div class="col-sm-6 col-md-12 m-l-5">
+                    <div class="row">
+                        <div *ngIf="isFilterShow" class="col-md-2">
+                            <div class="">
+                                <input id="search_{{property.house_id}}" type="checkbox" (click)="$event.stopPropagation()" (change)="checkedProperty($event)" value="{{property.house_id}}"/>
+                            </div>
+                            <div *ngIf="isMerge" class="radio radio-css radio-inline">
+                                <input type="radio"  id="search_merge_{{property.house_id}}" value="{{property.house_id}}" name="primary_id" (change)="checkedPrimaryProperty($event)" />  
+                                <label for="search_merge_{{property.house_id}}">&nbsp;</label>
+                            </div>
+                           
+                        </div>
+                        <div class="col-md-10">
+                            <label for="search_{{property.house_id}}">
+                                <img  [src]="(property?.front_picture?.url)?property?.front_picture?.url:propertyImg" width="100px" class="card-img"/>
+                            </label>
+                        </div>
+                    </div>
+                    <!-- <a (mouseover)="showPorpertyImg(property.front_picture)" href="" target="_blank" style="float:left;width:100px;height:100px;display: block;border:1px solid #DFD6BA;">
+                        <span *ngIf="overFlag" style=" text-align: center; display: block; position: relative; top: 36%;">Mouse Over For Image</span>
+                        <img *ngIf="!overFlag" [src]="propertyImg" width="100px" height="100px" style="float:left;"/>
+                    </a> -->
+                
+                </div>
+                <div class="col-sm-6 col-md-12">
+                        <div class="col-sm-12 m-b-10">Off Site: 
+                            <ng-container *ngIf="property?.off_site && property?.off_site.off_site=='0'; then offSiteNo; else offSiteYes">
+                            </ng-container>
+                            <ng-template #offSiteNo> No</ng-template>
+                            <ng-template #offSiteYes> Yes</ng-template>
+                        </div>
+                        <div class="col-md-12 m-b-10">
+                                <app-add-me-btn [property_id]="property.house_id"></app-add-me-btn>
+                        </div>
+                        <div class="col-md-12 m-b-10">
+                            
+                            <button *ngIf="removedAlarm" type="button" name="add_alarm"  (click)="removeAlarmMe($event,property.alarm_id)" class="m-r-5 btn btn-sm btn-primary">
+                                Remove it from the Alarm
+                            </button>
+                            <app-add-to-alarm  *ngIf="!removedAlarm" [property_id]="property.house_id"></app-add-to-alarm>
+                        </div>
+                        <div class="col-md-12 m-b-10">
+                            <app-wholesale-retail [property_id]="property.house_id"></app-wholesale-retail>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-2 col-sm-6">
+            
+            <p *ngIf="!(userRole=='wholesale_buyer' || userRole=='home_buyer')"><span>ADDRESS:</span> {{property?.address}}</p>
+            <p *ngIf="(userRole=='wholesale_buyer' || userRole=='home_buyer')"><span>ADDRESS:</span> <a [routerLink]="['/home/showdetail/'+property.house_id+'/'+(property.address|slugify)]" target="_blank" class="link-color">{{property?.address}}</a></p>
+            <p><span>CITY:</span> {{property?.city}}</p>
+            <p><span>COUNTY:</span> {{property?.county}}</p>
+            <p><span>STATE:</span> {{property?.state}}</p>
+            <p><span>ZIP:</span> {{property?.zip}}</p>
+            <p><span>HEATED SQFT:</span> {{ math.floor(property?.total_living_sqft) }}</p>
+            <p><span>YEAR BUILT:</span> {{property?.year_built}}</p>
+            <p><span>BED:</span> {{property?.bed}}</p>
+            <p><span>BATH:</span> {{property?.bath}}</p>
+            <p><span>LOT SIZE:</span> {{property?.lot_acreage_sf}}</p>
+            <p><span>PARCEL ID:</span> {{property?.parcel_id1}}</p>
+            <p><span>BORROWER NAME:</span> {{ property?.last_borrower_info?.full_name     }}</p>
+            <p><span>OWNER NAME:</span> {{ property?.last_owner_info?.full_name     }}</p>
+
+        </div>
+        <div class="col-md-2 col-sm-6">
+            <p><span>1ST LIEN STR:</span> {{ (property?.first_liens?.no_str_no_appt==1)?'No':'Yes'}}</p>
+            <p><span>1ST LIEN:</span> {{ property?.first_liens?.lien_amount | currency}}</p>
+            <p><span>1ST LIEN DATE:</span> {{property?.first_liens?.date_recorded}}</p>
+            <!-- <p><span>FORECLOSING FIRST LIEN:</span> {{ (property?.first_liens?.lien_foreclosing==1)?'Yes':'No'}}</p> -->
+            <p><span>2ND STR LIEN:</span> {{ (property?.second_liens?.no_str_no_appt==1)?'No':'Yes'}}</p>
+            <p><span>2ND LIEN:</span> {{ property?.second_liens?.lien_amount | currency}}</p>
+            <p><span>2ND LIEN DATE:</span> {{property?.second_liens?.date_recorded}}</p>
+            <!-- <p><span>FORECLOSING SECOND LIEN:</span> {{ (property?.second_liens?.lien_foreclosing==1)?'Yes':'No'}}</p> -->
+            <p><span>3RD STR LIEN:</span> {{ (property?.third_liens?.no_str_no_appt==1)?'No':'Yes'}}</p>
+            <p><span>3RD LIEN:</span> {{ property?.third_liens?.lien_amount | currency}}</p>
+            <p><span>3RD LIEN DATE:</span> {{property?.third_liens?.date_recorded}}</p>
+            <!-- <p><span>FORECLOSING THIRD LIEN:</span> {{ (property?.third_liens?.lien_foreclosing==1)?'Yes':'No'}}</p> -->
+            <p><span>HOA STR:</span> {{ (property?.hoa_liens?.no_str==1)?'No':'Yes'}}</p>
+            <p><span>HOA LIEN:</span> {{ property?.hoa_liens?.hoa_lien_amount | currency}}</p>
+            <p><span>UNPAID TAX:</span></p>
+            <p><span>TAX YEAR:</span> </p>
+        </div>
+
+        <div class="col-md-2 col-sm-6">
+            <p><span>TRUSTEE:</span> {{property?.last_sale_details?.trustee | truncate:[13, '..'] }}</p>
+            <p><span>SALE DATE:</span> {{property?.last_sale_details?.sale_date}}</p>
+            <p><span>SALE TIME:</span> {{property?.last_sale_details?.sale_time}}</p>
+            <p><span>SALE TYPE:</span> {{property?.last_sale_details?sale_type_option[property?.last_sale_details?.sale_type]:''}}</p>
+            <p><span>SALE STATUS:</span> {{property?.last_sale_details?sale_status_option[property?.last_sale_details?.sale_status]:''}}</p>
+            <p><span>CASE #:</span> {{property?.last_sale_details?.case_number}}</p>
+            <p><span>OPENING BID:</span> {{ (property?.last_sale_details?.opening_bid) |currency }}</p>
+            <p><span>COUNTY VALUE:</span> {{(property?.county_value) |currency }}</p>
+            <p><span>ZESTIMATE:</span> {{property?.local_real_estate_details?.zestimate | currency}}</p>
+            <p><span>CMA/ARV:</span> {{ (property?.last_cma_arv_recommendations?.recommended_cma_arv) |currency}}</p>
+            <p><span>GSD:</span> {{ property?.last_cma_arv_recommendations?.general_demand }} </p>
+            <p><span>SSD:</span> {{ property?.last_cma_arv_recommendations?.specific_demand }}</p>
+            <p><span>ADOM:</span> {{ property?.last_cma_arv_recommendations?.days_on_market }}</p>
+            
+            <!-- <p><span>PRECINCT #:</span> {{property?.last_sale_details?.priceint}}</p> -->
+             
+        </div>
+
+        
+
+        <div class="col-md-2 col-sm-6">
+            <p><span>LAST DATE TO UPSET BID: </span><br/>{{ property?.last_sale_details?.last_bidder?.last_date_to_upset_bid }}</p>
+            <p><span>MIN $ TO UPSET BID: </span>{{ property?.last_sale_details?.last_bidder?.min_amt_nxt_ub |currency }}</p>
+            <p><span>WINNING BID: </span>{{ property?.last_sale_details?.last_bidder?.winning_bid | currency}}</p>
+            <p><span>WINNING BIDDER: </span>{{ property?.last_sale_details?.last_bidder?.wining_bidder }}</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <p><span>LAST BID $:</span> {{ property?.last_sale_details?.last_bidder?.min_amt_nxt_ub }}</p>
+            <p><span>LAST BIDDER DATE:</span> {{ property?.last_sale_details?.last_bidder?.last_date_to_upset_bid }}</p>
+            <p><span>LAST BIDDER:</span>{{ property?.last_sale_details?.last_bidder?.name_upset_bidder }}</p>
+            <p><span>TOTAL BIDDER: </span>{{ property?.last_sale_details?.total_bidder }}</p>
+            
+        </div>
+        <div *ngIf="(userRole=='wholesale_buyer' || userRole=='home_buyer') else otherTemplate" class="col-md-2 col-sm-6"> 
+            <p><span>REDEMPTION EXPIRES: </span>{{ property?.hoa_liens?.redemption_expires?property?.hoa_liens?.redemption_expires:property?.tax_liens?.redemption_expires }}</p>
+            <p><span>BUY IT 1ST:</span> {{ property?.buy_it_1?.first_name?property?.buy_it_1?.first_name+' '+property?.buy_it_1?.last_name:''}}</p>
+            <p><span>BUY IT 2ND:</span> {{ property?.buy_it_2?.first_name?property?.buy_it_2?.first_name+' '+property?.buy_it_2?.last_name:'' }}</p>
+        </div>
+
+        <ng-template #otherTemplate>
+            <div class="col-md-2 col-sm-6">
+                <p><span>NOS: </span>{{ property?.last_sale_details?.nos?property?.last_sale_details?.nos?.first_name+' '+property?.last_sale_details?.nos?.last_name:'' }} </p>
+                <p><span>NOS DATE: </span>{{ property?.last_sale_details?.nos_date }} </p>
+                <p><span>DTC: </span>{{cma_arv_user(property?.cma_arv_recommendations,'first_dtc')}} </p>
+                <p><span>DTC DATE: </span>{{cma_arv_date(property?.cma_arv_recommendations,'first_dtc')}}</p>
+                <p><span>DCA: </span>{{cma_arv_user(property?.cma_arv_recommendations,'second_dca')}} </p>
+                <p><span>DCA DATE: </span>{{cma_arv_date(property?.cma_arv_recommendations,'second_dca')}}</p>
+                <p><span>CHIEF DCA: </span>{{cma_arv_user(property?.cma_arv_recommendations,'third_dca')}} </p>
+                <p><span>CHIEF DCA DATE: </span>{{cma_arv_date(property?.cma_arv_recommendations,'third_dca')}}</p>
+                <p><span>IM:</span> {{ property?.last_sale_details?.last_bidder?.im?.first_name }}</p>
+                <p><span>IM DATE:</span> {{ property?.last_sale_details?.last_bidder?.im_date }}</p>
+                <p><span>BUY IT 1ST:</span> {{ property?.buy_it_1?.first_name?property?.buy_it_1?.first_name+' '+property?.buy_it_1?.last_name:''}}</p>
+                <p><span>BUY IT 2ND:</span> {{ property?.buy_it_2?.first_name?property?.buy_it_2?.first_name+' '+property?.buy_it_2?.last_name:'' }}</p>
+                <p><span>LAST PROPERTY INVITE SENT:</span> {{ property?.last_invite_date?((property?.last_invite_date?.created_at*1000) | date:'MM/dd/yyyy'):'' }}</p>
+                
+            </div>
+        </ng-template>
+
+        
+    </div>
+    <div class="form-group row m-b-0">
+        <div class="col-md-12 col-sm-12 p-l-20 p-r-20">
+            <p><span>NOTICE OF FORECLOSURE:</span> {{property?.last_sale_details?.sale_descriptions?.notice_of_foreclosure | truncate:[1000, '...']}}</p>
+            <p><span>LEGAL DESCRIPTION:</span> {{property?.property_descriptions?.legal_description | truncate:[1000, '...']}}</p>
+            <p><span>PROPERTY DESCRIPTION:</span> {{property?.property_descriptions?.property_description | truncate:[200, '...']}}</p>
+            <p><a [routerLink]="['/home/showdetail/'+property.house_id+'/'+(property.address|slugify)]" class="m-r-5 btn btn-sm btn-primary" target="_blank">Open Link</a></p>
+        </div>
+    </div>
+
+

@@ -1,0 +1,87 @@
+
+  <form [formGroup]="assessmentForm" [appDisableElement]="assessmentForm" *ngIf="!propErr">
+      <fieldset>
+        <legend>Assessment & Taxes</legend>
+        <mat-dialog-content class="parent-loader">
+          <app-loader [loading]="loading"></app-loader>
+          <!-- one row start-->
+          <div class="form-group row m-b-0">
+              <!-- Tax Owed -->
+              <div class="col-md-12">
+                <div class="form-group row m-b-1">
+                    <div class="col-3">
+                        <label class="col-form-label">Property Tax Owed</label>
+                    </div>
+                    <div class="col-3">
+                        <label class="col-form-label">Owed Year</label>
+                    </div>
+                    <div class="col-3">
+                        <label class="col-form-label">Tax Assessed</label>
+
+                    </div>
+                    <div class="col-3">
+                        <label class="col-form-label">Tax Year</label>
+                    </div>
+                </div>  
+
+                <div formArrayName="owed_tax_data">
+                  <!-- Row Start -->
+                  <div  [formGroupName]="i"  *ngFor="let taxObj of assessmentForm.get('owed_tax_data')['controls']; let i = index;">
+                    <div id="{{i}}" class="form-group row m-b-1">
+                          <div class="col-3">
+                            <input type="text" formControlName="property_taxes_owed" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.property_taxes_owed.errors }" class="form-control m-b-0 assess-cls" (change)="calculateTotal()"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+                            <div *ngIf="taxObj.controls.property_taxes_owed.errors" class="invalid-feedback clr-bth ">
+                              <div *ngIf="taxObj.controls.property_taxes_owed.errors.required">Property Tax Owed is required</div>
+                          </div>
+                          </div>
+                          <div class="col-3">
+                                <input type="text" formControlName="property_taxes_owed_year" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.property_taxes_owed_year.errors }" class="form-control m-b-0 assess-cls"  appOnBlurSave (updatedValue)="autoSave($event)" /> 
+                                <div *ngIf="taxObj.controls.property_taxes_owed_year.errors" class="invalid-feedback clr-bth">
+                                  <div *ngIf="taxObj.controls.property_taxes_owed_year.errors.required">Owed Year is required</div>
+                                </div>
+                          </div>
+                          <div class="col-3">
+                            <input type="text" formControlName="taxes_assessed" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.taxes_assessed.errors}" class="form-control m-b-0 assess-cls"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+                            <div *ngIf="taxObj.controls.taxes_assessed.errors" class="invalid-feedback clr-bth">
+                              <div *ngIf="taxObj.controls.taxes_assessed.errors.required">Tax assessed is required</div>
+                          </div>
+                          </div>
+                          <div class="col-3">
+                              <input type="text" formControlName="taxes_year" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.taxes_year.errors}" class="form-control m-b-0 assess-cls"   appOnBlurSave (updatedValue)="autoSave($event)"/> 
+                              <div *ngIf="taxObj.controls.taxes_year.errors" class="invalid-feedback clr-bth">
+                              <div *ngIf="taxObj.controls.taxes_year.errors.required">Tax year is required</div>
+                            </div>
+                          </div>
+                    </div>
+                    <!-- Row End -->
+                  </div>
+                  <div class="form-group row m-b-0">
+                      <div class="col-md-4">
+                        <div class="col-form-label">
+                          Total property taxes owed : <span class="font-weight-bold">{{calculateTotal()}}</span>
+                          <span></span>
+                        </div>
+                      </div>
+                  </div> 
+                </div>
+                  <!-- Row Start -->
+                  
+              </div>
+              <!-- Tax Owed -->
+          </div>
+          <!-- one row end -->
+      </mat-dialog-content>
+      <mat-dialog-actions align="end">
+          <button mat-button mat-dialog-close>Close</button>
+          <button  *hideElement="true" mat-button mat-raised-button class="btn btn-sm btn-primary" (click)="addTaxOwedField()">
+              Add More
+            </button>
+          <button  *hideElement="true" mat-button mat-raised-button class="btn btn-sm btn-primary" (click)="validateTaxOwedForm(assessmentForm)">
+            Save<i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+          </button>
+      </mat-dialog-actions>
+
+    </fieldset>
+  </form>
+
+

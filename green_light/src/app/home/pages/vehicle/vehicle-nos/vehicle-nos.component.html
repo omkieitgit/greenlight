@@ -1,0 +1,72 @@
+<panel [collapse]='false' (valueChange)='panelExpand($event)' title="VEHICLE NOS">
+        <form [formGroup]="vehicleNosInfoForm">
+                <div class="form-group row">
+                        <div class="col-md-2">
+                                <label class="col-form-label">NOS Date</label>
+                                <my-date-picker [options]="myDatePickerOptions"  formControlName="nos_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                <div *ngIf="submitted && vehicleNosInfoForm.get('nos_date').errors" style="display:block;" class="invalid-feedback">
+                                        <div *ngIf="vehicleNosInfoForm.get('nos_date').errors.required">Nos Date required</div>
+                                </div> 
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">NOS By</label>
+                                <!-- [ngClass]="{ 'is-invalid': submitted && f.nos_by.errors }" -->
+                                <select formControlName="nos_by"  class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && vehicleNosInfoForm.get('nos_by').errors }">
+                                        <option value="">Select Nos User</option>
+                                        <option [value]="nos.id" *ngFor="let nos of nosUserList">{{nos.name}}</option>
+                                </select> 
+                                <div *ngIf="vehicleNosInfoForm.get('nos_by').errors" class="invalid-feedback">
+                                        <div *ngIf="vehicleNosInfoForm.get('nos_by').errors.required">Nos By required</div>
+                                </div> 
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">NOS By Date</label>
+                                <my-date-picker [options]="myDatePickerOptions"  formControlName="nos_by_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                <div *ngIf="submitted && vehicleNosInfoForm.get('nos_by_date').errors" style="display:block;" class="invalid-feedback">
+                                        <div *ngIf="vehicleNosInfoForm.get('nos_by_date').errors.required">Nos by Date required</div>
+                                </div>
+                        </div>
+                        <div class="col-md-2 m-r-20">
+                                <label class="col-form-label">&nbsp;</label>
+                                <input type="file"  class="form-control m-b-0" #fileUploading class="form-control btn btn-sm btn-primary" value="Choose File" name="property_file"  multiple (change)="uploadHandler($event)">     
+                        </div> 
+                        <div class="col-md-1">
+                                <label class="col-form-label">&nbsp;</label>
+                                <button type="button" class="form-control m-b-0 btn btn-sm btn-primary" value="Save" (click) ="validateForm(this.vehicleNosInfoForm,fileUploading)" >
+                                        Save <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                                </button>
+                        </div>
+                </div>
+              
+                <div *ngIf="vehicleNosInfo" class="table-responsive m-t-10  m-b-10 table-fixed-header">
+                        <table class="table table-bordered table-condensed">
+                                <thead>
+                                        <tr>
+                                                <th>NOS Date</th>
+                                                <th>NOS By</th>
+                                                <th>NOS By Date</th>
+                                                <th>Document</th>
+                                                <th>Action</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        <tr *ngFor="let vehicle of vehicleNosInfo">
+                                                <td style="white-space: nowrap;">{{vehicle.nos_date}}</td>
+                                                <td style="white-space: nowrap;">{{vehicle?.nos?.first_name + ' '+vehicle?.nos?.last_name }}</td>
+                                                <td>{{vehicle.nos_by_date}}</td>
+                                                <td class="break"><a *ngIf="vehicle?.url" href="{{vehicle?.url}}" target="_blank" [title]="vehicle?.url">View</a></td>
+                                                <td class="p-5">
+                                                        <a href="javascript:;" (click)="editVehicleInfo(vehicle)">
+                                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                        </a>
+                                                </td>
+                                        </tr>
+                                </tbody>
+                        </table>
+                </div>
+
+                
+
+              
+        </form>
+</panel>

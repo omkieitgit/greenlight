@@ -1,0 +1,49 @@
+
+<form [formGroup]="documentForm"> 
+ <!-- one row start-->
+ <div class="form-group row m-b-0 m-t-5">
+    <div class="col-md-2">
+       <div class="checkbox checkbox-css">
+            <input type="checkbox" id="document_{{doc_count_id}}" value="" (change)="$event.target.checked?(showPropertyList=true): (showPropertyList=false)">
+            <label for="document_{{doc_count_id}}">Documents ({{length}})</label>
+        </div>
+    </div>
+  </div>
+  <!-- one row end -->
+  <!-- one row start-->
+  <div class="form-group row m-b-0 m-t-5  parent-loader">     
+      <app-loader [loading]="uploadLoading"></app-loader> 
+      <div class="col-md-2">
+              <select formControlName="property_document_type" [ngClass]="{ 'is-invalid': f.property_document_type.hasError('required') }" class="form-control m-b-0" >
+              <option value="">Document Type</option> 
+              <option [value]="property.key" *ngFor="let property of document_type_list | keyvalue">{{property.value}}</option>
+            </select>  
+            <div *ngIf="f.property_document_type.hasError('required')" class="error_message">Doc type is required
+            </div>      
+      </div>
+      <div *ngIf="field_option?.other_name" class="col-md-2  mt-3 mt-md-0">
+          <input type="text" formControlName="doc_other_name" placeholder="Other Name" class="form-control m-b-0" />
+      </div>
+      <div *ngIf="field_option?.case_no" class="col-md-2  mt-3 mt-md-0">
+          <input type="text" formControlName="case_no" placeholder="Case No" class="form-control m-b-0" />
+      </div>
+      <div class="col-md-2  mt-3 mt-md-0">
+          <my-date-picker name="prop_document_date" [options]="myDatePickerOptions" formControlName="prop_document_date"[ngClass]="{ 'is-invalid':f.prop_document_date.errors }" (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+      </div>
+      <div class="col-md-2  mt-3 mt-md-0">
+        <input type="file" [ngClass]="{ 'is-invalid': f.property_file.hasError('required') }" class="form-control m-b-0" #fileUploading class="form-control btn btn-sm btn-primary" value="Choose File" name="property_file"  multiple (change)="uploadHandler($event)">     
+        <div *ngIf="f.property_file.hasError('required')" class="error_message">File is required</div>     
+      </div>
+      <div class="col-md-2">
+          <button *hideElement="true" (click)="fileUploader(fileUploading, $event)" class="form-control m-b-0 btn btn-sm btn-primary" >
+              Upload
+            <i *ngIf="uploadLoading" class="fa fa-spin fa-spinner"></i>
+          </button>
+      </div>
+  </div>
+
+  <div *ngIf="showPropertyList">
+    <app-document-list #documentListChanged [config]='config' [data]='documentData' [columns]='columns' (rowDelete)="rowDelete($event)"></app-document-list>
+  </div>
+  <!-- one row end-->
+</form>

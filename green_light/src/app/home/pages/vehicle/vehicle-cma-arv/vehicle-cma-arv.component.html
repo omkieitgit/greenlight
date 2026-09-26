@@ -1,0 +1,90 @@
+<panel [collapse]='false' (valueChange)='panelExpand($event)' title="CMA/ARV">
+        <form [formGroup]="vehicleCmaArvForm">
+                <div class="form-group row">
+                        <div class="col-md-2">
+                                <label class="col-form-label">In Cash Offer</label>
+                                <input type="text"   formControlName="in_cash_offer" class="form-control m-b-0 my-class"  [ngClass]="{ 'is-invalid': submitted && vehicleCmaArvForm.get('in_cash_offer').errors }"/>
+                                <div *ngIf="vehicleCmaArvForm.get('in_cash_offer').errors" class="invalid-feedback">
+                                        <div *ngIf="vehicleCmaArvForm.get('in_cash_offer').errors.required">In Cash Offer is required</div>
+                                </div> 
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Trade In Value</label>
+                                <input type="text"  class="form-control m-b-0 my-class"  formControlName="trade_in_value" [ngClass]="{ 'is-invalid': submitted && vehicleCmaArvForm.get('trade_in_value').errors }"/>
+                                <div *ngIf="vehicleCmaArvForm.get('trade_in_value').errors" class="invalid-feedback">
+                                        <div *ngIf="vehicleCmaArvForm.get('trade_in_value').errors.required">Trade In Value required</div>
+                                </div> 
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Private Party Value</label>
+                                <input type="text"  class="form-control m-b-0 my-class"  formControlName="private_party_value" [ngClass]="{ 'is-invalid': submitted && vehicleCmaArvForm.get('private_party_value').errors }"/>
+                                <div *ngIf="vehicleCmaArvForm.get('private_party_value').errors" class="invalid-feedback">
+                                        <div *ngIf="vehicleCmaArvForm.get('private_party_value').errors.required">Private Party Value is required</div>
+                                </div> 
+                        </div>
+
+                        <div class="col-md-2">
+                                <label class="col-form-label">Comps Url</label>
+                                <input type="text"  class="form-control m-b-0 my-class"  formControlName="comps_url" />
+                        </div>
+
+                        <div class="col-md-2">
+                                <label class="col-form-label">User Type</label>
+                                <select class="form-control" formControlName="cma_arv_type">
+                                        <option value="">Select Type</option>
+                                        <option [value]="addedBy.key" *ngFor="let addedBy of info_added_by | keyvalue">{{addedBy.value.replace('_',' ') | titlecase}}</option>
+                                </select> 
+                        </div>
+                        <div class="col-md-2">
+                                <label class="col-form-label">Vehicle</label>
+                                <select class="form-control" formControlName="vehicle_type">
+                                        <option value="">Select Vehicle</option>
+                                        <option value="1">Vehicle 1 </option>
+                                        <option value="2">Vehicle 2 </option>
+                                        <option value="3">Vehicle 3 </option>
+                                </select> 
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-1">
+                                <label class="col-form-label">&nbsp;</label>
+                                <button type="button" class="form-control m-b-0 btn btn-sm btn-primary" value="Save" (click) ="validateForm(this.vehicleCmaArvForm)" >
+                                        Save
+                                        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                                </button>
+                        </div>
+                </div>
+        </form>
+        <div *ngIf="vehicleCmaArvInfo" class="table-responsive m-t-10  m-b-10 table-fixed-header">
+                <table class="table table-bordered table-condensed">
+                        <thead>
+                                <tr>
+                                        <th>In Cash Offer</th>
+                                        <th>Trade In Value</th>
+                                        <th>Private Party Value</th>
+                                        <th>Comps Url</th>
+                                        <th>User Type</th>
+                                        <th>Vehicle</th>
+                                        <th>Action</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                               
+                          <tr *ngFor="let vehicle of vehicleCmaArvInfo">
+                            <td style="white-space: nowrap;">{{vehicle.in_cash_offer}}</td>
+                            <td style="white-space: nowrap;">{{vehicle.trade_in_value}}</td>
+                            <td>{{vehicle.private_party_value}}</td>
+                            <td>{{vehicle.comps_url}}</td>
+                            <td>{{ vehicle.cma_arv_type.replace('_',' ') | titlecase }}</td>
+                            <td>{{'Vehicle '+ vehicle.vehicle_type}}</td>
+                            <td class="p-5">
+                                    <a href="javascript:;" (click)="editVehicleCmaArv(vehicle)">
+                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                    </a>
+                            </td>
+                            
+                          </tr>
+                        </tbody>
+                </table>
+        </div>
+</panel>

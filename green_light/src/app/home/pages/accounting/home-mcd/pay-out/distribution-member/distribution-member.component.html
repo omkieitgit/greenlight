@@ -1,0 +1,111 @@
+<fieldset>
+      <legend>Distributions to Members</legend>
+      <div class="table-responsive m-t-10">
+        <form [formGroup]="payoutForm" [appDisableElement]="payoutForm">
+        <table class="table table-bordered table-condensed">
+          <tr>
+            <td style="width:60%" colspan="2" ></td>
+            <td style="width:40%" class="border-0 m-0 p-0">
+              <table>
+                  <tr>
+                    <td>Direct Deposit Routing Number</td>
+                    <td>Wiring Routing Number</td>
+                    <td>Bank Account Number</td>
+                    <td>Name of Bank</td>
+                  </tr>
+                </table>
+            </td>
+          </tr>
+          <tr *ngFor="let mcdlender of mcdLenderResult">
+            <td colspan="3" class="border-0 m-0 p-0">
+              <table>
+                <tr>
+                  <app-member
+                  [property_id]="property_id" 
+                  [mcdlender]="mcdlender"
+                  [additionalField]="additionalField" 
+                  [fieldType]="fieldType"
+                  [netProfitAmount]="netProfitAmount" 
+                  (updateTotalDistibution)="totalDistibution($event)">
+                  </app-member>
+                </tr>
+              </table>
+            </td>
+           
+          </tr>
+          <tr>
+           
+              <td style="width:10%" align="right">
+                <div class="form-group row"> 
+                  <textarea formControlName="lender_name" class="form-control m-b-0" appOnBlurSave rows="5" (updatedValue)="autoSave($event)"></textarea>
+                 </div> 
+              </td>
+              <td style="width:50%">
+                <div class="form-group row m-10"> 
+                  <div class="col-md-4">AA Fee Payable</div>
+                  <div class="col-md-6"> {{aaFee | currency  }}</div>
+                  <div class="col-md-2">{{(aaFee*1+bonusSpread*1+moreLlcAmount*1) | currency }}</div>
+                </div>
+                <div class="form-group row m-10">
+                  <div class="col-md-4">Bonus on Spread</div>
+                  <div class="col-md-4">{{bonusSpread | currency }}</div>
+                  <div class="col-md-4"></div>
+                </div>
+
+                <div  class="form-group row m-10">
+                  <div class="col-md-8">
+                          <app-more-field 
+                                  [property_id]="property_id"
+                                  [additionalField]="moreDistField"
+                                  [fieldType]="disFieldType"
+                                  (totalAmount)="updateMoreInfo($event)">
+                          </app-more-field>  
+                  </div>
+                  <div class="col-md-4"></div>
+                </div>
+
+              </td>
+              <td style="width:40%">
+                  <div class="form-group row m-0 p-0">
+                          <div class="col-md-3 m-0 p-0">
+                                  <input type="text" formControlName="deposit_return_no" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                          </div>
+                          <div class="col-md-3 m-0 p-0">
+                                  <input type="text"   formControlName="wiriing_routing_no" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                          </div>
+                          <div class="col-md-3 m-0 p-0">
+                                  <input type="text"  formControlName="bank_ac_no"  class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                          </div>
+                          <div class="col-md-3 m-0 p-0">
+                                  <input type="text"  formControlName="bank_name"  class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                          </div>
+                  </div>
+              </td>
+         
+          </tr>
+          <tr>
+            <td style="width:10%" align="right"></td>
+            <td style="width:50%">
+              <div class="form-group row m-10">
+                <div class="col-md-10"><strong>Total</strong></div>
+                <div class="col-md-2">{{(grandTotalDistibutionAmount+(aaFee*1+bonusSpread*1)) | currency }}</div>
+              </div>
+              <div class="form-group row m-10">
+                <div class="col-md-10"><strong>Available</strong></div>
+                <div class="col-md-2">{{ avilableAmount | currency }}</div>
+              </div>
+              <div class="form-group row m-10">
+                <div class="col-md-10"><strong>Needed</strong></div>
+                <div class="col-md-2">{{ (grandTotalDistibutionAmount+(aaFee*1+bonusSpread*1)) | currency  }}</div>
+              </div>
+              <div class="form-group row m-10">
+                <div class="col-md-10"><strong>Surplus/Short</strong></div>
+                <div class="col-md-2">{{ avilableAmount-(grandTotalDistibutionAmount+(aaFee*1+bonusSpread*1)) | currency  }}</div>
+              </div>
+            </td>
+            <td style="width:40%"></td>
+          </tr>
+        </table>
+      </form>
+      </div>
+</fieldset>

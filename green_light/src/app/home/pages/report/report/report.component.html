@@ -1,0 +1,128 @@
+<app-attention-warning></app-attention-warning>
+
+<div class="card row p-10" >
+  <form [formGroup]="reportForm">
+    <div class="form-group row m-b-10">
+      <div class="col-md-1">
+        <label class="col-form-label">TYPE</label>
+      </div>
+      <div class="col-md-2">
+        <select class="form-control" formControlName="user_type" >
+          <option value="nos_by">NOS BY</option>
+          <option value="im_by">IM BY</option>
+          <option value="trustee_caller">Trustee Caller</option>
+          <option value="first_dtc">FIRST DTC</option>
+          <option value="second_dca">SECOND DCA</option>
+          <option value="third_dca">THIRD DCA</option>
+          <option value="chief_dca">CHIEF DCA</option>
+          <option value="auction_by">AUCTION BY</option>
+        </select>  
+      </div>
+  
+      <div class="col-md-1">
+        <label class="col-form-label">DATE</label>
+      </div>
+      <div class="col-md-4">
+        <div class="input-group date_range">
+            <my-date-picker name="from" class="form-control"  [options]="myDatePickerOptions" formControlName="from" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+            <span class="input-group-addon">to</span>
+            <my-date-picker name="to" class="form-control"  [options]="myDatePickerOptions" formControlName="to" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+        </div>
+      </div>
+     
+      <div class="col-md-1">
+        <label class="col-form-label">KEYWORDS</label>
+      </div>
+      <div class="col-md-2">
+        <input type="text" name="equity"  class="form-control m-b-0"  formControlName="keywords" />            
+      </div>
+
+      
+
+    </div>
+    <!-- one row end -->
+
+    <div class="form-group row m-b-1">
+      <div class="col-md-6">
+        &nbsp;
+      </div>
+      
+      <div class="col-md-6">
+        <div class="form-group row m-b-1">
+          <div class="col-md-5"></div>
+          <div class="col-md-3">
+              <button class="form-control m-b-0 btn btn-sm btn-primary" (click)="showUserReport()">
+                Show Report <i *ngIf="loadingContent" class="fa fa-spin fa-spinner"></i> 
+              </button>
+          </div>
+          <div class="col-md-4 pull-right">
+            <button class="form-control m-b-0 btn btn-sm btn-primary" (click)="exportMyReport()">
+              Export My Report <!--  <i class="fa fa-spin fa-spinner"></i>  -->
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row">
+	<!-- begin col-6 -->
+	<div class="col-lg-6">
+		<!-- begin panel -->
+		<panel [collapse]='false'  title="User List">
+      <div class="tab-content">
+        <!-- begin tab-pane -->
+        <div class="tab-pane fade active show  parent-loader" id="general-tab">
+          <app-loader [loading]="loadingContent"></app-loader>
+          <!-- begin table-responsive -->
+          <div *ngIf="reportResult.length>0" class="table-responsive">
+            <table class="table table-bordered table-condensed">
+                <tr>
+                  <th>Name</th>
+                  <th>Total Records</th>
+                  <th>Action</th>
+                </tr>
+              <tbody>
+                <tr *ngFor="let report of reportResult">
+                    <td>{{report?.first_name+' '+report?.last_name }}</td>
+                    <td>{{report?.total_records}}</td>
+                    <td>
+                        <a href="javascript:void(0)" class="_view_more" (click)="viewMore(report?.user_id,report?.first_name+' '+report?.last_name)">View More</a>&nbsp;&nbsp;
+                        <a href="javascript:void(0)" class="_export_more" (click)="exportMyReport(report?.user_id)">Export Records</a></td>                </tr>
+              </tbody>
+              <tfoot *ngIf="moreBtn">
+                <tr>
+                  <td colspan="3" align="center">
+                    <button  class="btn btn-primary btn-sm" (click)="!loader && getloadmorepages()" >
+                      Load More
+                      <i *ngIf="loader" class="fa fa-spin fa-spinner"></i>
+                    </button>
+                  </td>
+                </tr>
+            </tfoot>
+            </table>
+          </div>
+          <div *ngIf="!loadingContent && reportResult.length==0">
+            No Result Found
+          </div>
+          <!-- end table-responsive -->
+        </div>
+        <!-- end tab-pane -->
+      </div>
+		</panel>
+		<!-- end panel -->
+  </div>
+  	<!-- begin col-6 -->
+	<div class="col-lg-6">
+		<!-- begin panel -->
+		<panel [collapse]='false'  title="All User Report">
+      <div  [chart]="user_report_chart"></div>
+		</panel>
+		<!-- end panel -->
+  </div>
+</div>
+
+<ng-container *ngIf="isClickViewMore">
+    <app-user-report [requestData]="userReportRequest"></app-user-report>
+</ng-container>

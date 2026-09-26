@@ -1,0 +1,49 @@
+
+
+<h2 mat-dialog-title>Category</h2>
+<mat-dialog-content class="mat-typography">
+        <form  [formGroup]="categoryForm">
+        <div class="form-group row m-b-5">
+                <div class="col-md-2">
+                        <label class="col-form-label">Category Name</label>
+                </div>
+                <div class="col-md-4">                     
+                        <input type="text" formControlName="category_name"  class="form-control m-b-0" placeholder="Category Name"/> 
+                </div>
+                <div class="col-md-2">
+                        <button class="pull-right form-control btn btn-sm btn-primary" (click)="validateForm(categoryForm)">
+                                Save <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                        </button>
+                </div>
+        </div>  
+        </form>
+
+        <div *ngIf="categoryList" class="table-responsive m-t-10">
+                <table class="table table-bordered table-condensed">
+                        <tr>
+                                <th>Category Type</th>
+                                <th>Category Name</th>
+                                <th>Action</th>
+                        </tr>
+                        <tbody>
+                                <tr *ngFor="let category of categoryList">
+                                        <td>
+                                             <ng-container *ngFor="let categoryType of payoutCategory">
+                                                 {{categoryType[category.category_type]}}
+                                             </ng-container>  
+                                        </td>
+                                        <td>{{category.category_name}}</td>
+                                        <td class="p-5">
+                                                <a href="javascript:;" (click)="editPayout(category)">
+                                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                </a>
+                                        </td>
+                
+                                </tr>
+                        </tbody>
+                </table>
+        </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

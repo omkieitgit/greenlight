@@ -1,0 +1,42 @@
+<panel title="1099" (valueChange)='panelExpand($event)'>
+        <fieldset class="parent-loader">
+             <!-- Loader DIV -->
+            <div *ngIf="loading"  class="child-loader"><span class="spinner-small"></span></div>
+            <!-- Loader DIV -->
+            <div class="table-responsive m-t-10 table-fixed-header">
+                <table class="table table-bordered table-condensed">
+                        <thead>
+                                <tr>
+                                        <th>Payer's Name</th>	
+                                        <th>Payer's Address</th>	
+                                        <th>Payer's Tin</th>
+                                        <th>Recipient's Name</th>
+                                        <th>Recipient's Tin</th> 
+                                        <th>Recipient's Address</th>
+                                        <th>Year</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                
+                                <tr *ngFor="let mscForm of mscFormList">
+                                        <td style="white-space: nowrap;">{{mscForm.payers_name}}</td>
+                                        <td style="white-space: nowrap;">{{mscForm.payers_tin}}</td>
+                                        <td style="white-space: nowrap;">{{mscForm?.payers_address}}</td>
+                                        <td style="white-space: nowrap;">{{mscForm.recipients_name}}</td>
+                                        <td style="white-space: nowrap;">{{mscForm.recipients_tin}}</td>
+                                        <td style="white-space: nowrap;">{{mscForm?.recipients_address}}</td>
+                                        <td>{{mscForm.form_year}}</td>
+                                        <td>{{mscForm.amount| currency}}</td>
+                                        <td>  
+                                                <a href="javascript:;" class="m-r-5" (click)="clientMscForm(mscForm)">
+                                                        <i  class="fas fa-lg fa-file-alt"></i>
+                                                </a>
+                                        </td>
+                                </tr>
+                        </tbody>
+                </table>
+        </div>
+        </fieldset>
+</panel>

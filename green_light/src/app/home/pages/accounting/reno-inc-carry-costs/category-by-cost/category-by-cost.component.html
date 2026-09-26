@@ -1,0 +1,53 @@
+<div  class="parent-loader">
+
+        <!-- Loader DIV -->
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <!-- Loader DIV -->
+        <form>
+          <fieldset>
+            <legend>Summary of Non-Hud Expenses</legend>
+            <div class="form-group row">
+                <div class="col-md-12">
+                  <div class="table-responsive table-fixed-header">
+                    <table class="table table-bordered table-condensed">
+                      <thead>
+                        <tr>
+                          <th>Sub Category</th>
+                          <th>Amount</th>
+                          <!-- <th>Monthly</th>
+                          <th>Weekly</th>
+                          <th>Daily</th> -->
+                        </tr>
+                      </thead>
+                    <tbody>
+                      <ng-container *ngIf="categoryByInfo.length>0">
+                        <tr *ngFor="let incidental of categoryByInfo">
+                          <td>{{incidental?.category?.category_name}}</td>
+                            <td>{{incidental.total_amount | currency }}</td>
+                            <!-- <td>{{incidental.total_amount | currency }}</td>
+                            <td>{{ ((incidental.total_amount/4)  ) | currency}}</td>
+                            <td>{{( (incidental.total_amount/30) )  | currency  }}</td> -->
+                        </tr>
+                      </ng-container>
+                      <ng-container *ngIf="categoryByInfo.length==0">
+                        <tr>
+                          <td colspan="5" class="text-center font-weight-bold">No Record Found </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                    <tfoot *ngIf="categoryByInfo.length>0">
+                        <th colspan="1" class="text-right">Total</th>
+                        <th>{{ totalAmount  | currency  }}</th>
+                        <!-- <th>{{ ((totalAmount/4) )  | currency  }} </th>
+                        <th>{{ ((totalAmount/30))  | currency  }}</th> -->
+                    </tfoot>
+                  </table>
+                  </div>
+                  
+                </div>
+            </div>
+          </fieldset>
+        </form>
+        
+      </div>
+      

@@ -1,0 +1,8 @@
+<div class="">
+  <div *ngIf="!isFavourite"> 
+      <a  href="javascript:;" (click)="add_favourite()"><i class="fa fa-heart" style="color:green"></i> Add Favourite</a>
+  </div>
+  <div *ngIf="isFavourite"> 
+      <a  href="javascript:;" (click)="remove_favourite()"><i class="fa fa-heart" style="color:red;"></i> Remove Favourite</a>
+  </div>
+</div>

@@ -1,0 +1,77 @@
+<app-attention-warning></app-attention-warning>
+
+<div class="card row" *ngIf="!loading">
+  <form [formGroup]="profileForm"> 
+    <div class="row col-md-12 p-t-20">
+        <div class="col-md-2">
+          <label class="col-form-label">First Name</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="first_name"  class="form-control m-b-0"  />                     
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Last Name</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="last_name"  class="form-control m-b-0"  />                     
+        </div>
+    </div>
+    <div class="row col-md-12 p-t-20">
+        <div class="col-md-2">
+          <label class="col-form-label">Address</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="address"  class="form-control m-b-0"  />                     
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">City</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="city"  class="form-control m-b-0"  />                     
+        </div>
+    </div>
+    <div class="row col-md-12 p-t-20">
+        <div class="col-md-2">
+          <label class="col-form-label">State</label>
+        </div>
+        <div class="col-md-4">
+            <select class="form-control" formControlName="state" >
+              <option value="">Select State</option>
+              <option [value]="state.key" *ngFor="let state of states | keyvalue">{{state.value}}</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Email</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="email"  class="form-control m-b-0"  />                     
+        </div>
+    </div>
+    <div class="row col-md-12 p-t-20">
+        <div class="col-md-2">
+          <label class="col-form-label">Mobile</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="mobile"  class="form-control m-b-0"  />                     
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Username</label>
+        </div>
+        <div class="col-md-4">
+          <input type="text" formControlName="username"  class="form-control m-b-0"  />                     
+        </div>
+    </div>
+    <div class="form-group col-md-12 row p-b-20">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+          <label class="col-form-label">&nbsp;</label>
+          <button  (click)="validateForm(this.profileForm)" class="form-control m-b-0 btn btn-sm btn-primary">
+              Save
+            <i *ngIf="loader" class="fa fa-spin fa-spinner"></i> 
+            <!-- <div [ngClass]="{'btn_loader': loader }"></div> -->
+          </button>
+        </div>   
+    </div>
+   
+  </form>
+</div>

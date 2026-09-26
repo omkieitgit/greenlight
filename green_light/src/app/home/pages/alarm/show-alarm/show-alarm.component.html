@@ -1,0 +1,20 @@
+
+ <app-attention-warning></app-attention-warning>
+ 
+ <div class="estate_content row card"  > 
+     <div *ngIf="!loading"  class="child-loader"><span class="spinner-small "></span></div>
+     <div class="card-body" *ngIf="alarm_list" > 
+       <app-search-result 
+          [searchResult]="alarm_list" 
+          [loading]="loading" 
+          [totalRecord]="totalRecord" 
+          [searchField]="searchField" 
+          [limit]="limit" 
+          [getPagination]="true" 
+          [isFilterShow]="isFilterShow" 
+          [removedAlarm]="removedAlarm"
+          (emitPagination)="pageChanged($event)"
+          (removeAlarmMe)="removeAlarm($event)">
+        </app-search-result>
+   </div>
+ </div>

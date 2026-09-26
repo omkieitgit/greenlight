@@ -1,0 +1,272 @@
+<h3 mat-dialog-title>W9</h3>
+<mat-dialog-content [ngStyle]="{'min-height':dialogHeight?'400px':''}" class="parent-loader">
+   <!-- Loader DIV -->
+   <div *ngIf="dialogHeight"  class="child-loader"><span class="spinner-small "></span></div>
+   <!-- Loader DIV -->
+  <div class="form-group row m-b-5 m-t-5 parent-loader">
+    <!-- Loader DIV -->
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <!-- Loader DIV -->
+      
+      <form *ngIf="propErr"  [formGroup]="clientW9Form">
+
+          <fieldset>
+              <!-- <a href="javascript:;" (click)="viewW9Form()">View W9 Form</a> -->
+              <div class="form-group row">
+                  <label class="col-form-label text-center">REQUEST FOR TAXPAYER IDENTIFICATION NUMBER AND CERTIFICATION</label>
+              </div>
+              <div class="col-md-12">
+                <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-form-label">1.Name (as shown in your income tax return):</label>    
+                    </div>
+                    <div class="col-md-6">
+                        <input name="name" id="name" formControlName="name" type="text" class="form-control m-b-0" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6">
+                      <label class="col-form-label">2.Business name/disregarded entity name:</label>    
+                    </div>
+                    <div class="col-md-6">
+                        <input name="business_name" id="business_name" formControlName="business_name" type="text" class="form-control m-b-0" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12">
+                      <label class="col-form-label">3.Check appropriate box for federal tax classification of the person whose name is entered on line</label>    
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                      <label class="col-form-label">1. Check only one of the following seven boxes</label>    
+                    </div>
+                </div>
+                
+                <div class="light-border">
+                    <div formGroupName="federal_tax_data"  class="form-group row">
+
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                              <div class="checkbox checkbox-css">
+                                  <input type="checkbox" id="Individual" formControlName="individual" value="1" >
+                                  <label for="Individual">Individual/sole proprietor or single-member LLC </label>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="checkbox checkbox-css">
+                                  <input type="checkbox" id="Corporation" formControlName="corporation" value="2">
+                                  <label for="Corporation">C Corporation </label>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="checkbox checkbox-css">
+                                  <input type="checkbox" id="Trust" formControlName="trust_estate" value="3" >
+                                  <label for="Trust">Trust/estate </label>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="checkbox checkbox-css">
+                                  <input type="checkbox" id="Limited" formControlName="liability" value="4">
+                                  <label for="Limited">Limited liability company. </label>
+                              </div>
+                            </div>
+                        </div>  
+                        <div class="col-md-6">
+                            <div class="col-md-12">
+                              <div class="checkbox checkbox-css">
+                                  <input type="checkbox" id="c_corporation" formControlName="c_corporation" value="5">
+                                  <label for="c_corporation">C Corporation </label>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <div class="checkbox checkbox-css">
+                                  <input type="checkbox" id="Partnership" formControlName="partinership" value="6" >
+                                  <label for="Partnership">Partnership </label>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="checkbox checkbox-css">
+                                    <input type="checkbox" id="Other" formControlName="other" value="7">
+                                    <label for="Other">Other (see instructions) </label>
+                                </div>
+                              </div>
+                        </div>  
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4">
+                        <label class="col-form-label">Other (see instructions).</label>    
+                      </div>
+                      <div class="col-md-4">
+                          <input  formControlName="other_instructions" type="text" class="form-control m-b-0" >
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-4">
+                        <label class="col-form-label"> Enter the tax classification (C=C corporation, S=S corporation, P=Partnership)</label>    
+                      </div>
+                      <div class="col-md-4">
+                          <input  formControlName="tax_classification" type="text" class="form-control m-b-0" >
+                      </div>
+                    </div>
+                    <p>
+                        Note: Check the appropriate box in the line above for the tax classification of the single-member owner. Do not check LLC if the LLC is classified 
+                        as a single-member LLC that is disregarded from the owner unless the owner of the LLC is another LLC that is not disregarded from the owner for U.S. 
+                        federal tax purposes. Otherwise, a single-member LLC that is disregarded from the owner should check the appropriate box for the tax classification of its owner.
+                    </p>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                      <label class="col-form-label">Address (number, street, and apt. or suite no.) See instructions.</label>    
+                    </div>
+                    <div class="col-md-4">
+                        <input name="address" id="address" formControlName="address" type="text" class="form-control m-b-0" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                      <label class="col-form-label">City, state, and ZIP code</label>    
+                    </div>
+                    <div class="col-md-4">
+                        <input name="city" id="city" formControlName="city" type="text" class="form-control m-b-0" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                      <label class="col-form-label">List account number(s) here (optional)</label>    
+                    </div>
+                    <div class="col-md-4">
+                        <input name="account_number" id="account_number" formControlName="account_number" type="text" class="form-control m-b-0" >
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-4">
+                      <label class="col-form-label">Requester’s name and address (optional)</label>    
+                    </div>
+                    <div class="col-md-4">
+                        <input name="requesters_name_address" id="requesters_name_address" formControlName="requesters_name_address" type="text" class="form-control m-b-0" >
+                    </div>
+                </div>
+          
+                <div class="form-group row">
+                    <div class="col-md-12">
+                      <label class="col-form-label">4.Exemptions (codes apply only to certain entities, not individuals; see instructions on page 3):</label>    
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                      <label class="col-form-label">Exempt payee code (if any)</label>    
+                    </div>
+                    <div class="col-md-3">
+                        <input name="exempt_payee_code" id="exempt_payee_code" formControlName="exempt_payee_code" type="text" class="form-control m-b-0" >
+                    </div>
+                    <div class="col-md-3">
+                        <label class="col-form-label">Exemption from FATCA reporting code (if any)</label>    
+                      </div>
+                      <div class="col-md-3">
+                          <input name="exemption_FATCA_reporting_code" id="exemption_FATCA_reporting_code" formControlName="exemption_FATCA_reporting_code" type="text" class="form-control m-b-0" >
+                      </div>
+                      <p>(Applies to accounts maintained outside the U.S.)</p>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-8">
+                      <label class="col-form-label">Taxpayer Identification Number (TIN)</label>    
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                      <label class="col-form-label">Social security number</label>    
+                    </div>
+                    <div class="col-md-9">
+                        <ng-container *ngIf="!showSSN">
+                          {{w9Result?.ss_number}}
+                        </ng-container>
+                        <div class="row" *ngIf="showSSN">
+                          <div class="col-md-3">
+                            <div class="row" formArrayName="social_security_number">
+                                <div  class="col-md-4 p-r-5 p-l-5" [formGroupName]="i" *ngFor="let priceObj of clientW9Form.get('social_security_number')['controls']; let i=index">
+                                    <input formControlName="social_security_number" maxlength="1" type="text" class="form-control m-b-0" >
+                                </div>
+                            </div>
+                          </div>
+                          <div class="col-md-1">-</div>
+                          <div class="col-md-2">
+                            <div  class="row" formArrayName="social_security_number_2">
+                              <div class="col-md-6 p-r-5 p-l-5" [formGroupName]="empIndex" *ngFor="let priceObj of clientW9Form.get('social_security_number_2')['controls']; let empIndex=index">
+                                <input formControlName="social_security_number_2" type="text" maxlength="1" class="form-control m-b-0" >
+                              </div>
+                            </div>
+                          </div> 
+                          <div class="col-md-1">-</div>
+                          <div class="col-md-4">
+                            <div  class="row" formArrayName="social_security_number_3">
+                              <div class="col-md-3 p-r-5 p-l-5" [formGroupName]="empIndex" *ngFor="let priceObj of clientW9Form.get('social_security_number_3')['controls']; let empIndex=index">
+                                <input formControlName="social_security_number_3" type="text" maxlength="1" class="form-control m-b-0" >
+                              </div>
+                            </div>
+                          </div> 
+                        </div>
+                        <a *ngIf="!showSSN" href="javascript:;" (click)="viewSsn()" class="m-r-5">View SSN</a>
+                    </div>
+                   
+                </div>
+                <div class="form-group row">
+                  <div class="col-md-3">
+                    <label class="col-form-label">Employer identification number</label>    
+                  </div>
+                  <div class="col-md-9">
+                      <div class="row">
+                        <div class="col-md-2">
+                          <div class="row" formArrayName="employer_identification_number">
+                              <div  class="col-md-6 p-r-5 p-l-5" [formGroupName]="i" *ngFor="let priceObj of clientW9Form.get('employer_identification_number')['controls']; let i=index">
+                                  <input formControlName="employer_identification_number" maxlength="1" type="text" class="form-control m-b-0" >
+                              </div>
+                          </div>
+                        </div>
+                        <div class="col-md-1">-</div>
+                        <div class="col-md-7">
+                          <div  class="row" formArrayName="employer_identification_number_2">
+                            <div style="width:13%" class="p-r-5 p-l-5" [formGroupName]="empIndex" *ngFor="let priceObj of clientW9Form.get('employer_identification_number_2')['controls']; let empIndex=index">
+                              <input formControlName="employer_identification_number_2" maxlength="1" type="text" class="form-control m-b-0" >
+                            </div>
+                          </div>
+                        </div> 
+                      </div>
+                  </div>
+                </div>
+
+                <div class="form-group row">
+                    <!-- <div class="col-md-3">
+                      <label class="col-form-label">Signature of U.S. person</label>    
+                    </div>
+                    <div class="col-md-3">
+                        <input name="signature" id="signature" formControlName="signature" type="text" class="form-control m-b-0" >
+                    </div> -->
+                    <div class="col-md-3">
+                        <label class="col-form-label">Date</label>    
+                      </div>
+                      <div class="col-md-3">
+                          <my-date-picker name="w9_date" [options]="myDatePickerOptions" formControlName="w9_date" [ngClass]="{ 'is-invalid': submitted && clientW9Form.controls.w9_date.errors }" (dateChanged)="onDateChanged($event)" class="flt-l w-85" placeholder="YYYY-MM-DD"></my-date-picker>
+                          <div *ngIf="f.w9_date.errors" class="invalid-feedback">
+                            <div *ngIf="f.w9_date.errors.required">date is required</div>
+                          </div>
+                      </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-3">
+                      <label class="col-form-label">official form W-9 : </label>    
+                    </div>
+                    <div class="col-md-3">
+                        <a href="https://www.irs.gov/pub/irs-pdf/fw9.pdf" target="_blank">https://www.irs.gov/pub/irs-pdf/fw9.pdf</a>
+                    </div>
+                </div>
+              </div>
+          </fieldset>
+      </form>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button  (click)="closeDialog()">Close</button>
+  <button  mat-button (click) ="!loading && validateForm(this.clientW9Form)">Save</button>
+</mat-dialog-actions>

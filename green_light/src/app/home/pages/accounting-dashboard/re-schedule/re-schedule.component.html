@@ -1,0 +1,118 @@
+<app-attention-warning></app-attention-warning>
+<div class="row">
+        <div class="card w-100">
+                <div class="card-body">
+                        <fieldset>
+                                <legend>RE Schedule</legend>
+                                <form [formGroup]="rescheduleForm">
+                                        <div class="form-group row m-b-0">
+                                                <div  class="col-md-2">
+                                                        <label class="col-form-label">Property Address</label>
+                                                        <input type="text" formControlName="property_address" class="form-control m-b-0"  />          
+                                                </div>
+                                                <!-- <div class="col-md-2">
+                                                        <label class="col-form-label">Lender Name</label>
+                                                        <input type="text" formControlName="lender_name" class="form-control m-b-0"  />          
+                                                </div> -->
+                                                <div class="col-md-2">
+                                                        <label class="col-form-label">Status</label>
+                                                        <select formControlName="is_sold" class="form-control m-b-0">
+                                                            <option value="">Select Property Status</option>
+                                                            <option value="sold">Sold</option>
+                                                            <option value="active">Active</option>
+                                                        </select>
+                                                </div>
+                                                <div class="col-md-2">
+                                                        <label class="col-form-label">&nbsp;</label>
+                                                        <button class="form-control m-b-0 btn btn-primary btn-sm" (click)="searchMscFormList()">Search</button>
+                                                </div>
+                                        </div>
+                                </form>
+                        </fieldset>
+                        <div class="parent-loader">
+                                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                                <div class="table-responsive m-t-10 table-fixed-header">
+                                        <table class="table table-bordered table-condensed">
+                                                <thead>
+                                                        <tr>
+                                                                <th>Status</th>	
+                                                                <th>Loan #</th>	
+                                                                <th>APN#</th>	
+                                                                <th>Property Address</th>
+                                                                <th>State</th>	
+                                                                <th>Project Name / LLC</th>	
+                                                                <th>Lender</th>	
+                                                                <th>Maturity Date</th>	 
+                                                                <th>Loan Amount</th> 	
+                                                                <th>Int. Rate</th>	 
+                                                                <th>Loan Type</th> 	
+                                                                <th>Purchase Date</th>	
+                                                                <th>Gross Acres</th>	
+                                                                <th>Cost A to B</th>	
+                                                                <th>Estimated Market Value</th>	
+                                                                <th>Current Equity</th>	
+                                                                <th>LTV	</th>
+                                                                <th>Net B to C</th>	
+                                                                <th>Craig's %</th>	
+                                                                <th>Net Worth</th>
+                                                        </tr>
+                                                </thead>
+                                               
+                                                <tbody>
+                                                        
+                                                        <tr *ngFor="let reschedule of reschedule_list">
+                                                                <td>{{reschedule?.is_sold}}</td>
+                                                                <td class="nowrap">{{reschedule?.property_info?.first_liens?.dt_book_page}}</td>
+                                                                <td>{{reschedule?.property_info?.parcel_id1}}</td>
+                                                                <td class="nowrap">
+                                                                        <a href="javascript:;" target="_blank" [routerLink]="['/home/showdetail/'+reschedule.house_id+'/'+(reschedule?.property_info?.address|slugify) ]">
+                                                                                {{reschedule?.property_info?.address}}
+                                                                        </a>
+                                                                </td>
+                                                                <td class="nowrap">{{reschedule?.property_info?.state +' - '+ reschedule?.property_info?.county}}</td>
+                                                                <td>{{reschedule?.payers_info?.payers_name}}</td>
+                                                                <td>
+                                                                        {{reschedule?.lender_info?.lender_name}}<br/>
+                                                                        {{reschedule?.property_info?.first_liens?.lender}}
+                                                                </td>
+                                                                <td class="nowrap">{{reschedule?.property_info?.first_liens?.maturity_date}}</td>
+                                                                <td>{{reschedule?.loan_amount | currency}}</td>
+                                                                <td>{{reschedule?.property_info?.first_liens?.modification_annual_interest }}</td>
+                                                                <td>{{loan_type[reschedule?.property_info?.first_liens?.loan_type]}}</td>
+                                                                <td class="nowrap">{{reschedule?.payout?.close_date_a_to_b}}</td>
+                                                                <td>{{reschedule?.property_info?.lot_acreage_sf}}</td>
+                                                                <td>{{reschedule?.net_profit?.total_a_to_b | currency}}</td>
+                                                                <td>{{reschedule?.property_info?.last_cma_arv_recommendations?.recommended_cma_arv | currency}}</td>
+                                                                <td>{{((reschedule?.property_info?.last_cma_arv_recommendations?.recommended_cma_arv*1)-(reschedule?.loan_amount*1)).toFixed(2) | currency}}</td>
+                                                                <td>
+                                                                        <ng-container *ngIf="(reschedule?.loan_amount && reschedule?.property_info?.last_cma_arv_recommendations?.recommended_cma_arv); else other_content">
+                                                                                {{((reschedule?.loan_amount)/(reschedule?.property_info?.last_cma_arv_recommendations?.recommended_cma_arv*1)).toFixed(2)}}%
+                                                                        </ng-container>
+                                                                        <ng-template #other_content>
+                                                                                {{'0%'  }}
+                                                                        </ng-template>
+                                                                </td>
+                                                                <td>{{reschedule?.net_profit?.total_b_to_c_sale | currency}}</td>
+                                                                <td>
+                                                                    {{ reschedule?.craig_info?.total_percentage?reschedule?.craig_info?.total_percentage:'0' }}%
+                                                                </td>
+                                                                <td> 
+                                                                        {{ (((reschedule?.net_profit?.netProfit)*reschedule?.craig_info?.total_percentage)/100).toFixed(2) | currency }}
+                                                                </td>
+                                                        </tr>
+                                                </tbody>
+                                        
+                                                <tfoot>
+                                                        <tr>
+                                                                <td  colspan="19" align="right" ><strong>Total:</strong></td>
+                                                                <td>{{ total_craig_profit | currency }}</td>
+                                                        </tr>
+                                                </tfoot>
+                                        </table>
+                                        
+                                </div>
+                        </div>
+                        
+                </div>
+        </div>
+</div>

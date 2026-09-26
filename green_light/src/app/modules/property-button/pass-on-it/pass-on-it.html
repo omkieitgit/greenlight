@@ -1,0 +1,27 @@
+<h3>Pass On It</h3>
+<form [formGroup]="passForm" class="parent-loader">
+  <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+  <div class="m-b-20">
+    <div class="form-group row m-b-0">
+        <div class="col-md-12">
+          <label class="col-form-label">Please give a detalied explination as to why you passed on this property.</label>
+        </div>
+    </div>
+    <div class="form-group row m-b-0">
+        <div class="col-md-12">
+            <textarea autosize [minRows]="5" formControlName="notes" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" class="form-control m-b-0"></textarea>
+            <div *ngIf="f.notes.errors" class="invalid-feedback">
+              <div *ngIf="f.notes.errors.required">Please enter note.</div>
+            </div>
+        </div>
+    </div>
+  </div>
+  <mat-dialog-actions align="end">
+      <button mat-button mat-raised-button mat-dialog-close>Close</button>
+
+      <button  mat-button mat-raised-button class="btn-primary" (click)="validateForm(this.passForm)">
+        Save
+        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+      </button>
+  </mat-dialog-actions>
+</form>

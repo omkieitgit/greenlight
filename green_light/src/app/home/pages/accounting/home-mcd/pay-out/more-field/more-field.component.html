@@ -1,0 +1,55 @@
+<form [formGroup]="moreFieldForm" [appDisableElement]="moreFieldForm" class="_property_info parent-loader">
+        <!-- one row start-->
+        <div formArrayName="more_info_data">
+                <ng-container *ngIf="fieldType=='otherincome'">
+                        <div class="form-group row m-b-5">
+                                <div class="col-md-6">
+                                        <label class="col-form-label">Air BnB.VRBO:</label>     
+                                </div>
+                                <div class="col-md-4">
+                                  {{ totalAirBnb | currency }}
+                                </div>
+                                <div class="col-md-2"></div>
+                        </div>
+                        <div class="form-group row m-b-5">
+                                <div class="col-md-6">
+                                        <label class="col-form-label">Funds Prior to closing:</label>     
+                                </div>
+                                <div class="col-md-4">
+                                  {{ totalFundsPriorClosing | currency }}
+                                </div>
+                                <div class="col-md-2"></div>
+                        </div>
+                </ng-container>
+
+                <div  [formGroupName]="i"  [appDisableElement]="priceObj" *ngFor="let priceObj of moreFieldForm.get('more_info_data')['controls']; let i = index;">
+                        <div id="{{i}}" class="form-group row m-b-5">
+                                <input type="hidden" formControlName="id">
+                                <div class="col-md-6">
+                                        <input type="text" formControlName="field_name"  class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                                        <div *ngIf="priceObj.controls.field_name.errors && i==validRow" class="invalid-feedback">
+                                                <div *ngIf="priceObj.controls.field_name.errors.required">Field name is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-4">
+                                        <input type="text" formControlName="field_value" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" [readonly]="priceObj.controls.readOnly.value"/>         
+                                        <div *ngIf="priceObj.controls.field_value.errors && i==validRow" class="invalid-feedback">
+                                                <div *ngIf="priceObj.controls.field_value.errors.required">Amount is required</div>
+                                        </div>
+                                        
+                                </div>
+                                <div class="col-md-2 col-form-label" >
+                                        <ng-container *ngIf="!viewAccessOnly">
+                                                <a *ngIf="moreFieldForm.controls.more_info_data.length>1" href="javascript:;" (click)="removePriceInputField(i,priceObj.get('id').value)">
+                                                        <i *ngIf="!loading" class="fa fa-times-circle text-danger m-r-5"></i>
+                                                </a>
+                                               <a *ngIf="moreFieldForm.controls.more_info_data.length==i+1" href="javascript:;" (click)="addPriceInputField()">
+                                                        <i *ngIf="!loading" class="fa fa-plus-circle"></i>
+                                               </a> 
+                                        </ng-container>
+                                </div>
+                        </div>
+                </div>
+        </div>
+        <!-- one row end -->
+</form>

@@ -1,0 +1,259 @@
+<panel title="Client Homebuyers" (valueChange)='panelExpand($event)'>
+        <div   class="parent-loader">
+                <!-- <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div> -->
+                <fieldset>						
+                        <div class="form-group row">
+                                <div class="col-md-3"></div>
+                                <div class="col-md-2"><label class="col-form-label">Estimated amounts</label></div>
+                                <div class="col-md-2"><label class="col-form-label">Actual amounts</label></div>
+                                <div class="col-md-2"><label class="col-form-label">Difference</label></div>
+                                <div class="col-md-2"><label class="col-form-label">Homebuyers Calculator</label></div>
+                        </div>
+
+                        <ng-container *ngFor="let payoutdetail of payoutOtherDetail.payout_top">
+                                <app-homebuyer-payout *ngIf="payoutdetail" [property_id]="property_id" [payoutdetail]="payoutdetail"  [borderClass]="borderClass" (emittedUpdateDate)="updateDate($event)" ></app-homebuyer-payout>
+                        </ng-container>
+                        <ng-container *ngFor="let payoutdetail of payoutOtherDetail.purchase_price">
+                                <app-homebuyer-payout *ngIf="payoutdetail" [property_id]="property_id" [payoutdetail]="payoutdetail" [borderClass]="borderClass" (estimatedAmount)="totalEstimateAmount($event)"></app-homebuyer-payout>
+                        </ng-container>
+
+                        <ng-container *ngFor="let category of payoutCategory;  let i=index">
+                                
+                                <app-home-buyer-category 
+                                        [property_id]="property_id" 
+                                        [payoutInfo]="payoutInfo" 
+                                        [categoryList]="category_list" 
+                                        [title]="category.title"
+                                        [categoryType]="category.key"
+                                        [totalTitle]="category.total_title"
+                                        (estimatedTotalAmount)="totalAmount($event)">
+                                </app-home-buyer-category>
+
+                                <ng-container *ngIf="category.key=='settlement'">
+                                        
+                                        <app-sub-total
+                                                marginTop="1"
+                                                subTotalTitle="Total costs to Buy A to B"
+                                                [estimate_amount]="((payoutOtherDetail.purchase_price[0].est_amount*1)+ sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement'])), 'est_amount'))"
+                                                [actual_amount]="((payoutOtherDetail.purchase_price[0].amount*1)+sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement'])), 'amount'))"
+                                                [buyer_amount]="((payoutOtherDetail.purchase_price[0].buyer_amount*1)+sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement'])), 'buyer_amount'))">
+                                        </app-sub-total>
+                                
+                                </ng-container>
+
+                                <ng-container *ngIf="category.key=='adjustment'">
+                                        <app-sub-total
+                                                marginTop="1"
+                                                subTotalTitle="Total Cash Required/(Surplus) on Settlement"
+                                                [estimate_amount]="((payoutOtherDetail.purchase_price[0].est_amount*1)+sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement','adjustment'])), 'est_amount'))"
+                                                [actual_amount]="((payoutOtherDetail.purchase_price[0].amount*1)+sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement','adjustment'])), 'amount'))"
+                                                [buyer_amount]="((payoutOtherDetail.purchase_price[0].buyer_amount*1)+sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement','adjustment'])), 'buyer_amount'))">
+                                        </app-sub-total>
+                                </ng-container>
+
+                                <ng-container *ngIf="category.key=='adjustment'">
+                                        <fieldset>  
+                                                <legend>Purchase Cost Adjustments</legend> 
+                                                <ng-container *ngFor="let payoutdetail of payoutOtherDetail.purchase_cost">
+                                                        <app-homebuyer-payout *ngIf="payoutdetail" [property_id]="property_id" [payoutdetail]="payoutdetail" (estimatedAmount)="totalEstimateAmount($event)" ></app-homebuyer-payout>
+                                                </ng-container>
+                                                <app-sub-total
+                                                        subTotalTitle="Total Adjustments"
+                                                        [estimate_amount]="(sumPipe.transform(payoutOtherDetail.purchase_cost,'est_amount'))"
+                                                        [actual_amount]="((payoutOtherDetail.purchase_cost | sum:'amount'))"
+                                                        [buyer_amount]="(sumPipe.transform(payoutOtherDetail.purchase_cost,'buyer_amount'))">
+                                                </app-sub-total>
+                                        </fieldset>
+
+                                        <app-sub-total
+                                                marginTop="1"
+                                                subTotalTitle="Total Costs to Buy A to B"
+                                                [estimate_amount]="((payoutOtherDetail.purchase_price[0].est_amount*1)+(sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement'])), 'est_amount') + sumPipe.transform(payoutOtherDetail.purchase_cost,'est_amount')))"
+                                                [actual_amount]="((payoutOtherDetail.purchase_price[0].amount*1)+(sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement'])), 'amount') + sumPipe.transform(payoutOtherDetail.purchase_cost,'amount')))"
+                                                [buyer_amount]="((payoutOtherDetail.purchase_price[0].buyer_amount*1)+(sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['a_to_b','settlement'])), 'buyer_amount') + sumPipe.transform(payoutOtherDetail.purchase_cost,'buyer_amount')))">
+                                        </app-sub-total>
+                                
+                                        <fieldset>  
+                                                <legend>LLC Fees</legend> 
+                                                <ng-container *ngFor="let payoutdetail of payoutOtherDetail.llc_fee">
+                                                        <app-homebuyer-payout *ngIf="payoutdetail"  [property_id]="property_id" [payoutdetail]="payoutdetail" (estimatedAmount)="totalEstimateAmount($event)"></app-homebuyer-payout>
+                                                </ng-container>
+                                                <app-sub-total
+                                                        subTotalTitle="Total LLC Fees"
+                                                        [estimate_amount]="(sumPipe.transform(payoutOtherDetail.llc_fee,'est_amount'))"
+                                                        [actual_amount]="((payoutOtherDetail.llc_fee | sum:'amount'))"
+                                                        [buyer_amount]="(sumPipe.transform(payoutOtherDetail.llc_fee,'buyer_amount'))">
+                                                </app-sub-total>
+                                                
+                                        </fieldset>
+                                        <fieldset>  
+                                                <legend>The Estates Fees</legend>
+                                                <ng-container *ngFor="let payoutdetail of payoutOtherDetail.estates_fee">
+                                                        <app-homebuyer-payout *ngIf="payoutdetail"  [property_id]="property_id" [payoutdetail]="payoutdetail" (estimatedAmount)="totalEstimateAmount($event)"></app-homebuyer-payout>
+                                                </ng-container>
+                                                <app-sub-total
+                                                        subTotalTitle="Total Estates Fees"
+                                                        [estimate_amount]="(sumPipe.transform(payoutOtherDetail.estates_fee,'est_amount'))"
+                                                        [actual_amount]="((payoutOtherDetail.estates_fee | sum:'amount'))"
+                                                        [buyer_amount]="(sumPipe.transform(payoutOtherDetail.estates_fee,'buyer_amount'))">
+                                                </app-sub-total>
+                                        </fieldset>
+
+                                        <app-home-buyer-category 
+                                                *ngIf="renoHomeBuyerCategory"
+                                                [property_id]="property_id" 
+                                                [renoHomeBuyerCategory]="renoHomeBuyerCategory" 
+                                                title="Reno and Holding Costs"
+                                                categoryType="nonhud"
+                                                totalTitle="Total Reno & Holding Cost"
+                                                (estimatedTotalAmount)="totalAmount($event)">
+                                        </app-home-buyer-category>
+                                        
+                                        <app-sub-total
+                                                marginTop="1"
+                                                subTotalTitle="Total Costs to Buy A to B"
+                                                [estimate_amount]="payoutSummery?.totalAtoBCost?.est_amount"
+                                                [actual_amount]="payoutSummery?.totalAtoBCost?.amount"
+                                                [buyer_amount]="payoutSummery?.totalAtoBCost?.buyer_amount">
+                                        </app-sub-total>
+                                        
+                                        <ng-container *ngFor="let payoutdetail of payoutOtherDetail.payout_selling">
+                                                <div class="m-t-40">
+                                                        <app-homebuyer-payout *ngIf="payoutdetail"  [property_id]="property_id" [payoutdetail]="payoutdetail" [borderClass]="borderClass"></app-homebuyer-payout>
+                                                </div>
+                                        </ng-container>
+                                </ng-container>
+
+                                <ng-container *ngIf="category.key=='btoc_settlement'">   
+                                        <app-sub-total
+                                                marginTop="1"
+                                                subTotalTitle="Gross Proceeds per HUD"
+                                                [estimate_amount]="(payoutOtherDetail.payout_selling[0].est_amount-(sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['b_to_c','btoc_settlement'])), 'est_amount') ))"
+                                                [actual_amount]="(payoutOtherDetail.payout_selling[0].amount-(sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['b_to_c','btoc_settlement'])), 'amount') ))"
+                                                [buyer_amount]="(payoutOtherDetail.payout_selling[0].buyer_amount-(sumPipe.transform( (filterPipe.transform(totalPayoutAmount,['b_to_c','btoc_settlement'])), 'buyer_amount') ))">
+                                        </app-sub-total>
+                                </ng-container>
+
+                                <ng-container *ngIf="category.key=='btoc_adjustment'" >  
+                                        <app-sub-total
+                                                marginTop="1"
+                                                subTotalTitle="Net B to C Sale Value"
+                                                [estimate_amount]="payoutSummery?.totalBtoCCost?.est_amount"
+                                                [actual_amount]="payoutSummery?.totalBtoCCost?.amount"
+                                                [buyer_amount]="payoutSummery?.totalBtoCCost?.buyer_amount">
+                                        </app-sub-total> 
+                                </ng-container>
+
+                        </ng-container>
+                        <fieldset>  
+                                <legend>NET PROFIT COMPUTATION</legend>
+                                <app-sub-total
+                                        isNormalFont="1"
+                                        subTotalTitle="Total Costs to Buy A to B"
+                                        [estimate_amount]="payoutSummery?.totalAtoBCost?.est_amount"
+                                        [actual_amount]="payoutSummery?.totalAtoBCost?.amount"
+                                        [buyer_amount]="payoutSummery?.totalAtoBCost?.buyer_amount">
+                                </app-sub-total>
+
+                                <app-sub-total 
+                                        isNormalFont="1"
+                                        editableField="1"
+                                        [property_id]="property_id" 
+                                        subTotalTitle="Funds Prior to Closing"
+                                        [estimate_amount]="payoutInfo?.est_funds_prior_closing"
+                                        [actual_amount]="(payoutSummery?.totalAtoBCost?.amount-totalFundsPriorClosing)"
+                                        [buyer_amount]="payoutInfo?.buyer_funds_prior_closing"
+                                        (fundPriorClosing)="updateFundPriorClosing($event)">
+                                </app-sub-total>
+                        
+                                <app-sub-total
+                                        isNormalFont="1"
+                                        subTotalTitle="Net B to C Sale Value"
+                                        [estimate_amount]="payoutSummery?.totalBtoCCost?.est_amount"
+                                        [actual_amount]="payoutSummery?.totalBtoCCost?.amount"
+                                        [buyer_amount]="payoutSummery?.totalBtoCCost?.buyer_amount">
+                                </app-sub-total> 
+                                <app-sub-total
+                                        isNormalFont="1"
+                                        subTotalTitle="Air BnB.VRBO"
+                                        [estimate_amount]="payoutInfo?.airbnb_amount"
+                                        [actual_amount]="payoutInfo?.airbnb_amount"
+                                        [buyer_amount]="payoutInfo?.airbnb_amount">
+                                </app-sub-total> 
+                                <ng-container *ngFor="let additional of payoutInfo.addition_field_info"> 
+                                        <app-addition-field [otherDetail]="additional" [property_id]="property_id" (estimatedAmount)="additionAmount($event)" ></app-addition-field>  
+                                        <!-- <app-sub-total
+                                                isNormalFont="1"
+                                                subTotalTitle="{{additional.field_name}}"
+                                                [estimate_amount]="additional.est_amount"
+                                                [actual_amount]="additional.field_value"
+                                                [buyer_amount]="additional.buyer_amount">
+                                        </app-sub-total>  -->
+                                </ng-container>
+                                
+                                <app-sub-total
+                                        subTotalTitle="Net Profit Before Financing Costs"
+                                        [estimate_amount]="(
+                                                ((payoutSummery?.totalBtoCCost?.est_amount*1)+
+                                                 sumPipe.transform(payoutInfo.addition_field_info,'est_amount')+
+                                                (payoutSummery?.totalFundCostAtob?.est_amount-payoutInfo?.est_funds_prior_closing)+
+                                                (payoutInfo?.airbnb_amount*1))
+                                                - payoutSummery?.totalAtoBCost?.est_amount
+                                                )"
+                                        [actual_amount]="(
+                                                ( (payoutSummery?.totalBtoCCost?.amount*1)+
+                                                sumPipe.transform(payoutInfo.addition_field_info,'field_value')+
+                                                (payoutSummery?.totalFundCostAtob?.amount-totalFundsPriorClosing)+
+                                                (payoutInfo?.airbnb_amount*1))
+                                                -payoutSummery?.totalAtoBCost?.amount
+                                        )"
+                                        [buyer_amount]="(((payoutSummery?.totalBtoCCost?.buyer_amount*1)+
+                                        sumPipe.transform(payoutInfo.addition_field_info,'buyer_amount')+
+                                        (payoutInfo?.airbnb_amount*1)+
+                                        (payoutSummery?.totalFundCostAtob?.buyer_amount-payoutInfo?.buyer_funds_prior_closing))
+                                        -payoutSummery?.totalAtoBCost?.buyer_amount
+                                )">
+                                </app-sub-total> 
+
+                                <app-sub-total
+                                        subTotalTitle="Financing Cost/Other Closing Costs"
+                                        [estimate_amount]="payoutInfo.financing_cost"
+                                        [actual_amount]="payoutInfo.financing_cost"
+                                        [buyer_amount]="payoutInfo.financing_cost">
+                                </app-sub-total> 
+
+                                <app-sub-total
+                                        subTotalTitle="Net Profit"
+                                        [estimate_amount]="(
+                                                ((payoutSummery?.totalBtoCCost?.est_amount*1)+
+                                                sumPipe.transform(payoutInfo.addition_field_info,'est_amount')+
+                                                (payoutSummery?.totalFundCostAtob?.est_amount-payoutInfo?.est_funds_prior_closing)+
+                                                (payoutInfo?.airbnb_amount*1))
+                                                - payoutSummery?.totalAtoBCost?.est_amount-payoutInfo.financing_cost
+                                                )"
+                                        [actual_amount]="(
+                                                ( (payoutSummery?.totalBtoCCost?.amount*1)+
+                                                sumPipe.transform(payoutInfo.addition_field_info,'field_value')+
+                                                (payoutSummery?.totalFundCostAtob?.amount-totalFundsPriorClosing)+
+                                                (payoutInfo?.airbnb_amount*1))
+                                                -payoutSummery?.totalAtoBCost?.amount-payoutInfo.financing_cost
+                                        )"
+                                        [buyer_amount]="(((payoutSummery?.totalBtoCCost?.buyer_amount*1)+
+                                                sumPipe.transform(payoutInfo.addition_field_info,'buyer_amount')+
+                                                (payoutSummery?.totalFundCostAtob?.buyer_amount-payoutInfo?.buyer_funds_prior_closing)+
+                                                (payoutInfo?.airbnb_amount*1))
+                                                -payoutSummery?.totalAtoBCost?.buyer_amount-payoutInfo.financing_cost
+                                        )">
+                                </app-sub-total> 
+                                
+                        </fieldset>
+
+                        <div class="m-t-20">
+                                <app-client-ranovation-budget [property_id]="property_id" [totalPayoutAmount]="totalPayoutAmount"></app-client-ranovation-budget>
+                        </div>
+                        
+                        <app-mailing *ngIf="!estAmountEditAccess" [property_id]="property_id"></app-mailing>
+                
+                </fieldset>
+        </div>
+</panel>

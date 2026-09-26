@@ -1,0 +1,66 @@
+<div>
+    <div class="p-b-10">
+        <h4>
+            County Url
+        </h4>
+    </div>
+    <form [formGroup]="countyUrlForm">
+      <fieldset>
+        <div class="form-group row m-b-0">
+          <label class="col-md-2 col-form-label">State</label>
+          <div class="col-md-3">
+            <select class="form-control" formControlName="state" (change)="getCountyList($event.target.value)" >
+              <option value="">Select State</option>
+              <option [value]="state.key" *ngFor="let state of states | keyvalue">{{state.value}}</option>
+            </select>  
+          </div>
+          <label class="col-md-2 col-form-label">County</label>
+          <div class="col-md-3">
+            <select class="form-control" formControlName="county" [ngClass]="{ 'is-invalid': submitted && f.county.errors }" >
+              <option value="">Select County</option>
+              <option [value]="country" *ngFor="let country of countries">{{country}}</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-sm btn-primary"  (click)="onChangeTable(config)">Search</button>
+          </div>
+        </div>
+      </fieldset>
+      <ng-container outsideBody>
+        <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <div class="table-responsive" *ngIf="loadTable" style="max-height: 400px;">
+              <ng-container outsideBody>
+                <div class="table-responsive">
+                  <ngx-datatable
+                    class="bootstrap fullscreen"
+                    [rows]="rows"
+                    [columnMode]="scrollBarHorizontal?'standard':'force'"
+                    [headerHeight]="50"
+                    [footerHeight]="0"
+                    rowHeight="auto"
+                    (activate)="onCellClick($event)"
+                    [scrollbarH]="scrollBarHorizontal"
+                  >
+                    <ngx-datatable-column  *ngFor="let col of columns; let i=index" name="{{col.title}}"  prop="{{col.name}}"  [draggable]="false" >
+                      <ng-template let-value="value" let-title="" ngx-datatable-cell-template>
+                        <div [innerHTML]="value"></div>
+                      </ng-template>
+          
+                    </ngx-datatable-column>
+                  </ngx-datatable>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container footer>
+        <ngb-pagination *ngIf="config.paging" class="d-flex justify-content-center" [(page)]="page" [maxSize]="maxSize" [boundaryLinks]="true" [collectionSize]="length" [rotate]="false" (pageChange)="onChangeTable(config, $event)" (numPages)="numPages = $event"></ngb-pagination>
+      </ng-container>
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+      </mat-dialog-actions>
+    </form>
+</div>
+

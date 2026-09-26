@@ -1,0 +1,38 @@
+
+<app-attention-warning></app-attention-warning>
+
+<div class="row">
+  <div class="card col-md-8">
+      <div class="card-body">
+          <app-property-action [slug_address]="slug_address" ></app-property-action>
+      </div>
+  </div>
+  <div *ngIf="topPropertyInfo"  class="card col-md-4 card-body text-right">
+      
+      <div *ngIf="topPropertyInfo?.geo?.latitude;else other_content">
+        <a href="https://www.google.com/maps/search/{{topPropertyInfo?.geo?.latitude}},{{topPropertyInfo?.geo?.longitude}}/data=!3m1!1e3" target="_blank">Click here to view Google Map </a>
+      </div>
+    
+    <ng-template #other_content>
+      <a href="https://maps.google.com/?q={{topPropertyInfo?.address+' '+topPropertyInfo?.city+' '+topPropertyInfo?.state+' '+topPropertyInfo?.zip}}" target="_blank">Click here to view Google Map </a>
+    </ng-template>
+      
+      | CMA/ARV ${{topPropertyInfo?.recommended_cma_arv}}
+      <br/>
+      <a href="https://www.showingtime.com/impact-of-coronavirus/" target="_blank">Real Estate Showings</a> | 
+    </div>
+</div>
+  <!-- begin nav-pills -->
+<!-- begin row -->
+<div class="row">
+<!-- begin col-6 -->
+  <div class="col-lg-12 p-0">
+    <!-- end nav-pills -->
+    <app-showdetail-menu [property_id]="property_id" [slug_address]="slug_address" [activeClass]="activeClass"></app-showdetail-menu>
+    <div class="tab-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+<!-- <app-property-button></app-property-button>
+<app-property-queue></app-property-queue> -->

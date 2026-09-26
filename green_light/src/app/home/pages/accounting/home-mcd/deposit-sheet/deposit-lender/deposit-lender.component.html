@@ -1,0 +1,62 @@
+<fieldset>
+        <legend>Transactions
+                <button class="pull-right btn btn-sm btn-primary" (click)="categoryDialog()">Add New Accounts</button>                                    
+        </legend>   
+        <form [formGroup]="depositSheetForm" [appDisableElement]="depositSheetForm" class="_property_info parent-loader">
+                <div class="form-group row m-b-5">
+                        <div class="col-md-4">
+                                <label class="col-form-label">Account Title</label>
+                        </div>
+                        <div class="col-md-3">
+                                <label class="col-form-label">Amount</label>
+                        </div>
+                        <div class="col-md-3">
+                                <label class="col-form-label">Type</label>
+                        </div>
+                </div>
+                <div formArrayName="more_lender_data">
+                        <div  [formGroupName]="i"  *ngFor="let priceObj of depositSheetForm.get('more_lender_data')['controls']; let i = index;">
+                        
+                                <div id="{{i}}" class="form-group row m-b-5">
+                                        <input type="hidden" formControlName="id">
+                                        <div class="col-md-4 _navbar_search">
+                                                <mat-form-field appearance="outline" >
+                                                        <input type="text" matInput formControlName="lender_id" [matAutocomplete]="auto" >
+                                                        <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFn">
+                                                                <mat-option *ngFor="let lender of deposit_lender_list" [value]="lender">{{lender.lender_name}}</mat-option>
+                                                        </mat-autocomplete>
+                                                </mat-form-field>
+                                        </div>
+                                        <div class="col-md-3">
+                                                <input type="text" formControlName="amount" class="form-control m-b-0" />         
+                                                <div *ngIf="priceObj.controls.amount.errors" class="invalid-feedback">
+                                                        <div *ngIf="priceObj.controls.amount.errors.required">Amount is required</div>
+                                                </div>
+                                                
+                                        </div>
+                                        <div class="col-md-3 _navbar_search">
+                                                <mat-form-field appearance="outline" >
+                                                        <input type="text" matInput formControlName="trans_type" [matAutocomplete]="auto1">
+                                                        <mat-autocomplete #auto1="matAutocomplete">
+                                                            <mat-option [value]="'deposit'">Deposit</mat-option>
+                                                            <mat-option  [value]="'withdrawal'">Withdrawal</mat-option>
+                                                        </mat-autocomplete>
+                                                </mat-form-field>
+                                        </div>
+                                       
+                                        
+
+                                        <div class="col-md-2 col-form-label">
+                                                <a *ngIf="depositSheetForm.controls.more_lender_data.length>1" href="javascript:;" (click)="removePriceInputField(i,priceObj.get('id').value)">
+                                                        <i *ngIf="!loading" class="fa fa-times-circle text-danger m-r-5"></i>
+                                                </a>
+                                                <a  *ngIf="depositSheetForm.controls.more_lender_data.length==i+1" href="javascript:;" (click)="addPriceInputField()">
+                                                        <i *ngIf="!loading" class="fa fa-plus-circle"></i>
+                                                </a> 
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        
+        </form>
+</fieldset>

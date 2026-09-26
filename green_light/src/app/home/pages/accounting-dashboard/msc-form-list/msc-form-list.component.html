@@ -1,0 +1,92 @@
+<app-attention-warning></app-attention-warning>
+<div class="row">
+        <div class="card w-100">
+                <div class="card-body">
+                        <fieldset>
+                                <legend>1099 Form List</legend>
+                                <form [formGroup]="mscForm">
+                                        <div class="form-group row m-b-0">
+                                                <div class="col-md-2">
+                                                        <label class="col-form-label">Payers Name</label>
+                                                        <select formControlName="payers_id" class="form-control m-b-0">
+                                                                <option value="">Select Payers</option>
+                                                                <option *ngFor="let payers of payersList" [value]="payers.id">{{payers.payers_name}}</option>
+                                                        </select>
+                                                </div>
+                                          
+                                                <div class="col-md-2">
+                                                        <label class="col-form-label">Recipent's Name</label>
+                                                        <select formControlName="recipient_id" class="form-control m-b-0">
+                                                            <option value="">Select Recipent's</option>
+                                                            <option *ngFor="let recipient of recipientList" [value]="recipient.id">{{recipient.recipients_name}}</option>
+                                                        </select>
+                                                </div>
+                                                <div  class="col-md-2">
+                                                        <label class="col-form-label">Year</label>
+                                                        <input type="text" formControlName="form_year" class="form-control m-b-0"  />          
+                                                </div>
+                                                <div class="col-md-2">
+                                                        <label class="col-form-label">&nbsp;</label>
+                                                        <button class="form-control m-b-0 btn btn-primary btn-sm" (click)="searchMscFormList()">Search</button>
+                                                </div>
+                                        </div>
+                                </form>
+                        </fieldset>
+                        <div class="parent-loader">
+                                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+               
+                                <div class="table-responsive m-t-10 table-fixed-header">
+                                        <table class="table table-bordered table-condensed">
+                                               <thead>
+                                                        <tr>
+                                                                <th>Payer's Name</th>	
+                                                                <th>Payer's Address</th>	
+                                                                <th>Payer's Tin</th>
+                                                                <th>Recipient's Name</th>
+                                                                <th>Recipient's Tin</th> 
+                                                                <th>Recipient's Address</th>
+                                                                <th>Year</th>
+                                                                <th>Amount</th>
+                                                                <th>Action</th>
+                                                        </tr>
+                                               </thead>
+                                                <tbody>
+                                                        
+                                                        <tr *ngFor="let mscForm of mscFormList">
+                                                                <td class="nowrap">{{mscForm.payers_name}}</td>
+                                                                <td class="nowrap">{{mscForm.payers_tin}}</td>
+                                                                <td class="nowrap">{{mscForm?.payers_address}}</td>
+                                                                <td class="nowrap">{{mscForm.recipients_name}}</td>
+                                                                <td class="nowrap">{{mscForm.recipients_tin}}</td>
+                                                                <td class="nowrap">{{mscForm?.recipients_address}}</td>
+                                                                <td>{{mscForm.form_year}}</td>
+                                                                <td>{{mscForm.amount| currency}}</td>
+                                                                <td>  
+                                                                        <a href="javascript:;" class="m-r-5" (click)="clientMscForm(mscForm)">
+                                                                                <i  class="fas fa-lg fa-file-alt"></i>
+                                                                        </a>
+                                                                </td>
+                                                        </tr>
+                                                </tbody>
+                                        
+                                                <tfoot>
+                                                        <!-- <tr>
+                                                                <td  colspan="2" align="right" ><strong>Total:</strong></td>
+                                                                <td>{{ (mscFormSheetInfo|sum:'in_amount_bidding') | currency }}</td>
+                                                                <td>{{ (mscFormSheetInfo|sum:'out_amount_bidding') | currency}}</td>
+                                                                <td>{{  (mscFormSheetInfo | mscFormSheet:'totalChecksum') | currency}}</td>
+                                                        </tr> -->
+                                                </tfoot>
+                                        </table>
+                                        <div *ngIf="moreBtn" class="text-center m-t-20 m-b-10" >
+                                                <button  class="btn btn-primary btn-sm" (click)="!loader && getloadmorepages()" >
+                                                        Load More
+                                                        <i *ngIf="loader" class="fa fa-spin fa-spinner"></i>
+                                                </button>
+                                        </div>
+                                </div>
+                        </div>
+                        
+                </div>
+        </div>
+</div>

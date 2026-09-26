@@ -1,0 +1,412 @@
+ <!-- begin panel -->
+ <panel title="Sale Date {{sale_date_count}} &nbsp;&nbsp;&nbsp;&nbsp; {{saleDateTitle?.sale_date | date:'MM/dd/yyyy'   }}  {{saleDateTitle?.sale_time}} {{saleDateTitle?.opening_bid?'OB '+saleDateTitle?.opening_bid:''}} {{saleDateTitle?.case_number?'Case No '+saleDateTitle?.case_number:''}} {{ saleDateTitle.sale_type?'Sale Type: '+saleDateTitle.sale_type:'' }}" class="panel_in_panel">
+
+      <!-- one row start-->
+      <fieldset>
+        <!-- <legend>Sale Date</legend> -->
+        <form [formGroup]="saleDateForm" *ngIf="!propErr" [appDisableElement]="saleDateForm" class="parent-loader"> 
+          <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+          <div class="form-group row m-b-5">
+            <div class="col-md-2">
+                <label class="col-form-label">Sale Date</label>
+                <div [ngClass]="{ 'is-invalid': submitted && f.sale_date.errors }">
+                    <my-date-picker name="sale_date" [options]="myDatePickerOptions" formControlName="sale_date" (dateChanged)="onDateChanged($event,saleDateInput)" #saleDateInput class="" placeholder="MM/DD/YYYY"></my-date-picker>
+                    <div *ngIf="f.sale_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                      <div *ngIf="f.sale_date.errors.required">Sale Date is required</div>
+                    </div> 
+                </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Case Number</label>
+              <input type="text" formControlName="case_number" [ngClass]="{ 'is-invalid': submitted && f.case_number.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>            
+              <div *ngIf="f.case_number.errors" class="invalid-feedback">
+                <div *ngIf="f.case_number.errors.required">Case Number is required</div>
+              </div> 
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Opening Bid</label>
+              <input type="text" formControlName="opening_bid" [ngClass]="{ 'is-invalid': submitted && f.opening_bid.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />            
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Sale Type</label>
+                  <select formControlName="sale_type" [ngClass]="{ 'is-invalid': submitted && f.sale_type.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)">
+                  <option value="">Select Sale Type</option>
+                  <option [value]="sale_opt.key" *ngFor="let sale_opt of sale_type_option | keyvalue | sort:'value'">
+                  {{sale_opt.value}}</option></select>        
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Sale Status</label>
+              <select formControlName="sale_status" [ngClass]="{ 'is-invalid': submitted && f.sale_status.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)">
+                  <option value="">Select Status</option>
+                  <option [value]="sale_opt.key" *ngFor="let sale_opt of sale_status_option | keyvalue  | sort:'value'" >
+                  {{sale_opt.value}}</option></select>        
+            </div>
+            <!-- <div class="col-md-2">
+              <label class="col-form-label">Redemption Expires</label>
+              <my-date-picker name="redemption_expires" [options]="myDatePickerOptions" formControlName="redemption_expires" [ngClass]="{ 'is-invalid': submitted && f.redemption_expires.errors }" (dateChanged)="onDateChanged($event,redExpdateInput)" #redExpdateInput placeholder="MM/DD/YYYY"></my-date-picker>
+              <div *ngIf="f.redemption_expires.errors && submitted" class="invalid-feedback" style="display:block">
+                <div *ngIf="f.redemption_expires.errors.required">Redemption Expires is required</div>
+              </div>
+            </div> -->
+          </div>
+          <!-- one row end -->
+          
+          <!-- one row start-->
+          <div class="form-group row m-b-5">         
+            <div class="col-md-2">
+              <label class="col-form-label">Sale Place</label>
+              <input type="text" formControlName="sale_place" [ngClass]="{ 'is-invalid': submitted && f.sale_place.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>                  
+              <div *ngIf="f.sale_place.errors" class="invalid-feedback">
+                <div *ngIf="f.sale_place.errors.required">Sale Place is required</div>
+              </div> 
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Sale Time</label>
+              <input type="text" formControlName="sale_time" [ngClass]="{ 'is-invalid': submitted && f.sale_time.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />                 
+              <div *ngIf="f.sale_time.errors" class="invalid-feedback">
+                <div *ngIf="f.sale_time.errors.required">Sale Time is required</div>
+              </div>
+            </div>
+            <div class="col-md-2">
+            <label class="col-form-label">Trustee File #</label>
+              <input type="text" formControlName="trustee_file_no" [ngClass]="{ 'is-invalid': submitted && f.trustee_file_no.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />                    
+              <div *ngIf="f.trustee_file_no.errors" class="invalid-feedback">
+                <div *ngIf="f.trustee_file_no.errors.required">Trustee File is required</div>
+              </div>
+            </div>
+            <div class="col-md-2">
+            <label class="col-form-label">Precinct</label>
+              <select formControlName="priceint" [ngClass]="{ 'is-invalid': submitted && f.priceint.errors }" class="form-control m-b-0"appOnBlurSave (updatedValue)="autoSave($event)" >
+                    <option value="">Select Precinct</option> 
+                    <option [value]="count" *ngFor="let count of counter_10">{{count}}</option>
+                  </select>
+            </div>
+            <div class="col-md-2">
+            <label class="col-form-label">Trustee Scraped</label>
+              <input type="text"  formControlName="trustee_scraped" [ngClass]="{ 'is-invalid': submitted && f.trustee_scraped.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>                     
+            </div>
+
+            <div class="col-md-2">
+              <label class="col-form-label">Trustee Caller</label>
+              <div class="input-group">
+                <ng-container *ngIf="is_admin else TruesteeUserAccess">
+                  <select formControlName="trustee_caller" [ngClass]="{ 'is-invalid': submitted && f.trustee_caller.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)">
+                    <option value="">Select Trustee caller User</option>
+                    <option [value]="trustee.id" *ngFor="let trustee of nosImTrusteeList.trustee_caller">{{trustee.name}}</option>
+                  </select> 
+                </ng-container>
+
+                <ng-template #TruesteeUserAccess>
+                  <input type="text" formControlName="trustee_caller" #trustee_caller class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+                  <div class="input-group-append" (click)="trustee_caller_user(trustee_caller)">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+          <!-- one row end -->
+
+
+          <!-- one row start-->
+          <div class="form-group row m-b-5">         
+              <div class="col-md-2">
+                <label class="col-form-label">Trustee</label>
+                <input type="text" formControlName="trustee" [ngClass]="{ 'is-invalid': submitted && f.trustee.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />                    
+                <div *ngIf="f.trustee.errors" class="invalid-feedback">
+                  <div *ngIf="f.trustee.errors.required">Trustee is required</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Trustee URL</label>
+                <span [appLink]="saleData.trustee_url"></span>  
+                <input type="text" formControlName="trustee_url" [ngClass]="{ 'is-invalid': submitted && f.trustee_url.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>                 
+                <div *ngIf="f.trustee_url.errors" class="invalid-feedback">
+                  <div *ngIf="f.trustee_url.errors.required">Trustee URL is required</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+              <label class="col-form-label">Trustee Address</label>
+                <input type="text" formControlName="trustee_address" [ngClass]="{ 'is-invalid': submitted && f.trustee_address.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />                     
+                <div *ngIf="f.trustee_address.errors" class="invalid-feedback">
+                  <div *ngIf="f.trustee_address.errors.required">Trustee Address is required</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Trustee Phone</label>
+                <input type="text" formControlName="trustee_phone" [ngClass]="{ 'is-invalid': submitted && f.trustee_phone.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />
+                <div *ngIf="f.trustee_phone.errors" class="invalid-feedback">
+                  <div *ngIf="f.trustee_phone.errors.required">Trustee Phone is required</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+              <label class="col-form-label">Trustee Hours</label>
+                <input type="text"  formControlName="trustee_hours" [ngClass]="{ 'is-invalid': submitted && f.trustee_hours.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>            
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Trustee Called Date</label>
+                <my-date-picker [options]="myDatePickerOptions"    [disabled]="trusteeDate"  formControlName="trustee_caller_date" [ngClass]="{ 'is-invalid': submitted && f.im_date.errors }" (dateChanged)="onDateChanged($event,trusteeDateInput)" #trusteeDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+              </div>
+            </div>
+            <!-- one row end -->
+
+          <!-- one row start-->
+          <div class="form-group row m-t-5">         
+            <div class="col-md-2">
+              <label class="col-form-label">Notice of Foreclosure</label>
+            </div>
+            <div class="col-md-10">
+                <textarea class="form-control" formControlName="notice_of_foreclosure" [ngClass]="{ 'is-invalid': submitted && f.notice_of_foreclosure.errors }" appOnBlurSave (updatedValue)="autoSave($event)"></textarea> 
+                <div *ngIf="f.trustee_phone.errors" class="invalid-feedback">
+                  <div *ngIf="f.trustee_phone.errors.required">Notice of Foreclosure is required</div>
+                </div>
+            </div>
+          </div>
+          <!-- one row end -->
+          <!-- one row start-->
+          <div class="form-group row m-b-5">         
+              <div class="col-md-2">
+                <label class="col-form-label">Newspaper/Legal Notice URL </label>
+                <span [appLink]="saleData.newspapaer_url"></span>  
+                <input type="text" formControlName="newspapaer_url" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.newspapaer_url.errors }" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                <div *ngIf="f.newspapaer_url.errors" class="invalid-feedback">
+                  <div *ngIf="f.newspapaer_url.errors.required">Newspaper/Legal Notice URL  is required</div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Date Pulled</label>
+                <div class="position-relative">
+                  <my-date-picker name="newspapaer_date_pulled" [options]="myDatePickerOptions" formControlName="newspapaer_date_pulled" [ngClass]="{ 'is-invalid': submitted && f.newspapaer_date_pulled.errors }" (dateChanged)="onDateChanged($event,datePullInput)" #datePullInput placeholder="MM/DD/YYYY"></my-date-picker>
+                  <div *ngIf="f.newspapaer_date_pulled.errors && submitted" class="invalid-feedback" style="display:block">
+                    <div *ngIf="f.newspapaer_date_pulled.errors.required">Date Pulled is required</div>
+                  </div>
+                </div>
+              </div>
+  
+              <div class="col-md-2">
+                <label class="col-form-label">Book</label>
+                <div class="position-relative">
+                  <input type="text" formControlName="book" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.book.errors }" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                  <div *ngIf="f.book.errors" class="invalid-feedback">
+                    <div *ngIf="f.book.errors.required">Book is required</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Page Number</label>
+                <div class="position-relative">
+                  <input type="text" formControlName="page_number" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.page_number.errors }" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                  <div *ngIf="f.page_number.errors" class="invalid-feedback">
+                      <div *ngIf="f.page_number.errors.required">Page Number is required</div>
+                    </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">IM By</label>
+                <div class="position-relative">
+                  <div class="input-group">
+                    <ng-container *ngIf="is_admin else imUserAccess">
+                      <select formControlName="im_by" [ngClass]="{ 'is-invalid': submitted && f.im_by.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)">
+                        <option value="">Select IM User</option>
+                        <option [value]="im.id" *ngFor="let im of nosImTrusteeList.im_by">{{im.name}}</option>
+                      </select> 
+                    </ng-container>
+    
+                    <ng-template #imUserAccess>
+                    
+                        <input type="text" formControlName="im_by" #im_by class="form-control m-b-0"  />
+                        <div class="input-group-append" (click)="im_by_user(im_by)">
+                          <span class="input-group-text">
+                            <i class="fa fa-user"></i>
+                          </span>
+                        </div>
+                      
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">IM by date</label>
+                <div class="position-relative">
+                  <my-date-picker [options]="myDatePickerOptions" [disabled]="imDate" formControlName="im_date" [ngClass]="{ 'is-invalid': submitted && f.im_date.errors }" (dateChanged)="onDateChanged($event,imDateInput)" #imDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                </div>
+              </div>
+            </div>
+            <!-- one row end -->
+            
+          <!-- one row start-->
+          <div class="form-group row m-b-5">         
+            <!-- <div class="col-md-2">
+              <label class="col-form-label">Legal Notice URL</label>
+              <span [appLink]="saleData.legal_notice_url"></span>  
+              <input type="text" formControlName="legal_notice_url" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.legal_notice_url.errors }" />
+              <div *ngIf="f.legal_notice_url.errors" class="invalid-feedback">
+                  <div *ngIf="f.legal_notice_url.errors.required">Legal Notice URL is required</div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">Date Pulled</label>
+                  <my-date-picker name="legal_date_pulled" [options]="myDatePickerOptions"  formControlName="legal_date_pulled"[ngClass]="{ 'is-invalid': submitted && f.legal_date_pulled.errors }" (dateChanged)="onDateChanged($event)" class="" placeholder="MM/DD/YYYY"></my-date-picker>
+                  <div *ngIf="f.legal_date_pulled.errors && submitted" class="invalid-feedback" style="display:block">
+                    <div *ngIf="f.legal_date_pulled.errors.required">Date Pulled is required</div>
+                  </div>
+            </div> -->
+            <div class="col-md-2">
+              <label class="col-form-label">NOS Name</label>
+              <div class="input-group">
+                <ng-container *ngIf="is_admin else nosUserAccess">
+                  <select formControlName="nos_by" [ngClass]="{ 'is-invalid': submitted && f.nos_by.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)">
+                    <option value="">Select Nos User</option>
+                    <option [value]="nos.id" *ngFor="let nos of nosImTrusteeList.nos_by">{{nos.name}}</option>
+                  </select> 
+                </ng-container>
+
+                <ng-template #nosUserAccess>
+                  <input type="text" formControlName="nos_by" #nos_by class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)" />
+                  <div class="input-group-append" (click)="nos_user(nos_by)">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                  </div>
+                </ng-template>
+                
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Nos Date</label>
+              <my-date-picker [options]="myDatePickerOptions" [disabled]="nosDate" formControlName="nos_date" [ngClass]="{ 'is-invalid': submitted && f.nos_date.errors }" (dateChanged)="onDateChanged($event,nosDateInput)" #nosDateInput  placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Auction.Com URL</label>
+              <span [appLink]="saleData.auction_com_url"></span>  
+              <input type="text" class="form-control m-b-0" formControlName="auction_com_url" appOnBlurSave (updatedValue)="autoSave($event)"/>
+            </div> 
+            <div class="col-md-2">
+              <label class="col-form-label">Date Pulled</label>
+                <my-date-picker name="auction_date_pulled" [options]="myDatePickerOptions"  formControlName="auction_date_pulled" [ngClass]="{ 'is-invalid': submitted && f.auction_date_pulled.errors }" (dateChanged)="onDateChanged($event,datepullDateInput)" #datepullDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                    <!-- <div class="input-group-append">
+                  <i class="fas fa-calendar-alt fa-2x cal-date" aria-hidden="true" (click)="adp.toggle()"></i>
+                </div> -->
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Auction By</label>
+              <div class="input-group">
+                <ng-container *ngIf="is_admin else auctionUserAccess">
+                  <select formControlName="auction_by" [ngClass]="{ 'is-invalid': submitted && f.auction_by.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)">
+                    <option value="">Select Auction User</option>
+                    <option [value]="auction.id" *ngFor="let auction of nosImTrusteeList.auction_by">{{auction.name}}</option>
+                  </select> 
+                </ng-container>
+
+                <ng-template #auctionUserAccess>
+                  <input type="text" formControlName="auction_by" #auction_by class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+                  <div class="input-group-append" (click)="auction_user(auction_by)">
+                    <span class="input-group-text">
+                      <i class="fa fa-user"></i>
+                    </span>
+                  </div>
+                </ng-template>
+                
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Auction Date</label>
+              <my-date-picker [options]="myDatePickerOptions" [disabled]="auctionDate" formControlName="auction_date" [ngClass]="{ 'is-invalid': submitted && f.auction_date.errors }" (dateChanged)="onDateChanged($event,auctionDateInput)" #auctionDateInput  placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+            
+          </div>
+          <!-- one row end -->
+
+          
+            
+            <app-document 
+            [document_type_list]="property_document_type_list"
+            [property_id]="property_id" 
+            [document_info]="saleData.document_sale" 
+            document_url="sale_document" 
+            doc_primary_key="id" 
+            [sale_id]="saleData.sale_id"
+            [doc_count_id]="'sale_'+sale_date_count"></app-document>
+            
+                    
+          <div class="form-group row m-t-5">         
+            <div class="col-md-2">
+                <label class="col-form-label">Before Sale Trustee Notes</label>                              
+            </div>
+            <div class="col-md-10">
+                <textarea class="form-control" formControlName="before_sale_trustee_notes" appOnBlurSave (updatedValue)="autoSave($event)"></textarea> 
+            </div>
+          </div>
+
+          <div *ngIf="beforeTrusteeNotes"  class="form-group row m-t-5">    
+            <div class="col-md-2">
+              <label class="col-form-label">Before Sale Scraper Notes</label>
+            </div> 
+            <div class="col-md-10">
+              <div class="border trustee-notes">
+                <ng-container *ngFor="let sale_notes of saleData.sale_trustee_notes">
+                  <div class="p-5" *ngIf="sale_notes.before_sale_trustee_notes">
+                    {{ sale_notes?.trustee_name}} {{ sale_notes?.scrape_date_time | date :'M/d/yyyy h:mm a' }} {{sale_notes?.scrape_date_time?'-':''}} {{ sale_notes.before_sale_trustee_notes}}
+                  </div>
+                </ng-container>
+              </div>
+            </div>    
+          </div>
+         
+          <!-- one row end -->
+            <!-- one row start-->
+          <div class="form-group row m-t-5">         
+            <div class="col-md-2">
+                <label class="col-form-label">After Sale Trustee Notes</label>                  
+            </div>
+            <div class="col-md-10">
+                <textarea class="form-control" formControlName="after_sale_trustee_notes" appOnBlurSave (updatedValue)="autoSave($event)"></textarea> 
+            </div>
+          </div>
+          <!-- one row end -->
+           <!-- one row start-->
+           <div *ngIf="afterTrusteeNotes"  class="form-group row m-t-5">    
+              <div class="col-md-2">
+                <label class="col-form-label">After Sale Scraper Notes</label>
+              </div> 
+              <div class="col-md-10">
+                <div class="border trustee-notes">
+                  <ng-container *ngFor="let sale_notes of saleData.sale_trustee_notes">
+                    <div class="p-5" *ngIf="sale_notes.after_sale_trustee_notes">
+                      {{ sale_notes.trustee_name}} {{ sale_notes.scrape_date_time}} {{ sale_notes.after_sale_trustee_notes}}
+                    </div>
+                  </ng-container>
+                </div>
+              </div>    
+            </div>
+          <!-- one row end -->
+          <div class="form-group row m-b-20">         
+              <div class="col-md-10"></div>
+              <div class="col-md-2">
+                <input type="hidden" formControlName="house_id" />
+                <button  *hideElement="true"  type="button" (click)="validateSaleDateForm(this.saleDateForm)" class="form-control  btn btn-sm btn-primary">
+                  SAVE SALE DATE {{sale_date_count}}
+                </button>
+              </div>
+          </div>
+        
+        </form>
+        <div class="form-group row m-t-5">
+          <div class="col-md-10"></div>
+          <div class="col-md-2 pull-right">
+            <button  *hideElement="true"  type="button"  class="form-control btn btn-sm btn-primary" (click)="more_bidder_date();">
+              Add More Bidder
+            </button>
+          </div>  
+        </div>  
+        <div class="clearfix m-t-5"></div>
+        <app-bidder-one *ngIf="loadBidderOne" [bidderData]="bidderOneDeta" [saleDateId]="saleDateId"></app-bidder-one>
+        <div #bidderParent></div>
+         
+       
+      </fieldset>
+    
+  </panel>
+  <!-- end panel -->

@@ -1,0 +1,19 @@
+<div class="row m-t-5 justify-content-end" >
+        <div class="col-md-1">
+                <button class="form-control m-b-0 btn btn-sm btn-primary" 
+                        [useExistingCss]="true" 
+                        printTitle="Property Detail - {{ propertyInfo?.address }}" 
+                        printSectionId="print-section" 
+                        ngxPrint >
+                        Print
+                </button>
+        </div>
+</div>
+<div  id="print-section">
+        <app-lender-info></app-lender-info>
+        <info></info>
+        <mortgage></mortgage>
+        <app-owner-borrow></app-owner-borrow>
+        <sale></sale>
+        <picvideo></picvideo>
+</div>

@@ -1,0 +1,102 @@
+<panel [collapse]='false' title="CMA/ARV Recommendations">
+
+    <form [formGroup]="cmaArvForm" *ngIf="!propErr" >
+    <!-- <div class="alert alert-dark fade show m-b-5 m-t-5 semi-bold text-black">Subject Property Basic Facts</div> -->
+      <fieldset class="read_only_txt">
+        <legend>
+          <div class="row" style="font-size: 14px;">
+            <div class="col-md-4">Subject Property Basic Facts</div>
+            <div class="col-md-3">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="sub_to_property" formControlName="sub_to_property" appOnBlurSave (updatedValue)="autoSave($event)" >    
+                <label for="sub_to_property">SubTo Property</label>  
+              </div>
+            </div>
+            <div class="col-md-5">
+              <div class="pull-right">
+                <a href="{{real_info.zillow_url}}" target="_blank" class="m-r-20" *ngIf="real_info.zillow_url">Zillow URL</a>
+                <a href="{{real_info.redfin_url}}" target="_blank" class="m-r-20" *ngIf="real_info.redfin_url">Redfin URL</a>
+                <a href="{{real_info.har_url}}" target="_blank" class="m-r-20" *ngIf="real_info.har_url">Har URL</a>
+              </div>
+            </div>
+          </div>
+        </legend>
+        <!-- one row start-->
+        <div class="form-group row m-b-5">
+          <div class="col-md-2">
+            <label class="col-form-label">Total Living Sqft</label>
+            <input type="text" formControlName="total_living_sqft" class="form-control m-b-0" readonly />            
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Beds</label>
+            <input type="text" formControlName="beds" class="form-control m-b-0" readonly />          
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Baths</label>
+            <input type="text" formControlName="bath" class="form-control m-b-0" readonly />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Year Built</label>
+            <input type="text"  formControlName="year_built" class="form-control m-b-0" readonly />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Lot Acres/Sqft
+              <span class="pull-right" >{{acrsValue}}</span>
+            </label>
+            <input type="text" formControlName="lot_acres_sqft" class="form-control m-b-0" readonly />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Property Type</label>
+            <input type="text" formControlName="property_type" class="form-control m-b-0" readonly/>            
+          </div>
+        </div>
+        <!-- one row end -->
+
+        <!-- one row start-->
+        <div class="form-group row m-b-5">
+          <div class="col-md-2">
+            <label class="col-form-label">Zestimate</label>
+            <input type="text" formControlName="zestimate" class="form-control m-b-0" readonly/>          
+          </div>   
+          <div class="col-md-2">
+            <label class="col-form-label">County Value</label>
+            <input type="text" formControlName="county_value" class="form-control m-b-0"  readonly/>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">CMA/ARV</label>
+            <input type="text" formControlName="cma_arv"  class="form-control m-b-0" readonly />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Conservative Sales Price</label>
+            <input type="text" formControlName="conservative_sale_price" class="form-control m-b-0" readonly/>
+          </div>  
+          <div class="col-md-2">
+              <label class="col-form-label">Cost Per SQFT</label>
+              <input type="text" formControlName="cost_per_sqft" class="form-control m-b-0" readonly/>
+          </div> 
+          <div class="col-md-2">
+              <label class="col-form-label">Specific Property Type</label>
+              <input type="text" formControlName="specific_property_type" class="form-control m-b-0" readonly/>            
+            </div>
+          <div class="col-md-2"></div>
+          <!-- <div class="col-md-2 m-t-5">
+            <label class="col-form-label">&nbsp;</label>
+            <input type="button" formControlName="save" (click)="validateForm(this.cmaArvForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save" />
+          </div>     -->
+        </div>
+        <!-- one row end -->
+        <div class="form-group row m-b-20 m-t-5">
+            <div class="col-md-12">
+              <app-common-notes [note_name]="cma_arv_notes"></app-common-notes>
+            </div>
+        </div>
+       
+      </fieldset>
+    </form>
+    <app-check-cma-arv *ngIf="!this.propErr" [cma_arv]="cma_arv" [cma_arv_type]="wholesale_buyer" cma_title="WHOLESALE BUYER" [property_id]="property_id"></app-check-cma-arv>
+    <app-check-cma-arv *ngIf="!this.propErr" [cma_arv]="cma_arv" [cma_arv_type]="first_dtc" cma_title="FIRST COMP" [property_id]="property_id"></app-check-cma-arv>
+    <app-check-cma-arv *ngIf="!this.propErr" [cma_arv]="cma_arv" [cma_arv_type]="second_dca" cma_title="SECOND COMP" [property_id]="property_id"></app-check-cma-arv>
+    <app-check-cma-arv *ngIf="!this.propErr" [cma_arv]="cma_arv" [cma_arv_type]="third_dca" cma_title="THIRD COMP" [property_id]="property_id"></app-check-cma-arv>
+    <app-check-cma-arv *ngIf="!this.propErr && finalCheck" [cma_arv]="cma_arv" [cma_arv_type]="final_dca" cma_title="FINAL COMP" [property_id]="property_id"></app-check-cma-arv>
+
+</panel> 

@@ -1,0 +1,293 @@
+<!-- Loder & Messages -->
+  <div class="alerts text-center">
+    <div *ngIf="loadingMessage" class="alert">
+      <p>Loading...</p>
+    </div>
+    <div *ngIf="propErr" class="alert">
+      {{ propErrMsg }}
+   </div>
+  </div>
+<!-- Loder & Messages -->
+
+<panel [collapse]='collapse' title="Property Tax">
+  <form [formGroup]="mortgageTaxPropertyForm" *ngIf="!propErr">
+    <fieldset>
+      <legend>Property Tax</legend>
+      
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-2">
+          <label class="col-form-label">Tax assessment year</label> 
+          <input type="text" formControlName="treasure_url" class="form-control m-b-0 m-t-5"  /> 
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Tax assessment value</label>            
+          <input type="text" formControlName="tax_bill_url" class="form-control m-b-0 m-t-5"  /> 
+        </div> 
+        <div class="col-md-2">
+          <label class="col-form-label">Tax assessment by zillow</label>            
+          <input type="text" formControlName="tax_bill_url" class="form-control m-b-0 m-t-5"  /> 
+        </div>
+        <div class="col-md-2">
+            <button type="button"  (click)="validateForm(this.mortgageTaxPropertyForm)" class="form-control m-b-0 btn btn-sm btn-primary">
+              Save <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+            </button>
+        </div>                   
+      </div>
+      <!-- one row end -->
+
+      <!-- one row start-->
+      <div class="form-group row m-b-0">
+          <!-- Tax Owed -->
+          <div class="col-md-12">
+            <div formArrayName="owed_tax_data">
+              <!-- Row Start -->
+              <div  [formGroupName]="i"  *ngFor="let taxObj of mortgageTaxPropertyForm.get('owed_tax_data')['controls']; let i = index;">
+                <div class="form-group row m-b-0">
+                  <div class="col-md-3">
+                    <div class="col-form-label flt-l">Property Tax Owed</div>
+                    <input type="text" formControlName="property_taxes_owed" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.property_taxes_owed.errors && i==validateRow }" class="form-control m-b-0 assess-cls" (change)="calculateTotal()"/>
+                    <div *ngIf="taxObj.controls.property_taxes_owed.errors && i==validateRow" class="invalid-feedback clr-bth ">
+                      <div *ngIf="taxObj.controls.property_taxes_owed.errors.required">Property Tax Owed is required</div>
+                  </div>
+                  </div>
+                  <div class="col-md-3">
+                      <div class="col-form-label  flt-l">Owed Year</div>
+                        <input type="text" formControlName="property_taxes_owed_year" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.property_taxes_owed_year.errors && i==validateRow }" class="form-control m-b-0 assess-cls"  /> 
+                        <div *ngIf="taxObj.controls.property_taxes_owed_year.errors && i==validateRow" class="invalid-feedback clr-bth">
+                          <div *ngIf="taxObj.controls.property_taxes_owed_year.errors.required">Owed Year is required</div>
+                        </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="col-form-label flt-l">Tax Assessed</div>
+                    <input type="text" formControlName="taxes_assessed" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.taxes_assessed.errors && i==validateRow }" class="form-control m-b-0 assess-cls" />
+                    <div *ngIf="taxObj.controls.taxes_assessed.errors && i==validateRow" class="invalid-feedback clr-bth">
+                      <div *ngIf="taxObj.controls.taxes_assessed.errors.required">Tax assessed is required</div>
+                  </div>
+                  </div>
+                  <div class="col-md-2">
+                    <div class="col-form-label  flt-l">Tax Year</div>
+                      <input type="text" formControlName="taxes_year" [ngClass]="{ 'is-invalid': submitted && taxObj.controls.taxes_year.errors && i==validateRow}" class="form-control m-b-0 assess-cls"  /> 
+                      <div *ngIf="taxObj.controls.taxes_year.errors && i==validateRow" class="invalid-feedback clr-bth">
+                      <div *ngIf="taxObj.controls.taxes_year.errors.required">Tax year is required</div>
+                  </div>
+                  </div>
+                  <div *hideElement="true" class="col-md-1 ">
+                      <div class="col-form-label  flt-l">&nbsp;</div>
+                      <div class="clr-bth">
+                          <button type="button"  class=" form-control btn btn-sm btn-primary"
+                          (click)="validateTaxOwedForm(taxObj,i)" value="Save" >
+                          Save <i class="fa fa-save"></i>
+                          </button>
+                      </div>
+                  </div>
+                  <div *hideElement="true" class="col-md-1 ">
+                      <div class="col-form-label  flt-l">&nbsp;</div>
+                      <div class="clr-bth">
+                          <button type="button" 
+                          class="form-control btn btn-sm btn-danger" 
+                          (click)="removeTaxOwedField(i, taxObj.controls.id.value)" value="Remove" >
+                          Remove <i class="fa fa-trash"></i>
+                        </button>
+                      </div>
+                  </div>
+                </div>
+                <!-- Row End -->
+              </div>
+              <div class="form-group row m-b-0">
+                  <div class="col-md-3">
+                    <div class="col-form-label flt-l">
+                      Total property taxes owed : <span class="font-weight-bold">{{calculateTotal()}}</span>
+                      <span></span>
+                    </div>
+                  </div>
+              </div> 
+             </div>
+             <!-- Row Start -->
+              <div class="form-group row m-b-0">
+                  <div class="col-md-10"></div>
+                  <div class="col-md-1"><input type="button" formControlName="add_more" class="form-control m-t-5 btn btn-sm btn-primary" (click)="addTaxOwedField()" value="Add More" /></div>
+              </div>
+               <!-- Row End -->
+          </div>
+          <div class="col-md-4"></div>
+          <!-- Tax Owed -->
+      </div>
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-2">
+          <label class="col-form-label">Property Taxes Owed</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5"  /> 
+        </div> 
+        <div class="col-md-2">
+          <label class="col-form-label">Year</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5" /> 
+        </div>                   
+      </div>
+      <!-- one row end -->
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-2">
+          <label class="col-form-label">Property Taxes Owed</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5"  /> 
+        </div> 
+        <div class="col-md-2">
+          <label class="col-form-label">Year</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5" /> 
+        </div>                   
+      </div>
+      <!-- one row end -->
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-2">
+          <label class="col-form-label">Property Taxes Owed</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5"  /> 
+        </div> 
+        <div class="col-md-2">
+          <label class="col-form-label">Year</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5" /> 
+        </div>                   
+      </div>
+      <!-- one row end -->
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-2">
+          <label class="col-form-label">Property Taxes Owed</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5"  /> 
+        </div> 
+        <div class="col-md-2">
+          <label class="col-form-label">Year</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5"  /> 
+        </div>                   
+      </div>
+      <!-- one row end -->
+      
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-2">
+          <label class="col-form-label">Total Property Taxes Owed</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="total_property_taxes_owed" class="form-control m-b-0 m-t-5"  />
+        </div>                              
+      </div>
+      <!-- one row end -->
+
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <div class="checkbox checkbox-css">               
+            <input type="checkbox" id="PropertyDocuments" value="" >    
+            <label for="PropertyDocuments">Documents</label>         
+          </div>           
+        </div>                                        
+      </div>        
+      <!-- one row end -->
+
+      <!-- one row start-->  
+      <div class="form-group row m-b-0">
+      <div class="col-md-8">
+        <table class="table table-bordered table-hover">
+            <tr>  
+                <th>Date</th>
+                <th>Document Type</th>                 
+                <th>Uploaded By</th>
+                <th>Uploaded Date</th>
+            </tr>
+            <tr>
+                <td>2018-09-10</td>
+                <td>Tax Statement</td>          
+                <td>Willow</td>
+                <td>2018-09-11 12:00 MN</td>                  
+            </tr>
+            <tr>
+                <td>2018-09-10</td>
+                <td>Property Record Card</td>
+                <td>Willow</td>
+                <td>2018-09-11 12:00 MN</td>                  
+            </tr>
+            <tr>
+                <td>2018-09-10</td>
+                <td>Clear (Propety)</td>
+                <td>Willow</td>
+                <td>2018-09-11 12:00 MN</td>                                
+            </tr>
+            <tr>
+                <td>2018-09-10</td>
+                <td>Clear (Order)</td>
+                <td>Willow</td>
+                <td>2018-09-11 12:00 MN</td>                                
+            </tr>
+            <tr>
+                <td>2018-09-10</td>
+                <td>Deed</td>
+                <td>Willow</td>
+                <td>2018-09-11 12:00 MN</td>                                
+            </tr>
+            <tr>
+                <td>2018-09-10</td>
+                <td>Quite claim deed</td>
+                <td>Willow</td>
+                <td>2018-09-11 12:00 MN</td>                                
+            </tr>
+            <tr>
+                <td>2018-09-10</td>
+                <td>Trustee Deed</td>
+                <td>Willow</td>
+                <td>2018-09-11 12:00 MN</td>                                
+            </tr>
+        </table>
+      </div>
+    </div>
+    <!-- one row end -->
+
+    <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-2">
+          <label class="col-form-label">DTC</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5"  /> 
+        </div> 
+        <div class="col-md-2">
+          <label class="col-form-label">2nd DCA Approved</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5" /> 
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">DCA - Final Check</label>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" class="form-control m-b-0 m-t-5"  /> 
+        </div>                             
+      </div>
+      <!-- one row end -->
+
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-10">&nbsp;</div>
+        <div class="col-md-2">
+          <button (click)="validateForm(this.mortgageTaxPropertyForm)" class="form-control m-b-0 btn btn-sm btn-primary m-t-5">Save</button>         
+        </div>                                 
+      </div>
+      <!-- one row end -->
+    </fieldset>
+  </form>
+</panel>

@@ -1,0 +1,76 @@
+<form [appDisableElement]="purchaseAdjForm" [formGroup]="purchaseAdjForm">
+
+        <fieldset>
+                <legend>The LLC Fees</legend>  
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">LLC name</label> </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="llc_name" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>   
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Travel/Office Fee</label> </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="travel_office_fee" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Labor Charges</label> </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="labor_charges" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Interest Expenses</label> </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="interest_expenses" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Total LLC Fee</label> </div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-3">
+                               {{totalLLCAmount| currency}}
+                        </div>
+                </div>
+                
+        </fieldset>
+
+        <fieldset>
+                <legend>The Estates Fees</legend>     
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Office Fee</label> </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="office_fee" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Bookkeeping Fee</label> </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="bookkeeping_fee"  appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Web & Data Fees </label>({{webFee}}) </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0"  formControlName="web_fee" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Assignment Fee</label> </div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="assignment_fee" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div> 
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Total The Estates Fees</label> </div>
+                        <div class="col-md-6"></div>
+                        <div class="col-md-3">
+                               {{totalESAmount| currency}}
+                        </div>
+                </div>
+        </fieldset>
+
+</form>

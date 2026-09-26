@@ -1,0 +1,385 @@
+<form [formGroup]="quickSearchForm" (keyup.enter)="seachProperty(this.quickSearchForm)">
+  <div class="estate_content" (click)="checkClickEvent($event)">
+      <fieldset>
+          <legend>Property Description</legend>
+        <!--  <div class="alert alert-dark fade show m-b-5 m-t-5 semi-bold text-black">Owner Information</div> -->
+          <!-- one row start-->
+          <!-- (selected)='selectEvent($event)' -->
+          <div class="form-group row m-b-0">
+            <div class="col-md-2 _navbar_search" style="z-index:9;">
+              <label class="col-form-label">Property Address</label>
+                <mat-form-field appearance="outline">
+                  <input type="text" class="form-control" matInput  formControlName="property_address" [matAutocomplete]="auto" class="text-color">
+                  <mat-autocomplete #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                      {{option}}
+                    </mat-option>
+                    <mat-option *ngIf="loadingSearch">
+                      <mat-spinner diameter="30" value="100"></mat-spinner>
+                    </mat-option>
+                    <mat-option *ngIf="noResult && !loadingSearch">
+                      No Result Found
+                    </mat-option>
+                  </mat-autocomplete>
+                  <mat-icon matSuffix color="primary" class="search-property md-18">
+                    <i class="fa fa-search"></i>
+                  </mat-icon>
+                </mat-form-field>
+              <!-- <ng-autocomplete 
+                  [data]="searchProAddress"
+                  (inputChanged)='onChangeSearch($event)'
+                  (selected)='selectEvent($event)'
+                  [itemTemplate]="itemTemplate"
+                  [notFoundTemplate]="notFoundTemplate">                                 
+                </ng-autocomplete>
+                  
+                <ng-template #itemTemplate let-item>
+                  <a [innerHTML]="item"></a>
+                </ng-template>
+                  
+                <ng-template #notFoundTemplate let-notFound>
+                  <div [innerHTML]="notFound"></div>
+                </ng-template> -->
+               <!-- <input type="text" formControlName="property_address"  class="form-control m-b-0" />                   -->
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">City</label>
+              <input type="text" formControlName="city" class="form-control m-b-0"  />          
+            </div>
+      
+            <div class="col-md-2">
+                <label class="col-form-label">State</label>
+                <select class="form-control" formControlName="state" (change)="getCountyList($event.target.value)" >
+                  <option value="">Select State</option>
+                  <option [value]="state.key" *ngFor="let state of states | keyvalue">{{state.value}}</option>
+                </select>  
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">County</label>
+                <input type="text" class="form-control m-b-0" formControlName="county" />
+
+                <!-- <select class="form-control" formControlName="county" [ngClass]="{ 'is-invalid': submitted && f.county.errors }" >
+                  <option value="">Select County</option>
+                  <option [value]="country" *ngFor="let country of countries">{{country}}</option>
+                </select> -->
+                  <div *ngIf="f.county.errors" class="invalid-feedback">
+                    <div *ngIf="f.county.errors.required">County is required</div>
+                  </div>
+              </div>
+      
+            <div class="col-md-2">
+              <label class="col-form-label">Zip Code</label>
+              <input type="text" class="form-control m-b-0" formControlName="zip_code" />
+            </div>
+                    
+            <div class="col-md-2">
+              <label class="col-form-label">Case Number</label>
+              <input type="text" name="case_number"  class="form-control m-b-0"  formControlName="case_number" />            
+            </div>
+          </div>
+          <!-- one row end -->
+          
+          <!-- one row start-->
+          <div class="form-group row m-b-0">
+              <div class="col-md-2">
+                  <label class="col-form-label">Trustee</label>
+                  <input type="text" name="trustee"class="form-control m-b-0" formControlName="trustee"  />            
+              </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Owner Name</label>
+              <input type="text" class="form-control m-b-0"  formControlName="owner_name"/>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Borrower Name</label>
+              <input type="text" formControlName="before_sale_spread" class="form-control m-b-0"  />            
+            </div>
+      
+            
+            <div class="col-md-2">
+              <label class="col-form-label">Entity | LLC Name</label>
+              <input type="text" formControlName="entity_llc_name"  class="form-control m-b-0" />            
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">Subdivision</label>
+                <input type="text" formControlName="sub_devision" class="form-control m-b-0"  />            
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Legal Description</label>
+                <input type="text" formControlName="legal_desc"  class="form-control m-b-0"  />            
+              </div>
+          </div>
+      
+          <!-- one row end -->
+        
+          <!-- one row start-->
+          <div class="form-group row m-b-0">
+            
+            <div class="col-md-2">
+              <label class="col-form-label">Property Type</label>
+                 <select formControlName="property_type"  class="form-control m-b-0" >
+                  <option value="">Select Property Type</option> 
+                  <option [value]="property.key" *ngFor="let property of property_type | keyvalue">{{property.value}}</option>
+                </select>            
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">Loan Type</label>
+                <select name="loan_type" id="loan_type" formControlName="loan_type"  class="form-control m-b-0" >
+                    <option value="">Select Loan Type</option>
+                    <option [value]="loan.key" *ngFor="let loan of loan_type_list | keyvalue">{{loan.value}}</option>
+                </select>
+              </div>    
+              <div class="col-md-2">
+                <label class="col-form-label">Sale Type</label>
+                <select formControlName="sale_type" [ngClass]="{ 'is-invalid': submitted && f.sale_type.errors }" class="form-control m-b-0" >
+                <option value="">Select Sale Type</option>
+                <option [value]="sale_opt.key" *ngFor="let sale_opt of sale_type_option | keyvalue">
+                {{sale_opt.value}}</option></select>        
+              </div> 
+            <div class="col-md-2">
+              <label class="col-form-label">Bidder Name</label>
+              <input type="text" formControlName="bidder_name"  class="form-control m-b-0" />            
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">Winning Bidder Name</label>
+                <input type="text" formControlName="winning_bidder_name"  class="form-control m-b-0" />            
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Year Built </label>
+              <input type="text" formControlName="year_built"  class="form-control m-b-0" />            
+            </div>
+            
+            
+          </div>
+          <div class="form-group row m-b-0">
+              <div class="col-md-2 m-t-5">
+                <label class="col-form-label">&nbsp;</label>
+                <div class="checkbox checkbox-css">
+                    <input formControlName="no_cma_arv"  type="checkbox" id="no_cma_arv" />
+                    <label for="no_cma_arv">No CMA/ARV</label>
+                </div>
+              </div>
+              <div class="col-md-2 m-t-5">
+                <label class="col-form-label">&nbsp;</label>
+                  <div class="checkbox checkbox-css">
+                      <input formControlName="w_bids"  type="checkbox" id="w_bids" />
+                      <label for="w_bids">W/BIDS</label>
+                  </div>
+              </div>
+              <!-- <div class="col-md-2 m-t-5">
+                  <div class="checkbox checkbox-css">
+                      <input formControlName="opening_bid"  type="checkbox" id="opening_bid" />
+                      <label for="opening_bid">Opening Bid</label>
+                  </div>
+              </div>
+              <div class="col-md-2 m-t-5">
+                  <div class="checkbox checkbox-css">
+                      <input formControlName="low_first"  type="checkbox" id="low_first" />
+                      <label for="low_first">Low First</label>
+                  </div>
+              </div>
+              <div class="col-md-2 m-t-5">
+                <div class="checkbox checkbox-css">
+                    <input formControlName="low_first_w_lien"  type="checkbox" id="low_first_w_lien" />
+                    <label for="low_first_w_lien">Low First W/Lien</label>
+                </div>
+              </div>
+              <div class="col-md-2 m-t-5">
+                <div class="checkbox checkbox-css">
+                    <input formControlName="upset_bid"  type="checkbox" id="upset_bid" />
+                    <label for="upset_bid">UPSET Bid</label>
+                </div>
+              </div> -->
+          </div>
+      </fieldset>
+     
+        <!-- one row end -->
+        <!-- <div class="alert alert-dark fade show m-b-5 m-t-10 semi-bold text-black">Sale Date</div> -->
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-6">
+            <fieldset>
+              <legend>SALE DATE</legend>
+              <div class="form-group row m-b-0">
+                  <div class="col-md-2">
+                    <label class="col-form-label">Start</label>
+                  </div>
+                  <div class="col-md-4">
+                    <my-date-picker name="sale_date_from" [options]="myDatePickerOptions" formControlName="sale_date_from" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">End</label>
+                  </div>
+                  <div class="col-md-4">
+                    <my-date-picker name="sale_date_to" [options]="myDatePickerOptions" formControlName="sale_date_to" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                  </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-md-6">
+            <fieldset>
+              <legend>REDEMPTION DATE</legend>
+              <div class="form-group row m-b-0">
+                <div class="col-md-2">
+                  <label class="col-form-label">Start</label>
+                </div>
+                <div class="col-md-4">
+                  <my-date-picker [options]="myDatePickerOptions" formControlName="redemption_date_from" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                </div>
+                <div class="col-md-2">
+                  <label class="col-form-label">End</label>
+                </div>
+                <div class="col-md-4">
+                  <my-date-picker [options]="myDatePickerOptions" formControlName="redemption_date_to" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <!-- one row end --> 
+      <fieldset>
+        <!-- one row end -->
+        <!-- <div class="alert alert-dark fade show m-b-5 m-t-10 semi-bold text-black">Sale Date</div> -->
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-1">
+            <label class="col-form-label">With In</label>
+          </div>
+          <div class="col-md-2">
+              <select class="form-control" formControlName="within_days" id="within_days">
+                  <option value="">--Select--</option>
+                    <option value="1">1 day</option>
+                    <option value="3">3 days</option>
+                    <option value="5">5 days</option>
+                    <option value="30">30 days</option>
+                    <option value="60">60 days</option>
+              </select>
+          </div>
+          <div class="col-md-3">
+            {{todayDate}}
+            <label class="col-form-label">From Today's date</label>
+          </div>
+          
+        </div>
+        <!-- one row end --> 
+      </fieldset>
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-6">
+            <fieldset>
+              <legend>Lot Acres/Sqft</legend>
+              <div class="form-group row m-b-0">
+                  <div class="col-md-2">
+                    <label class="col-form-label">From</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" formControlName="from_lot_acr_sqft"  class="form-control m-b-0" />            
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">To</label>
+                  </div>
+                  <div class="col-md-4">
+                    <input type="text" formControlName="to_lot_acr_sqft"  class="form-control m-b-0" />            
+                  </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="col-md-6">
+            <fieldset>
+              <legend>Living SQFT</legend>
+              <div class="form-group row m-b-0">
+                <div class="col-md-2">
+                  <label class="col-form-label">From</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" formControlName="from_living_sqft"  class="form-control m-b-0" />            
+                </div>
+                <div class="col-md-2">
+                  <label class="col-form-label">To</label>
+                </div>
+                <div class="col-md-4">
+                  <input type="text" formControlName="to_living_sqft"  class="form-control m-b-0" />            
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <!-- one row end --> 
+      <fieldset>
+        <legend>SORT OPTIONS</legend>
+        <!-- <div class="alert alert-dark fade show m-b-5 m-t-10 semi-bold text-black">Sort Options</div> -->
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-1"><label class="col-form-label">1ST Sort By:</label></div>
+          <div class="col-md-2">
+            <select formControlName="first_sort_by" id="first_sort_by" class="form-control">
+              <option [value]="sortBy.key" *ngFor="let sortBy of firstSortBy | keyvalue">{{sortBy.value}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-1"><label class="col-form-label">Order By:</label></div>
+          <div class="col-md-2">
+            <select formControlName="order_by" id="order_by" class="form-control">
+              <option value="asc">ASC</option>
+              <option value="desc">DESC</option>
+            </select>
+          </div>
+          <div class="col-md-1"><label class="col-form-label">2nd Sort By:</label></div>
+          <div class="col-md-2">
+            <select formControlName="second_sort_by" id="second_sort_by" class="form-control">
+              <option [value]="sortBy.key" *ngFor="let sortBy of firstSortBy | keyvalue">{{sortBy.value}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-1"><label class="col-form-label">Order By:</label></div>
+          <div class="col-md-2">
+            <select formControlName="second_sort_order" id="second_sort_order" class="form-control">
+              <option value="asc">ASC</option>
+              <option value="desc">DESC</option>
+            </select>
+          </div>
+
+        </div>
+        <!-- one row end -->
+      </fieldset>
+  </div>
+  <div class="card">
+    <div class="card-body">
+        <div class="_search_btn form-group row m-b-20">
+            <div class="col-md-2">
+                <label class="col-form-label">&nbsp;</label>
+                <button class="form-control m-b-0 btn btn-primary btn-sm" (click)="seachProperty(this.quickSearchForm)">SEARCH
+                    <i *ngIf="!loading" class="fa fa-spinner fa-spin"></i>
+                </button>
+            </div>
+            <div class="col-md-2">
+                <label class="col-form-label">&nbsp;</label>
+                <button class="form-control m-b-0 btn btn-primary btn-sm" (click)="rest_search()">CLEAR</button>
+            </div>
+            <div class="col-md-2 offset-md-1">
+                <label class="col-form-label">DISPLAY ROW</label>
+                <select class="form-control m-b-0" formControlName="limit" (change)="changeLimit($event)">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="500">500</option>
+                    <option value="1000">1000</option>
+                    <option value="2000">2000</option>
+                </select>
+            </div>
+            <div class="col-md-2 offset-md-1">
+                <label class="col-form-label">&nbsp;</label>
+                <button class="form-control m-b-0 btn btn-primary btn-sm">BACK</button>
+            </div>
+            <div class="col-md-2" *hideElement="true">
+                <label class="col-form-label">&nbsp;</label>
+                <button class="form-control m-b-0 btn btn-primary btn-sm" [routerLink]="['/home/quickinput']">QUICK INPUT</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+</form>
+
+<app-search-detail [searchResult]="searchResult" [map_data]="map_data" [loading]="loading" [totalRecord]="totalRecord" [searchField]="searchField" [limit]="limit"></app-search-detail>

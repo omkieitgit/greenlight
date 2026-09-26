@@ -1,0 +1,46 @@
+<fieldset>
+        <legend mat-dialog-title>Conversion Calculator</legend>
+        <mat-dialog-content class="parent-loader"  style="min-height:250px;">
+          <app-loader [loading]="loading"></app-loader>
+          <form  [formGroup]="sqftCalForm" >
+            <!-- one row start--> 
+            <div class="form-group row m-b-0">
+              <div class="col-md-4">
+                <label class="col-form-label">Comp Price/sqft</label>
+              </div>
+              <div class="col-md-4">
+                <label class="col-form-label">Lot Acres to Sqft</label>
+              </div>
+              <div class="col-md-4 text-right">
+                <label class="col-form-label text-right">Price/sqft</label>
+              </div>
+          </div>
+    
+          <div formArrayName="sqft_info_data">
+            <div [formGroupName]="i"  *ngFor="let owner of sqftCalForm.get('sqft_info_data')['controls']; let i = index;">
+              <div class="form-group row">
+                <div class="col-md-4">
+                  <input type="text" formControlName="price_sqft_amount"  class="form-control m-b-0"/>            
+                </div> 
+                <div class="col-md-4">
+                  <input type="text" formControlName="lot_acres_to_sqft"  class="form-control m-b-0" (change)="calSqlft(i)" />            
+                </div>
+                <div class="col-md-4 text-right cal_days_{{i}}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+            <div  class="form-group row m-b-0">
+              <div class="col-md-8"></div>
+              <div class="col-md-4 text-right total_avg"></div>
+            </div>
+            <!-- one row end -->
+          </form>
+        </mat-dialog-content>
+        <mat-dialog-actions align="end">
+          <button mat-button (click)="addMoreField()">Add More</button>
+          <button mat-button (click)="saveInfo()">Save</button>
+          <button mat-button mat-dialog-close>Cancel</button>
+        </mat-dialog-actions>
+      </fieldset>

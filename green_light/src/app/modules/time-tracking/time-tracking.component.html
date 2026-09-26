@@ -1,0 +1,14 @@
+<div class="form-group row">
+        <div class="col-md-3">
+                <h3>Time Tracking</h3>
+        </div>
+        <div class="col-md-3">
+                <p><strong>Time:</strong> {{project?.totalSeconds | hoursMinutesSeconds}}</p>
+                <p><strong>{{idleState}}</strong></p>
+                <p *ngIf="lastPing"><small>Last keepalive ping <strong>{{lastPing | amTimeAgo}}</strong></small></p>
+        </div>
+        <div class="col-md-3">
+                <button *ngIf="startBtn" (click)="startAcWork()" class="btn btn-success m-r-5">Start</button>
+                <button *ngIf="stopBtn" (click)="stopTiming()"  class="btn btn-danger">Stop</button>
+        </div>
+</div>

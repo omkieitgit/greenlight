@@ -1,0 +1,165 @@
+
+<h1 mat-dialog-title>Search Result</h1>
+<div mat-dialog-content>
+    <table width="100%" cellpadding="5" cellspacing="5" class="table table-bordered m-b-0">
+        <tr>
+            <td><b>Address</b></td>
+            <td>{{scrapper_data.full_address}}</td>
+        </tr>
+        <tr>
+            <td><b>City</b></td>
+            <td>{{scrapper_data.city}}</td>
+        </tr>
+        <tr>
+            <td><b>County</b></td>
+            <td>{{scrapper_data.county}}</td>
+        </tr>
+        <tr>
+            <td><b>State</b></td>
+            <td>{{scrapper_data.state}}</td>
+        </tr>
+        <tr>
+            <td><b>Zip Code</b></td>
+            <td>{{scrapper_data.zip_code}}</td>
+        </tr>
+        <tr>
+            <td><b>Baths</b></td>
+            <td>{{scrapper_data.baths}}</td>
+        </tr>
+        <tr>
+            <td><b>Full Baths</b></td>
+            <td>{{scrapper_data.full_bath}}</td>
+        </tr>
+        <tr>
+            <td><b>Beds</b></td>
+            <td>{{scrapper_data.beds}}</td>
+        </tr>
+        <tr>
+            <td><b>Built</b></td>
+            <td>{{scrapper_data.built_year}}</td>
+        </tr>
+        <tr>
+            <td><b>Appliances</b></td>
+            <td>{{scrapper_data.appliances}}</td>
+        </tr>
+       
+        <tr>
+            <td><b>Building Sqft</b></td>
+            <td>{{scrapper_data.built_sqft}}</td>
+        </tr>
+        
+        <tr>
+            <td><b>Cooling</b></td>
+            <td>{{scrapper_data.cooling}}</td>
+        </tr>
+        <tr>
+            <td><b>Pool</b></td>
+            <td>{{scrapper_data.pool_spa}}</td>
+        </tr>
+        
+        <!-- <tr>
+          <td><b>Floors</b></td>
+          <td>{{scrapper_data.gen_desc.Floors}}</td>
+        </tr> -->
+        <tr>
+          <td><b>Garage</b></td>
+          <td>{{scrapper_data.garage_type_value}}</td>
+        </tr>
+       
+        <tr>
+          <td><b>Heating</b></td>
+          <td>{{scrapper_data.heating}}</td>
+        </tr>
+        <tr>
+            <td><b>Property Type</b></td>
+            <td>{{scrapper_data.property_type}}</td>
+        </tr>
+        <tr>
+            <td><b>specific property types</b></td>
+            <td>{{scrapper_data.specific_property_types}}</td>
+        </tr>
+        <tr>
+          <td><b>Lot Size</b></td>
+          <td>{{scrapper_data.sqft }}</td>
+        </tr>
+        <tr>
+            <td><b>per sqft</b></td>
+            <td>{{scrapper_data.per_sqft}}</td>
+        </tr>
+        <tr>
+            <td><b>Lot Acres size</b></td>
+            <td>{{scrapper_data.lot_acres_size}}</td>
+        </tr>
+        <tr>
+            <td><b>Stories</b></td>
+            <td>{{scrapper_data.stories}}</td>
+        </tr>
+        <tr>
+            <td><b>Style</b></td>
+            <td>{{scrapper_data.building_style}}</td>
+        </tr>
+        <tr>
+            <td width="30%"><b>Legal Description</b></td>
+            <td width="70%">{{scrapper_data.another_legal_discription}}</td>
+        </tr>
+        <tr>
+            <td width="30%"><b> Description</b></td>
+            <td width="70%">{{scrapper_data.description}}</td>
+        </tr>
+        <tr *ngIf="scrapper_data?.schools">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>School</td>
+                            <td>Name</td>
+                            <td>Rank</td>
+                            <td>Distance</td>
+                        </tr>
+                        <tr>
+                            <td>Elementary</td>
+                            <td>{{scrapper_data?.schools?.elementary?.name}}</td>
+                            <td>{{scrapper_data?.schools?.elementary?.rank}}</td>
+                            <td>{{scrapper_data?.schools?.elementary?.distance}}</td>
+                        </tr>
+                        <tr>
+                            <td>Middle</td>
+                            <td>{{scrapper_data?.schools?.middle?.name}}</td>
+                            <td>{{scrapper_data?.schools?.middle?.rank}}</td>
+                            <td>{{scrapper_data?.schools?.middle?.distance}}</td>
+                        </tr>
+                        <tr>
+                            <td>High</td>
+                            <td>{{scrapper_data?.schools?.high?.name}}</td>
+                            <td>{{scrapper_data?.schools?.high?.rank}}</td>
+                            <td>{{scrapper_data?.schools?.high?.distance}}</td>
+                        </tr>
+                    </table>
+                </td>
+        </tr>
+           
+        <tr *ngIf="scrapper_data?.price_history">
+                <td>Price History</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>Date</td>
+                            <td>Price</td>
+                            <td>Cost per Sqft</td>
+                        </tr>
+                        <tr *ngFor="let priceHistory of scrapper_data?.price_history; let i = index">
+                            <td>{{priceHistory?.date}}</td>
+                            <td>{{priceHistory.price}}</td>
+                            <td>{{priceHistory.price_per_sqft}}</td>
+                        </tr>
+                    </table>
+                </td>
+        </tr>
+    </table>
+</div>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button mat-raised-button class="btn-primary" (click)="updateScrapperData()">
+        Save
+    </button>
+</mat-dialog-actions>

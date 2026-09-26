@@ -1,0 +1,31 @@
+<app-attention-warning></app-attention-warning>
+<app-property-search (propertyResult)="searchResult($event)" [limit]="limit"></app-property-search>
+<div class="estate_content p-5 parent-loader">
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        
+    <div class="estate-search-result ">
+        <!-- <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div> -->
+        <div *ngIf="totalResult>0" class="row search_result p-t-10 p-b-10">
+            <div class="col-md-6">
+                <app-propert-export [house_ids]="house_ids"></app-propert-export>
+            </div>
+            <div class="col-md-6">
+                <div class="pull-right">
+                    <button *ngIf="!selectPropertFlag" class="btn btn-primary btn-sm" (click)="select_all()">SELECT ALL</button>
+                    <button *ngIf="selectPropertFlag" class="btn btn-primary btn-sm" (click)="un_select_all()">UNSELECT ALL</button>
+                    <!-- <button  class="btn btn-primary btn-sm" (click)="deleteSelectPorperty()"><i class="fa fa-trash"></i> DELETE</button> -->
+                </div>
+            </div>
+        </div>
+        
+        <ng-container *ngFor="let propertyType of propetyCountInfo | keyvalue:asIsOrder">
+            <panel [collapse]="collapse" (valueChange)='panelExpand($event,propertyType.key)' title="{{propertyType.key=='passit'?'Release Buy It Request Order':propertyType.key.split('_').join(' ') | titlecase }} ( {{propertyType.value || '0'}} )">
+                <app-homebuyer-property-detail [limit]="limit" [filter_type]="propertyType.key" (selectedProperty)='displayCounter($event)' (unSelectedProperty)='removeHouseIds($event)'></app-homebuyer-property-detail>
+            </panel>
+        </ng-container>
+       
+        
+     
+    </div>
+</div>
+       

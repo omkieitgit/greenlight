@@ -1,0 +1,16 @@
+<div *ngIf="breadCrumbFlag" class="row">
+  <ol class="breadcrumb pull-right">
+    <li class="breadcrumb-item">
+      <a href="javascript:;" [routerLink]="['/home/dashboard']">Home</a>
+    </li>
+     <li *ngIf="breadcrumb" class="breadcrumb-item active">{{breadcrumb}}</li>
+  </ol>
+</div>
+<div class="row">
+    <div appMatchHeight="es-read-more" class="alert alert-secondary bg-white">
+      <p class="es-read-more" [ngClass]="{'attention-worning':!expand}"> 
+        <span class="text-warning semi-bold">ATTENTION/WARNING:</span> THESE TRANSACTIONS INVOLVE RISK. YOU MAY LOSE SOME OR ALL OF YOUR CAPITAL. The services offered may not be suitable for you. You must do your own due diligence and verify any information provided. We encourage you to seek advice from an independent financial advisor, real estate professional, accountant, tax advisor and/or attorney. Unless otherwise stated, the figures shown in all documents provided (including, but not limited to, information regarding title, ownership, liens, tax liens, taxes, current property values, after repair property values, and costs of repairs or renovations) are NOT guaranteed to be accurate and are estimates only. Some estimates are high; some are low. There are NO representations being made that any transaction will achieve profits similar to those being shown and there are NO GUARANTEES OF RESULTS OR PROFITS. DO NOT ENTER INTO THESE TRANSACTIONS UNLESS YOU ARE PREPARED TO LOSE SOME OR ALL OF YOUR CAPITAL.
+      </p>
+      <a href="javascript:;" class="readmore" *ngIf="!expand" (click)="toggleList(expand)" >More</a>
+    </div>
+  </div>

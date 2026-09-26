@@ -1,0 +1,82 @@
+<h3 mat-dialog-title>SubTo</h3>
+<mat-dialog-content class="parent-loader">
+        <div *ngIf="!loader"  class="child-loader"><span class="spinner-small "></span></div>
+        <div *ngIf="loader" class="form-group row m-b-0">
+                <div class="col-md-12">
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">ADDRESS:</label></div>
+                                <div class="col-md-8">{{ propertyDetail?.address }}, {{ propertyDetail?.city }}, {{ propertyDetail?.state }}, {{ propertyDetail?.zip }}</div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">OTHER INFO:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.total_living_sqft }}, {{propertyDetail?.year_built}}, {{propertyDetail?.lot_acreage_sf}} 
+                                </div>
+
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Owner 1:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.owner_info[0]?.full_name+' '+propertyDetail?.owner_info[0]?.phone }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Owner 2:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.owner_info[1]?.full_name+' '+propertyDetail?.owner_info[1]?.phone }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">CMA/ARV:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.recommended_cma_arv }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Sale Type:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ sale_type[propertyDetail?.last_sale_details?.sale_type] }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">County Value:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.county_value }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Lien 1:</label></div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Monthly Payment:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.first_liens?.amortization_monthly_payment }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Loan Estimated Balance:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.first_liens?.amortization_loan_estimate_balance }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Total Debt w/ Attorney fees:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.first_liens?.total_est_debt }} </div>
+                        </div>
+
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Lien 2:</label></div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Monthly Payment:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.second_liens?.amortization_monthly_payment }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Loan Estimated Balance:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.second_liens?.amortization_loan_estimate_balance }} </div>
+                        </div>
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Total Debt w/ Attorney fees:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.second_liens?.total_est_debt }} </div>
+                        </div>
+
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">HOA Lien:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.hoa_liens?.hoa_name }} {{ propertyDetail?.hoa_liens?.hoa_lien_amount }} </div>
+                        </div>
+
+                        <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Property Taxes Owed:</label></div>
+                                <div class="col-md-8 form-control-plaintext">{{ propertyDetail?.assessment[0]?.total_property_taxes_owed }} </div>
+                        </div>
+                </div>
+        </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

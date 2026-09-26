@@ -1,0 +1,100 @@
+<div class="estate-property">
+  <!-- begin col-6 -->
+  <div class="col-lg-12 p-0">
+    <!-- begin panel -->
+    <panel (valueChange)='panelExpand($event)' title="Mortgage, Other Liens">
+      <div class="parent-loader">
+        <!-- Loader DIV -->
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <!-- Loader DIV -->
+        <ng-container  *ngIf="mortgageLoading">
+          <mortgate-other-prop-tax 
+          [sale_info]="sale_info" 
+          [mortgageDataOther]="mortgageDataOther">
+        </mortgate-other-prop-tax>
+         
+          <!-- First lien -->
+          <app-lien 
+              [lienData]="firstLienInfo" 
+              [lien]="firstlien" 
+              [sale_info]="sale_info" 
+              [amortization_info]="mortgageDataBlankModel.amortizationInfo"
+              [manualSearch]="manualSearch"
+              [no_active_mortgage_lien]="no_active_mortgage_lien"
+              [excessFunds]="excessFunds"
+              (updateLoanEsBalance)="updateEsBalance($event)"
+              ></app-lien>
+          
+          <!-- Second lien -->
+          <app-lien 
+            [lienData]="secondLienInfo" 
+            [lien]="secondlien" 
+            [sale_info]="sale_info" 
+            [amortization_info]="mortgageDataBlankModel.amortizationInfo"
+            [manualSearch]="manualSearch"
+            [no_active_mortgage_lien]="no_active_mortgage_lien"
+            [excessFunds]="excessFunds"
+            (updateLoanEsBalance)="updateEsBalance($event)"
+
+          ></app-lien>
+
+          <!-- Third lien -->
+          <app-lien 
+            [lienData]="thirdLienInfo" 
+            [lien]="thirdlien" 
+            [sale_info]="sale_info" 
+            [amortization_info]="mortgageDataBlankModel.amortizationInfo"
+            [manualSearch]="manualSearch"
+            [no_active_mortgage_lien]="no_active_mortgage_lien"
+            (fourthLien)="viewFourthLien($event)"
+            [excessFunds]="excessFunds"
+            (updateLoanEsBalance)="updateEsBalance($event)"
+          ></app-lien>
+           <!-- Fourth lien -->
+           <app-lien *ngIf="showFourthLien || fourthLineInfo.mortgage_id" 
+           [lienData]="fourthLineInfo" 
+           [lien]="fourthlien" 
+           [sale_info]="sale_info" 
+           [amortization_info]="mortgageDataBlankModel.amortizationInfo"
+           [manualSearch]="manualSearch"
+           [no_active_mortgage_lien]="no_active_mortgage_lien"
+           (fourthLien)="viewFifthLien($event)"
+         ></app-lien>
+          <app-lien *ngIf="showFifththLien || fifthLineInfo.mortgage_id" 
+              [lienData]="fifthLineInfo" 
+              [lien]="fifthlien" 
+              [sale_info]="sale_info" 
+              [amortization_info]="mortgageDataBlankModel.amortizationInfo"
+              [manualSearch]="manualSearch"
+              [no_active_mortgage_lien]="no_active_mortgage_lien"
+            ></app-lien>
+
+          <lien-hoa 
+            [lienHoaData]="lienHoaData" 
+            [sale_info]="sale_info"
+            [manualSearch]="manualSearch"
+            ></lien-hoa> 
+            
+            <app-lien-tax
+            [lienTaxData]="lienTaxData" 
+            [sale_info]="sale_info"
+            [manualSearch]="manualSearch"
+            [excessFunds]="excessFunds"
+            ></app-lien-tax> 
+
+          <lien-other 
+            [lienOtherData]="lienOtherData"
+            [sale_info]="sale_info"
+            [manualSearch]="manualSearch"
+            ></lien-other>
+            
+        </ng-container>
+        
+        <!-- <div #mortgageSections></div> -->
+      </div>
+    
+    </panel>
+  </div>
+  <!-- end col-12 -->
+</div>
+<!-- row end -->

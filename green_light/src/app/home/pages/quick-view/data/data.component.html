@@ -1,0 +1,61 @@
+<h3>Notes</h3>
+<div class="form-group row m-b-0">
+    <div class="col-md-12">
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">ADDRESS:</label></div>
+            <div class="col-md-8">{{ data.address }} </div>
+        </div>
+
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">COUNTY:</label></div>
+            <div class="col-md-8">{{ data.county }} </div>
+        </div>
+
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">OWNER NAME:</label></div>
+            <div class="col-md-8">{{ data.owner_name }} </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">CMA/ARV:</label></div>
+            <div class="col-md-8">{{ data.cma_arv }} </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">EQUITY:</label></div>
+            <div class="col-md-8">{{ data.est_equity }} </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">L1:</label></div>
+            <div class="col-md-8">{{ data.l1 }} </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">L2:</label></div>
+            <div class="col-md-8">{{ data.l2 }} </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">Monthly Principle:</label></div>
+            <div class="col-md-8">{{ data.monthly_principal_payment }} </div>
+        </div>
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">RENT:</label></div>
+            <div class="col-md-8">{{ data.rental_rate }} </div>
+        </div>
+         <!--<div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">TAXES:</label></div>
+            <div class="col-md-8">{{ data.address }} </div>
+        </div> -->
+        <div class="form-group row m-b-0">
+            <div class="col-md-4"><label class="col-form-label">NOTES:</label></div>
+        </div>
+        <div class="form-group row m-b-0" *ngFor="let notes of data.whole_sale_note">
+            <div class="col-md-4" ><label class="col-form-label">&nbsp;</label></div>
+            <div class="col-md-8">{{  notes.note }} </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- one row start-->
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>
+<!-- one row end-->

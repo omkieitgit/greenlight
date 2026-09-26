@@ -1,0 +1,92 @@
+
+        <h3 mat-dialog-title>Form 1099-MISC</h3>
+        <mat-dialog-content >
+            <!-- Loader DIV -->
+            <form  [formGroup]="miscFormData" class="parent-loader">
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <div class="form-group row m-b-0 m-t-5">
+                    <div class="col-md-12">
+                        
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                    <label class="col-form-label">RECIPIENT’S</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <select  class="form-control m-b-0"  formControlName="id" (change)="onChangeRecipients($event)" [ngClass]="{ 'is-invalid': submitted && f.id.errors }">
+                                    <option *ngFor="let recipients of recipients_info" value="{{recipients.id}}">{{recipients?.recipients_name}}</option>
+                                    <option value="new">Add New</option>
+                                </select>
+                                <div *ngIf="f.id.errors" class="invalid-feedback">
+                                  <div *ngIf="f.id.errors.required">Recipient is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-container *ngIf="showRecipients">
+                            <div class="form-group row">
+                                <div class="col-md-6">
+                                        <label class="col-form-label">RECIPIENT’S name</label>    
+                                </div>
+                                <div class="col-md-6">
+                                    <input formControlName="recipients_name" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.recipients_name.errors }">
+                                    <div *ngIf="f.recipients_name.errors" class="invalid-feedback">
+                                      <div *ngIf="f.recipients_name.errors.required">Recipient Name is required</div>
+                                    </div>
+                                </div>
+                                
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="col-form-label">RECIPIENT’S TIN</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <input formControlName="recipients_tin" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.recipients_tin.errors }">
+                                <div *ngIf="f.recipients_tin.errors" class="invalid-feedback">
+                                    <div *ngIf="f.recipients_tin.errors.required">Recipient Tin is required</div>
+                                </div>
+                            </div>
+                        </div>
+            
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="col-form-label">Street Address</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <input  formControlName="recipients_address" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.recipients_address.errors }" >
+                                <div *ngIf="f.recipients_address.errors" class="invalid-feedback">
+                                    <div *ngIf="f.recipients_address.errors.required">Recipient Address is required</div>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="col-form-label">City, state, country, and ZIP</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <input formControlName="recipients_city_state" type="text" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.recipients_city_state.errors }">
+                                <div *ngIf="f.recipients_city_state.errors" class="invalid-feedback">
+                                    <div *ngIf="f.recipients_city_state.errors.required">Recipient City is required</div>
+                                </div>
+                            </div>
+                        </div>
+                        </ng-container>
+                        
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label class="col-form-label">Amount</label>    
+                            </div>
+                            <div class="col-md-6">
+                                <input formControlName="amount" type="text" class="form-control m-b-0" >
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+       </mat-dialog-content>
+    
+       <mat-dialog-actions align="end">
+                <button mat-button (click)="closeDialog()">Close</button>
+                <button  mat-button (click) ="!loading && validateForm(miscFormData)">Save</button>
+        </mat-dialog-actions>
+      
+      

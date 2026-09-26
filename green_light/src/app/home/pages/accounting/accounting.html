@@ -1,0 +1,39 @@
+
+ <div class="row m-b-5 justify-content-end" >
+  <div class="col-md-1">
+    <button class="form-control m-b-0 btn btn-sm btn-primary" 
+            [useExistingCss]="true" 
+            printTitle="Property Detail - {{ propertyInfo?.address }}" 
+            printSectionId="accounting_tab" 
+            ngxPrint >
+            Print
+    </button>
+  </div>
+</div> 
+<div class="estate-property" id="accounting_tab">
+  <app-time-tracking *ngIf="!viewAccessOnly" onpage="true" [property_id]="property_id"></app-time-tracking>
+  
+  <panel title="Accounting" [collapse]='false'>
+    
+    <app-home-buyer *ngIf="payoutDetail && loadNunHud" 
+      [property_id]="property_id"  
+      [payoutDetail]="payoutDetail"
+      [renoHomeBuyerCategory]="renoHomeBuyerCategory"></app-home-buyer>
+  
+    <app-accounting-document *ngIf="!viewAccessOnly" [property_id]="property_id" [viewAccessOnly]="viewAccessOnly"></app-accounting-document>
+    
+    <app-client-document [property_id]="property_id"></app-client-document>
+    <app-msc-form  *ngIf="!viewAccessOnly" [property_id]="property_id"></app-msc-form>
+    
+    <ng-container *ngIf="isBuyerMcdAccess">
+      <app-home-mcd *ngIf="loadPayout && loadNunHud" 
+        [property_id]="property_id" 
+        [payoutDetail]="payoutDetail"
+        [nonHubResult]="nonHubResult">
+      </app-home-mcd>
+    </ng-container>
+  
+
+    <app-mcd-user  *ngIf="!viewAccessOnly" [property_id]="property_id" ></app-mcd-user>
+  </panel>
+</div>

@@ -1,0 +1,124 @@
+<panel  title="investor information">
+        <div class="parent-loader">
+                <!-- Loader DIV -->
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <!-- Loader DIV -->
+                <form *ngIf="!viewAccessOnly" [formGroup]="lenderForm">
+                        <!-- one row start-->
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Investor Name</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="lender_name" [ngClass]="{ 'is-invalid': submitted && f.lender_name.errors }" />   
+                                        <div *ngIf="f.lender_name.errors" class="invalid-feedback">
+                                                <div *ngIf="f.lender_name.errors.required">Lender Name is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Interest</label>
+                                        <div class="input-group">
+                                                <input type="text" class="form-control m-b-0" placeholder="Interest %" formControlName="percentage" [ngClass]="{ 'is-invalid': submitted && f.percentage.errors }">
+                                                <div class="input-group-append">
+                                                        <span class="input-group-text"><i class="fa fa-percent"></i></span>
+                                                </div>
+                                                <div *ngIf="f.percentage.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.percentage.errors.required">Purpose of funds is required</div>
+                                                </div>
+                                        </div>
+                                </div>
+                        
+                                <div class="col-md-2">                     
+                                        <label class="col-form-label">Operating Agreement</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="agreement_org_name" [ngClass]="{ 'is-invalid': submitted && f.agreement_org_name.errors }">
+                                </div>
+                                <div class="col-md-2">                     
+                                        <label class="col-form-label">Articles </label>
+                                        <input type="text" class="form-control m-b-0" formControlName="artical_org_name" [ngClass]="{ 'is-invalid': submitted && f.artical_org_name.errors }">
+                                </div>
+                                <div class="col-md-2">                     
+                                        <label class="col-form-label">EIN</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="ein_org_name" [ngClass]="{ 'is-invalid': submitted && f.ein_org_name.errors }">
+                                </div>
+                               
+                               
+                        </div>
+                        <div class="form-group row">
+                                <div class="col-md-1">   
+                                        <label class="col-form-label">&nbsp;</label>         
+                                        <div class="checkbox checkbox-css">
+                                                <input type="checkbox" formControlName="is_lender" id="lender" value="1">
+                                                <label for="lender">Lender</label>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">   
+                                        <label class="col-form-label">&nbsp;</label>         
+                                        <div class="checkbox checkbox-css">
+                                                <input type="checkbox" formControlName="is_craig_per" id="is_craig_per" value="1">
+                                                <label for="is_craig_per">RE Craig %</label>
+                                        </div>
+                                </div>
+                                <div class="col-md-1">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button (click) ="validateForm(this.lenderForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                </div>
+                        </div>
+                        
+                </form> 
+                <div class="table-responsive m-t-10 table-fixed-header">
+                        <table class="table table-bordered table-condensed">
+                               <thead>
+                                        <tr>
+                                                <th>Contibutor/Lender Name</th>
+                                                <th>Percentage</th>
+                                                <th>Operating Agreement</th>
+                                                <th>Article</th>
+                                                <th>EIN</th>
+                                                <th>Action</th>
+                                      </tr>
+                               </thead>
+                                <tbody>
+                                  <tr *ngFor="let lender of mcdLenderResult">
+                                    <td>{{lender.lender_name}}</td>
+                                    <td>{{lender.percentage}}</td>
+                                    <td class="break">
+                                        <a *ngIf="lender.agreement_org_name && isValidURL(lender.agreement_org_name); else other_content" href="{{lender?.url?.agreement_store_name?lender?.url?.agreement_store_name:lender.agreement_org_name}}" target="_blank" [title]="lender.agreement_org_name">View</a>
+                                        <ng-template #other_content>{{lender.agreement_org_name}}</ng-template>
+                                    </td>
+                                    <td class="break">
+                                        <a *ngIf="lender.artical_org_name && isValidURL(lender.artical_org_name); else other_content1" href="{{lender?.url?.artical_store_name?lender?.url?.artical_store_name:lender.artical_org_name}}" target="_blank" [title]="lender.agreement_org_name">View</a>
+                                        <ng-template #other_content1>{{lender.artical_org_name}}</ng-template>
+                                    <td class="break">
+                                        <a *ngIf="lender.ein_org_name && isValidURL(lender.ein_org_name); else other_content2" href="{{lender?.url?.ein_store_name?lender?.url?.ein_store_name:lender.ein_org_name}}" target="_blank" [title]="lender.ein_org_name">View</a>
+                                        <ng-template #other_content2>{{lender.ein_org_name}}</ng-template>
+                                    </td>
+
+                                    <td class="p-5">
+                                            <ng-container *ngIf="!viewAccessOnly">
+                                                <a href="javascript:;" (click)="removeMcdLender(lender.id)">
+                                                        <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                </a>
+                                                <a href="javascript:;" (click)="editMcdLender(lender)">
+                                                    <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                </a>
+                                            </ng-container>
+                                    </td>
+
+                                  </tr>
+                                  
+                                </tbody>
+                                <tfoot>
+                                  <!-- <tr>
+                                    <td  colspan="4" align="right" ><strong>Total:</strong></td>
+                                    <td>{{ calTotalAmount('amount') }}</td>
+                                    <td>{{ calTotalAmount('returned_amount') }}</td>
+                                    <td>{{ calTotalAmount('funded_days') }}</td>
+                                    <td>{{ calTotalAmount('pts') }}</td>
+                                    <td>{{ calTotalAmount('interest') }} </td>
+                                    <td>{{ calTotalAmount('lender_referral') }}</td>
+                                    <td colspan="2"></td>
+                                  </tr> -->
+                                </tfoot>
+                        </table>
+                </div>
+                        
+        </div>
+</panel>

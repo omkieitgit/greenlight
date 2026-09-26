@@ -1,0 +1,217 @@
+<panel  title="Short Term Rental" (valueChange)='panelExpand($event)'>
+        <div class="parent-loader">
+                <!-- Loader DIV -->
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <!-- Loader DIV -->
+                <!-- <app-bank-statement [property_id]="property_id"></app-bank-statement> -->
+               
+                <panel  title="Short Term Rental & Booking" (valueChange)='panelExpand($event)'>
+                        <form [formGroup]="ShortTermRentalForm">
+                                <!-- one row start-->
+                                <div class="form-group row m-b-5" >
+                                        <div class="col-md-2 _navbar_search">
+                                                <label class="col-form-label">Booking Type</label>
+                                                <mat-form-field appearance="outline" >
+                                                        <input type="text" matInput formControlName="rental_type" [matAutocomplete]="auto1">
+                                                        <mat-autocomplete #auto1="matAutocomplete">
+                                                        <mat-option [value]="'rental'">Rental</mat-option>
+                                                        <mat-option  [value]="'booking'">Booking</mat-option>
+                                                        </mat-autocomplete>
+                                                </mat-form-field>
+                                        </div>
+                                        <div *ngIf="f.rental_type.value=='rental'" class="col-md-2">
+                                                <label class="col-form-label">Property Number</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="property_number" [ngClass]="{ 'is-invalid': submitted && f.property_number.errors }" />   
+                                                <div *ngIf="f.property_number.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.property_number.errors.required">Trans is required</div>
+                                                </div>
+                                        </div>
+                                        
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Guest</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="guest_name" [ngClass]="{ 'is-invalid': submitted && f.guest_name.errors }" />   
+                                                <div *ngIf="f.guest_name.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.guest_name.errors.required">Trans is required</div>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Checked In Date</label>
+                                                <my-date-picker name="check_in_date" [options]="myDatePickerOptions" formControlName="check_in_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                                <div *ngIf="f.check_in_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                        <div *ngIf="f.check_in_date.errors.required">Date is required</div>
+                                                </div> 
+                                        </div>
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Checked Out Date</label>
+                                                <my-date-picker name="check_out_date" [options]="myDatePickerOptions" formControlName="check_out_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                                <div *ngIf="f.check_out_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                        <div *ngIf="f.check_out_date.errors.required">Date is required</div>
+                                                </div> 
+                                        </div>
+        
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Amount</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="amount_received" [ngClass]="{ 'is-invalid': submitted && f.amount_received.errors }" />   
+                                                <div *ngIf="f.amount_received.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.amount_received.errors.required">Amount is required</div>
+                                                </div>
+                                        </div>
+                                        <div *ngIf="f.rental_type.value=='booking'" class="col-md-2">
+                                                <label class="col-form-label">&nbsp;</label>
+                                                <button (click) ="validateForm(this.ShortTermRentalForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                        </div>
+                                      
+                                </div>
+                                <div  *ngIf="f.rental_type.value=='rental'" class="form-group row m-b-5" >
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Property Description</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="property_description" [ngClass]="{ 'is-invalid': submitted && f.property_description.errors }" />   
+                                                <div *ngIf="f.property_description.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.property_description.errors.required">property Name is required</div>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Account Deposited</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="account_deposited" [ngClass]="{ 'is-invalid': submitted && f.account_deposited.errors }" />   
+                                                <div *ngIf="f.account_deposited.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.account_deposited.errors.required">Account Deposited is required</div>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Link</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="link" [ngClass]="{ 'is-invalid': submitted && f.link.errors }" />   
+                                                <div *ngIf="f.link.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.link.errors.required">Link is required</div>
+                                                </div>
+                                        </div>
+        
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Deposit Link</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="deposite_link" [ngClass]="{ 'is-invalid': submitted && f.deposite_link.errors }" />   
+                                                <div *ngIf="f.deposite_link.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.deposite_link.errors.required">Link is required</div>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">Amount Deposited</label>
+                                                <input type="text" class="form-control m-b-0" formControlName="amount_deposit" [ngClass]="{ 'is-invalid': submitted && f.amount_deposit.errors }" />   
+                                                <div *ngIf="f.amount_deposit.errors" class="invalid-feedback">
+                                                        <div *ngIf="f.amount_deposit.errors.required">Amount Deposited is required</div>
+                                                </div>
+                                        </div>
+                                       
+                                        <div class="col-md-2">
+                                                <label class="col-form-label">&nbsp;</label>
+                                                <button (click) ="validateForm(this.ShortTermRentalForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                        </div>
+                                </div>
+                                
+                        </form> 
+                        
+                        <fieldset>
+                                <legend>Rental</legend> 
+                                <div class="table-responsive m-t-10 table-fixed-header">
+                                        <table class="table table-bordered table-condensed">
+                                                <thead>
+                                                        <tr>
+                                                                <th>Property Number</th>
+                                                                <th>Guest</th>
+                                                                <th>Date of Checked In</th>
+                                                                <th>Date of Checked out</th>
+                                                                <th>Property Description</th>
+                                                                <th>Amount</th>
+                                                                <th>Account Deposited</th>
+                                                                <th>Amounts Paid to Client</th>
+                                                                <th>Link</th>
+                                                                <th>Deposit Link</th>
+                                                                <th>Action</th>
+                                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <tr *ngFor="let rental of shortTermRental">
+                                                                <td>{{rental.property_number}}</td>
+                                                                <td>{{rental.guest_name}}</td>
+                                                                <td>{{rental.check_in_date}}</td>
+                                                                <td>{{rental.check_out_date}}</td>
+                                                                <td>{{rental.property_description}}</td>
+                                                                <td>{{rental.amount_received | currency}}</td>
+                                                                <td>{{rental.account_deposited}}</td>
+                                                                <td>{{rental?.amount_deposit}}</td>
+                                                                <td>
+                                                                        <a *ngIf="rental.link && isValidURL(rental.link); else other_content" href="{{rental.link}}" target="_blank" [title]="rental?.link">View</a> 
+                                                                        <ng-template #other_content>{{rental?.link}}</ng-template>
+
+                                                                </td>
+                                                                <td>
+                                                                        <a *ngIf="rental.deposite_link && isValidURL(rental.deposite_link); else other_content1" href="{{rental.deposite_link}}" target="_blank" [title]="rental?.deposite_link">View</a>
+                                                                        <ng-template #other_content1>{{rental?.deposite_link}}</ng-template>
+                                                                </td>
+                                                                <td class="p-5">
+                                                                        <a href="javascript:;" (click)="removeShortTermRental(rental.id)">
+                                                                                <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                                        </a>
+                                                                        <a href="javascript:;" (click)="editShortTermRental(rental)">
+                                                                                <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                                        </a>
+                                                                </td>
+                
+                                                        </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                        <tr>
+                                                        <td  colspan="5" align="right" ><strong>Total Summary:</strong></td>
+                                                        <td>{{ (shortTermRental|sum:'amount_received') | currency }}</td>
+                                                        <td></td>
+                                                        <td>{{ (shortTermRental|sum:'amount_deposit') | currency }}</td>
+                                                        <td colspan="4"></td>
+                                                        </tr>
+                                                </tfoot>
+                                                
+                                        </table>
+                                </div>
+                        </fieldset>
+        
+                        <!-- <fieldset>
+                                <legend>Booking</legend> 
+                                <div class="table-responsive m-t-10">
+                                        <table class="table table-bordered table-condensed">
+                                                <tr>
+                                                        <th>Guest</th>
+                                                        <th>Date of Checked In</th>
+                                                        <th>Date of Checked out</th>
+                                                        <th>Amount</th>
+                                                        <th>Action</th>
+                                                </tr>
+                                                <tbody>
+                                                        <tr *ngFor="let rental of bookingInfo">
+                                                                <td>{{rental.guest_name}}</td>
+                                                                <td>{{rental.check_in_date}}</td>
+                                                                <td>{{rental.check_out_date}}</td>
+                                                                <td>{{rental.amount_received | currency}}</td>
+                                                                <td class="p-5">
+                                                                        <a href="javascript:;" (click)="removeShortTermRental(rental.id)">
+                                                                                <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                                        </a>
+                                                                        <a href="javascript:;" (click)="editShortTermRental(rental)">
+                                                                                <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                                        </a>
+                                                                </td>
+        
+                                                        </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                        <tr>
+                                                        <td  colspan="3" align="right" ><strong>Total Summary:</strong></td>
+                                                        <td>{{ calTotalBookingAmount('amount_received') | currency }}</td>
+                                                        <td ></td>
+                                                        </tr>
+                                                </tfoot>
+                                        </table>
+                                </div>
+                        </fieldset> -->
+                </panel>
+
+                
+                        
+        </div>
+</panel>

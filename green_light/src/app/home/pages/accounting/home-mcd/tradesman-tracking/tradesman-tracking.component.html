@@ -1,0 +1,261 @@
+
+<panel  title="Time Tracking Tradesman" (valueChange)='panelExpand($event)'>
+        <div class="parent-loader">
+                <!-- Loader DIV -->
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <!-- Loader DIV -->
+                <form [formGroup]="tradesmanTrackingForm">
+                        <!-- one row start-->
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <button (click) ="addTradsman()" class="form-control m-b-0 btn btn-sm btn-primary">Add Tradesman</button>
+                                </div>
+                        </div>
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2 _navbar_search">
+                                        <label class="col-form-label">Name</label>
+                                        <mat-form-field appearance="outline" >
+                                                <input type="text" matInput formControlName="name" [matAutocomplete]="auto8" placeholder="Select Name">
+                                                <mat-autocomplete #auto8="matAutocomplete" [displayWith]="displayFn" (optionSelected)="selectedUser()">
+                                                        <mat-option *ngFor="let user of tradesmanUsers;" [value]="user">{{ user.username }}</mat-option>
+                                                </mat-autocomplete>
+                                        </mat-form-field>
+                                        <div *ngIf="f.name.errors" class="invalid-feedback">
+                                                <div *ngIf="f.name.errors.required">Name is required</div>
+                                        </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Date</label>
+                                        <my-date-picker name="working_date" [options]="myDatePickerOptions" formControlName="working_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                        <div *ngIf="f.working_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                <div *ngIf="f.working_date.errors.required">Date is required</div>
+                                        </div> 
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Arrival Time</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="arrival_time" [ngClass]="{ 'is-invalid': submitted && f.arrival_time.errors }" />   
+                                        <div *ngIf="f.arrival_time.errors" class="invalid-feedback">
+                                                <div *ngIf="f.arrival_time.errors.required">Trans is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Morning Start Working</label>
+                                        <div class="row" >
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="morning_time_in" [matAutocomplete]="auto" placeholder="HH">
+                                                                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="getMorningDiffTime()">
+                                                                        <mat-option *ngFor="let hour of hours; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="morning_time_min_in" [matAutocomplete]="auto1" placeholder="MM">
+                                                                <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="getMorningDiffTime()">
+                                                                        <mat-option *ngFor="let mins of minitus; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                        </div>
+                                        <!-- <input type="text" class="form-control m-b-0" formControlName="morning_time_in" [ngClass]="{ 'is-invalid': submitted && f.morning_time_in.errors }" />    -->
+                                        <div *ngIf="f.morning_time_in.errors" class="invalid-feedback">
+                                                <div *ngIf="f.morning_time_in.errors.required">Start Working is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Morning Time Out</label>
+                                        <div class="row" >
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="morning_time_out" [matAutocomplete]="auto2" placeholder="HH">
+                                                                <mat-autocomplete #auto2="matAutocomplete" (optionSelected)="getMorningDiffTime()">
+                                                                        <mat-option *ngFor="let hour of hours; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="morning_time_min_out" [matAutocomplete]="auto3" placeholder="MM">
+                                                                <mat-autocomplete #auto3="matAutocomplete" (optionSelected)="getMorningDiffTime()">
+                                                                        <mat-option *ngFor="let mins of minitus; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                        </div>
+                                       
+                                        <!-- <input type="text" class="form-control m-b-0" formControlName="morning_time_out" [ngClass]="{ 'is-invalid': submitted && f.morning_time_out.errors }" />    -->
+                                        <div *ngIf="f.morning_time_out.errors" class="invalid-feedback">
+                                                <div *ngIf="f.morning_time_out.errors.required">Time Out is required</div>
+                                        </div>
+                                </div>
+                                
+                        </div>
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Afternoon Start Working</label>
+                                        <div class="row" >
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="afternoon_time_in" [matAutocomplete]="auto4" placeholder="HH">
+                                                                <mat-autocomplete #auto4="matAutocomplete" (optionSelected)="getDiffTime()">
+                                                                        <mat-option *ngFor="let hour of hours; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="afternoon_time_min_in" [matAutocomplete]="auto5" placeholder="MM">
+                                                                <mat-autocomplete #auto5="matAutocomplete" (optionSelected)="getDiffTime()">
+                                                                        <mat-option *ngFor="let mins of minitus; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                        </div>
+                                       
+                                        <!-- <input type="text" class="form-control m-b-0" formControlName="afternoon_time_in" [ngClass]="{ 'is-invalid': submitted && f.afternoon_time_in.errors }" />    -->
+                                        <div *ngIf="f.afternoon_time_in.errors" class="invalid-feedback">
+                                                <div *ngIf="f.afternoon_time_in.errors.required">Start Working is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Afternoon Time Out</label>
+                                        <!-- <input type="text" class="form-control m-b-0" formControlName="afternoon_time_out" [ngClass]="{ 'is-invalid': submitted && f.afternoon_time_out.errors }" />    -->
+                                        <div class="row" >
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="afternoon_time_out" [matAutocomplete]="auto6" placeholder="HH">
+                                                                <mat-autocomplete #auto6="matAutocomplete" (optionSelected)="getDiffTime()">
+                                                                        <mat-option *ngFor="let hour of hours; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                                <div class="col-md-6 _navbar_search">
+                                                        <mat-form-field appearance="outline" >
+                                                                <input type="text" matInput formControlName="afternoon_time_min_out" [matAutocomplete]="auto7" placeholder="MM">
+                                                                <mat-autocomplete #auto7="matAutocomplete" (optionSelected)="getDiffTime()">
+                                                                        <mat-option *ngFor="let mins of minitus; let index = index" [value]="index">{{ index>9?index:'0'+index }}</mat-option>
+                                                                </mat-autocomplete>
+                                                        </mat-form-field>
+                                                </div>
+                                                
+                                        </div>
+                                       
+                                        <div *ngIf="f.afternoon_time_out.errors" class="invalid-feedback">
+                                                <div *ngIf="f.afternoon_time_out.errors.required">Time Out is required</div>
+                                        </div>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Total Work Hours</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="total_work_hours" [ngClass]="{ 'is-invalid': submitted && f.total_work_hours.errors }" />   
+                                        <div *ngIf="f.total_work_hours.errors" class="invalid-feedback">
+                                                <div *ngIf="f.total_work_hours.errors.required">Work hours is required</div>
+                                        </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Description</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />   
+                                        <div *ngIf="f.description.errors" class="invalid-feedback">
+                                                <div *ngIf="f.description.errors.required">description Name is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Remarks</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="remarks" [ngClass]="{ 'is-invalid': submitted && f.remarks.errors }" />   
+                                        <div *ngIf="f.remarks.errors" class="invalid-feedback">
+                                                <div *ngIf="f.remarks.errors.required">remarks is required</div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">SSN Number</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="ssn_number" [ngClass]="{ 'is-invalid': submitted && f.ssn_number.errors }" />   
+                                        <div *ngIf="f.remarks.errors" class="invalid-feedback">
+                                                <div *ngIf="f.remarks.errors.required">SSN number is required</div>
+                                        </div>
+                                       
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <div>
+                                                <a *ngIf="user?.id && !user?.w_info?.social_security_number" href="javascript:;" class="m-r-5" (click)="addW9Form()">
+                                                        <i  class="fas fa-lg fa-plus-circle"></i>
+                                                </a>
+                                                <a *ngIf="user?.w_info?.social_security_number" href="javascript:;" class="m-r-5" (click)="addW9Form()">
+                                                        <i  class="fas fa-lg fa-edit"></i>
+                                                </a>
+                                                <a  *ngIf="user?.w_info?.social_security_number" href="javascript:;" class="m-r-5" (click)="viewW9Form()">
+                                                        <i  class="fas fa-lg fa-eye"></i>
+                                                </a>
+                                                <a *ngIf="user?.w_info?.social_security_number" href="javascript:;" (click)="sendEmail(tracking)">
+                                                        <i class="fas fa-lg fa-envelope m-l-10"></i>
+                                                </a>
+                                        </div>
+                                </div>
+                                      
+                                <div class="col-md-2">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button (click) ="validateForm(this.tradesmanTrackingForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                </div>
+                        </div>
+                      
+                </form> 
+                						
+                <div class="table-responsive m-t-10 table-fixed-header">
+                        <table class="table table-bordered table-condensed">
+                                <thead>
+                                        <tr>
+                                                <th>Name</th>
+                                                <th>Date</th>
+                                                <th>Arrival Time</th>
+                                                <th>Morning Start Working</th>
+                                                <th>Morning Time Out</th>
+                                                <th>Afternoon Start Working</th>
+                                                <th>Afternoon Time Out</th>
+                                                <th>Total Work Hours</th>
+                                                <th>Description</th>
+                                                <th>Remarks</th>
+                                                <th>Action</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                        <tr *ngFor="let tracking of tradesmanTracking">
+                                                <td>{{tracking?.user?.username}}</td>
+                                                <td>{{tracking.working_date}}</td>
+                                                <td>{{tracking.arrival_time }}</td>
+                                                <td>{{todayDate+' '+tracking.morning_time_in+':00' |date:'h:mm a' }}</td>
+                                                <td>{{todayDate+' '+tracking.morning_time_out +':00'|date:'h:mm a' }}</td>
+                                                <td>{{todayDate+' '+tracking.afternoon_time_in+':00' |date:'h:mm a'  }}</td>
+                                                <td>{{todayDate+' '+tracking.afternoon_time_out+':00' |date:'h:mm a' }}</td>
+                                                <td>{{tracking.total_work_hours}}</td>
+                                                <td>{{tracking.description}}</td>
+                                                <td>{{tracking.remarks}}</td>
+                                                <td class="p-5">
+                                                        <a href="javascript:;" (click)="removeTradesmanTracking(tracking.id)">
+                                                                <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                        </a>
+                                                        <a href="javascript:;" (click)="editTradesmanTracking(tracking)">
+                                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                        </a>
+                                                        
+                                                </td>
+
+                                        </tr>
+                                </tbody>
+                                <tfoot>
+                                        <tr *ngFor="let summery of tradesmanSummery">
+                                                <td colspan="2">{{summery?.user?.username}}</td>
+                                                <td colspan="9">{{summery?.timeSum}}</td>
+                                        </tr>
+                                </tfoot>
+                        </table>
+                </div>
+                        
+        </div>
+</panel>

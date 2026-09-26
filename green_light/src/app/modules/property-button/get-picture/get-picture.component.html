@@ -1,0 +1,77 @@
+<h3>Get Picture</h3>
+<form [formGroup]="getPictureForm" class="parent-loader">
+  <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+  <div *ngIf="!visiblePayment">
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Number of homes</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <select formControlName="number_home" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.number_home.errors }" >
+                <option value="1" amount="75">1 Home $75.00</option>
+                <option value="3" amount="175">3 Homes $175.00</option>
+                <option value="5" amount="275">5 Homes $275.00</option>
+                <option value="crawl_space">Crawl Space Pictures</option>
+            </select>
+            <div *ngIf="f.number_home.errors" class="invalid-feedback">
+              <div *ngIf="f.number_home.errors.required">Please select Number of homes.</div>
+            </div>
+        </div>
+      </div> 
+
+      <div *ngIf="crawlSpaceFlag">
+          <div class="form-group row m-b-0">
+              <div class="col-md-4">
+                <label class="col-form-label">Enter number of homes</label>
+              </div>
+          </div>
+          <div class="form-group row m-b-0">
+            <div class="col-md-4">
+                <input type="number" formControlName="number_of_home" (change)="crawlSpaceAmount($event)" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.number_of_home.errors }" />
+                <div *ngIf="f.number_of_home.errors" class="invalid-feedback">
+                  <div *ngIf="f.number_of_home.errors.required">Please enter Number of homes.</div>
+                </div>
+            </div>
+            <div class="col-md-2 font-weight-bold">{{ numberOfHouse | currency }}</div>
+          </div> 
+      </div>
+      
+
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Note</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-10">
+            <textarea autosize [minRows]="5" formControlName="notes" [ngClass]="{ 'is-invalid': submitted && f.notes.errors }" class="form-control m-b-0"></textarea>
+            <div *ngIf="f.notes.errors" class="invalid-feedback">
+              <div *ngIf="f.notes.errors.required">Please enter note.</div>
+            </div>
+            <p>Please put the address of the home(s) in the note box.</p>
+        </div>
+    
+      </div> 
+  </div>
+
+  <div *ngIf="visiblePayment">
+      <form action="" method="post" id="wholesale_register_form" enctype="multipart/form-data">
+        <div id="braintree-payment-form"></div>
+        <button (click)="processing()" *ngIf="showBraintreeButton"  type="submit" class="es-button left" id="payment_sub"  class="btn btn-default ic" value="">
+            {{showBraintreeButtonText}} (${{amount}})
+        </button>
+    </form>
+  </div>
+ 
+  <mat-dialog-actions align="end">
+      <button mat-button mat-raised-button mat-dialog-close>Close</button>
+      <button *ngIf="!visiblePayment" mat-button mat-raised-button class="btn-primary" (click)="validateForm(this.getPictureForm)">
+        Next
+        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+      </button>
+  </mat-dialog-actions>
+</form>
+    
+

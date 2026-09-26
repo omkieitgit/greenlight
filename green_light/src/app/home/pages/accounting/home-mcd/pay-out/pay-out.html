@@ -1,0 +1,323 @@
+<panel title="Pay Out" (valueChange)='panelExpand($event)'>
+  <div class="parent-loader">
+    <div *ngIf="!loaded"  class="child-loader"><span class="spinner-small "></span></div>
+
+    <ng-container *ngIf="loaded">
+      <form [appDisableElement]="payoutForm" [formGroup]="payoutForm">
+        <fieldset>
+          <legend>
+            Master Closing Document {{property_info?.address}}
+            <button *ngIf="!viewAccessOnly" (click) ="payoutCategoryList()"class="btn btn-sm btn-primary pull-right">
+              Payout Category
+            </button>
+          </legend>     
+          <app-payout-info 
+            [openPanel]="openPanel" 
+            [property_id]="property_id" 
+            [payoutInfo]="payoutInfo"
+            [viewAccessOnly]="viewAccessOnly"
+            (totalPurchaseAmount)="purchaseAmountAtoB($event)">
+          </app-payout-info>
+        </fieldset>
+
+        <app-payout-category 
+          [openPanel]="openPanel" 
+          [property_id]="property_id" 
+          [payoutInfo]="payoutInfo" 
+          [categoryList]="category_list"
+          title="Costs paid out of closing Hud A to B"
+          totalTitle="Total costs to Buy A to B"
+          categoryType="a_to_b"
+          (totalAmount)="totalAmountPayout($event)">
+        </app-payout-category>
+
+        <app-payout-category 
+          [openPanel]="openPanel" 
+          [property_id]="property_id" 
+          [payoutInfo]="payoutInfo" 
+          [categoryList]="category_list"
+          title="Credits received on settlement"
+          totalTitle="Total credits received on settlement"
+          categoryType="settlement"
+          (totalAmount)="totalCreditReceiveAmount($event)">
+        </app-payout-category>
+
+
+          <div class="table-responsive m-t-10">
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <td><strong>Total Cost to Buy A to B:</strong></td>
+                <td>
+                  {{ ((totalPurchaseAmountAtoB*1 ) + (totalAmountAtoB*1 ) + (totalAmountCreditReceive*1)).toFixed(2) | currency}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <app-payout-category 
+            [openPanel]="openPanel" 
+            [property_id]="property_id" 
+            [payoutInfo]="payoutInfo" 
+            [categoryList]="category_list"
+            title="Cash Adjustments"
+            totalTitle="Total Cash Adjustments on Settlement"
+            categoryType="adjustment"
+            (totalAmount)="totalAdjustmentsSettlementAmount($event)">
+          </app-payout-category>
+
+          <div class="table-responsive m-t-10">
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <td align="right"><strong>Total Cash Required/(Surplus) on Settlement:</strong></td>
+                <td>{{ ((totalPurchaseAmountAtoB*1 ) + (totalAmountAtoB*1 ) + (totalAmountCreditReceive*1) + (totalAdjustmentAmount*1)).toFixed(2)| currency}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <app-purchase-adjustments 
+            [property_id]="property_id"
+            [payoutInfo]="payoutInfo" 
+            [categoryList]="category_list"
+            [viewAccessOnly]="viewAccessOnly"
+            (totalPurchaseAdjustment)="totalPurchaseAdj($event)"
+            (bonusSpread)="bonusSpreadDetail($event)">
+          </app-purchase-adjustments>
+
+          <div class="table-responsive m-t-10">
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <td><strong>Total A to B Purchase Cost:</strong> </td>
+                <td>{{ ((totalPurchaseAmountAtoB*1 )+ (totalAmountAtoB*1 ) + (totalAmountCreditReceive*1) +(totalPurchaseAdjuestment*1)).toFixed(2) | currency}}</td>
+              </tr>
+            </table>
+          </div>
+
+          <app-fees
+            [property_id]="property_id"
+            [payoutInfo]="payoutInfo" 
+            [categoryList]="category_list"
+            [viewAccessOnly]="viewAccessOnly"
+            (totalEstateFee)="totalFee($event)">
+          </app-fees>
+
+          <app-non-hud 
+            [openPanel]="openPanel" 
+            [property_id]="property_id" 
+            [nonHubResult]="nonHubResult"
+            (totalNonHudAmount)="totalNonHud($event)">
+          </app-non-hud>
+
+          <div class="table-responsive m-t-10">
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <td><strong>Total Costs to Buy A to B:</strong></td>
+                <td>
+                  {{ ((totalPurchaseAmountAtoB*1 )+ (totalAmountAtoB*1 ) + (totalAmountCreditReceive*1)  + (totalPurchaseAdjuestment*1) +(totalFeeAmount*1) + (totalNonHudAmount*1)).toFixed(2) | currency}}</td>
+                <td></td>
+              </tr>
+            </table>
+          </div>
+
+          <app-payout-category 
+            [openPanel]="openPanel" 
+            [property_id]="property_id" 
+            [payoutInfo]="payoutInfo" 
+            [categoryList]="category_list"
+            title="Income other than Sale"
+            totalTitle="Total income other than Sale"
+            categoryType="othersale"
+            (totalAmount)="otherSaleIncome($event)">
+          </app-payout-category>
+
+        
+            <fieldset>
+              <div class="form-group row">
+                  <div class="col-md-2"> 
+                    <label class="col-form-label">Hud B to C</label> 
+                    &nbsp;&nbsp;<span [appLink]="payoutForm.get('hud_btoc').value"></span>
+                  </div>
+                  <div class="col-md-3">
+                          <input type="text" class="form-control m-b-0" formControlName="hud_btoc" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                  </div>
+                  <div class="col-md-2"> <label class="col-form-label">Selling Price B to C</label> </div>
+                  <div class="col-md-3">
+                    <div class="input-group">
+                      <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                      <input type="text" class="form-control m-b-0" formControlName="selling_price_btoc" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                    </div>
+                  </div>
+              </div>
+            </fieldset>
+          
+          
+          <app-payout-category 
+            [openPanel]="openPanel" 
+            [property_id]="property_id" 
+            [payoutInfo]="payoutInfo" 
+            [categoryList]="category_list"
+            title="Costs paid out of escrow"
+            totalTitle="Total Costs to Sell B to C"
+            categoryType="b_to_c"
+            (totalAmount)="totalSellingPriceBtoC($event)"
+            showTotal="true"
+            [totalCostsBtoC]="payoutForm.get('selling_price_btoc').value"
+            >
+          </app-payout-category>
+        
+          <!-- <div class="table-responsive m-t-10">
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <td><strong>Total Costs to Sell B to C:</strong></td>
+                <td>{{ ((payoutForm.get('selling_price_btoc').value*1) - (totalPriceBtoC*1)) | currency  }}</td>
+              </tr>
+            </table>
+          </div> -->
+
+          <app-payout-category 
+            [openPanel]="openPanel" 
+            [property_id]="property_id" 
+            [payoutInfo]="payoutInfo" 
+            [categoryList]="category_list"
+            title="Credits received on settlement"
+            totalTitle="Total credits received on settlement"
+            categoryType="btoc_settlement"
+            (totalAmount)="totalCreditReceived($event)">
+          </app-payout-category>
+          <div class="table-responsive m-t-10">
+            <table class="table table-bordered table-condensed">
+              <tr>
+                <td><strong>Gross Proceeds per HUD:</strong></td>
+                <td>{{ ((payoutForm.get('selling_price_btoc').value*1) - (totalPriceBtoC*1) + (totalCreditReceivedBtoC*1))| currency }}</td>
+              </tr>
+            </table>
+          </div>
+          <app-payout-category 
+            [openPanel]="openPanel" 
+            [property_id]="property_id" 
+            [payoutInfo]="payoutInfo" 
+            [categoryList]="category_list"
+            title="Income Statement Adjustments"
+            totalTitle="Total income Statement Adjustments"
+            categoryType="btoc_adjustment"
+            (totalAmount)="totalIncomeAdjustment($event)">
+        </app-payout-category>
+        <div class="table-responsive m-t-10">
+          <table class="table table-bordered table-condensed">
+            <tr>
+              <td><strong>Net B to C Sale Value:</strong></td>
+              <td>{{ ((payoutForm.get('selling_price_btoc').value*1) - (totalPriceBtoC*1) + (totalCreditReceivedBtoC*1) + (totalIncomeAdjustmentBtoC*1))| currency }}</td>
+            </tr>
+          </table>
+        </div>
+
+        <fieldset>
+          <legend>Available for Distribution from Closing</legend>
+          <div class="table-responsive m-t-10">
+            <table class="table table-bordered table-condensed">
+              
+              <tr>
+                <td ><strong>Balance in Closing Prior to Sale:</strong></td>
+                <td>{{ ((payoutForm.get('selling_price_btoc').value*1) - (totalPriceBtoC*1) + (totalCreditReceivedBtoC*1) + (totalIncomeAdjustmentBtoC*1))| currency }}</td>
+              </tr>
+              <tr>
+                <td>
+                  <app-more-field *ngIf="additionalField"
+                    [property_id]="property_id" 
+                    [additionalField]="additionalField" 
+                    fieldType="closingprior"
+                    (totalAmount)="totalclosingPriorAmount($event)">
+                  </app-more-field>  
+                </td>
+                <td>{{ totalclosingPrior | currency}}</td>
+              </tr>
+              <tr>
+                <td align="right"><strong>Cash available for distribution:</strong></td>
+                <td>{{ ((payoutForm.get('selling_price_btoc').value*1) - (totalPriceBtoC*1) + (totalCreditReceivedBtoC*1) + (totalIncomeAdjustmentBtoC*1)) + (totalclosingPrior*1) | currency }}</td>
+              </tr>
+            </table>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>NET PROFIT COMPUTATION</legend>
+          <app-net-profit 
+            [property_id]="property_id" 
+            title="Total Cost to buy A to B"
+            [amount]="((totalPurchaseAmountAtoB*1)+ (totalAmountAtoB*1)+(totalAmountCreditReceive*1)+(totalPurchaseAdjuestment*1) +(totalFeeAmount*1) + (totalNonHudAmount*1)).toFixed(2)">
+          </app-net-profit>
+
+          <app-net-profit 
+            [property_id]="property_id" 
+            title="Net B to C Sales Value"
+            [amount]="((payoutForm.get('selling_price_btoc').value*1) - (totalPriceBtoC*1) + (totalCreditReceivedBtoC*1) + (totalIncomeAdjustmentBtoC*1)).toFixed(2)">
+        </app-net-profit>
+
+          <app-net-profit 
+            *ngIf="payoutInfo"
+            [property_id]="property_id" 
+            title="Other Income"
+            [amount]="totalOtherIncome"
+            moreField="1"
+            [additionalField]="payoutInfo.addition_field" 
+            [totalAirBnb]="totalAirBnb"
+            [totalFundsPriorClosing]="totalFundPrior"
+            
+            fieldType="otherincome"
+            (totalAmount)="otherIncome($event)">
+          </app-net-profit>
+
+
+          <app-net-profit 
+            [property_id]="property_id" 
+            title="Net Profit Before Financing Costs"
+            [payoutTotalAmount]="payoutSubTotal"
+            [amount]="netProfitBeforeFcost">
+          </app-net-profit>
+          <!-- [amount]="netProfitBeforeFcost"
+             [amount]="netProfitPipe.transform(payoutSubTotal,'beforeFinance')" -->
+          
+            <div class="form-group row justify-content-center p-10 m-0 border">
+              <div class="col-md-3"> <label class="col-form-label">Financing Costs:</label> </div>
+              <div class="col-md-4"></div>
+              <div class="col-md-3">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">$</span></div>
+                  <input type="text" class="form-control m-b-0" formControlName="financing_cost" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                </div>
+              </div>
+            </div>
+          <app-net-profit 
+            [property_id]="property_id" 
+            title="Net Profit"
+            [payoutTotalAmount]="payoutSubTotal"
+            border_bottom="1"
+            [amount]="netProfitAmount">
+          </app-net-profit>
+          <!-- [amount]="netProfitPipe.transform(payoutSubTotal)" -->
+          <!-- [amount]="getNetProfofit()" -->
+        </fieldset>
+        <div class="row m-t-5 justify-content-end" >
+          <div class="col-md-1" style="margin-bottom:-25px;">
+            <button class="form-control m-b-0 btn btn-sm btn-primary" [useExistingCss]="true" printTitle="Distributions to Members" printSectionId="print-section" ngxPrint >
+                    Print
+            </button>
+          </div>
+        </div>
+        <div  id="print-section">
+            <app-distribution-member 
+            [property_id]="property_id" 
+            [mcdLenderResult]="mcdLenderResult"
+            [additionalField]="payoutInfo.addition_field" 
+            fieldType="distributions"
+            [aaFee]="payoutInfo.aa_fee"
+            [bonusSpread]="bonusSpread"
+            [distribution_llc]="payoutInfo.distribution_llc"
+            [avilableAmount]="((payoutForm.get('selling_price_btoc').value*1) - (totalPriceBtoC*1) + (totalCreditReceivedBtoC*1) + (totalIncomeAdjustmentBtoC*1)) + (totalclosingPrior*1)"
+            >
+          </app-distribution-member>
+        </div>
+       
+
+      </form>
+    </ng-container>
+  </div>
+</panel>

@@ -1,0 +1,53 @@
+<form [appDisableElement]="purchaseAdjForm" [formGroup]="purchaseAdjForm">
+        <fieldset>
+                <legend>Purchase Cost Adjustments</legend>     
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">AA Fee</label> </div>
+                        <div class="col-md-2">${{aaFee}}</div>
+                        <div class="col-md-3">
+                                <input type="text" #aa_fee formControlName="aa_fee" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                        <div class="col-md-2"> 
+                                <label class="col-form-label">Already Paid?</label> 
+                        </div>
+                        
+                        <div class="col-md-2">
+                                <div class="checkbox checkbox-css">
+                                        <input type="checkbox" id="aa_fee_paid" formControlName="aa_fee_paid"  appOnBlurSave (updatedValue)="autoSave($event)" (click)="alreadyPaid($event,'aa_fee',aa_fee)">
+                                        <label for="aa_fee_paid"></label>
+                                </div>
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Buyer Referral Fee</label> </div>
+                        <div class="col-md-2">$500</div>
+                        <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" #buyer_ref_fee formControlName="buyer_ref_fee" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                        <div class="col-md-2"> 
+                                <label class="col-form-label">Already Paid?</label> 
+                        </div>
+                        <div class="col-md-2">
+                                <div class="checkbox checkbox-css">
+                                        <input type="checkbox" id="buyer_ref_fee_paid" formControlName="buyer_ref_fee_paid" appOnBlurSave (updatedValue)="autoSave($event)" (click)="alreadyPaid($event,'buyer_ref_fee',buyer_ref_fee)">
+                                        <label for="buyer_ref_fee_paid"></label>
+                                </div>
+                        </div>
+                </div>
+
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Bonus on Spread</label> </div>
+                        <div class="col-md-2">{{bonusSpreadAmount | currency}}</div>
+                         <div class="col-md-3">
+                                <input type="text" class="form-control m-b-0" formControlName="bonus_on_spread" appOnBlurSave (updatedValue)="autoSave($event)"/>   
+                        </div>
+                </div>
+                <div class="form-group row">
+                        <div class="col-md-3"> <label class="col-form-label">Total Purchase Cost Aadjustment</label> </div>
+                        <div class="col-md-3">
+                               {{totalPurchAdj| currency}}
+                        </div>
+                </div>
+        </fieldset>
+        
+</form>

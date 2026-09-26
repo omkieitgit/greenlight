@@ -1,0 +1,71 @@
+{
+        "chart": {
+            "renderTo": "first_box_bar_chart",
+            "type": "column",
+            "options3d": {
+                "enabled": true,
+                "alpha": 15,
+                "beta": 15,
+                "depth": 50,
+                "viewDistance": 25
+            }
+        },
+        "credits": {
+            "enabled": false
+        },
+        "title": {
+            "text": "All User Report"
+        },
+       
+        "plotOptions": {
+            "column": {
+                "depth": 25
+            }
+        },
+        "xAxis": {
+            "type": "category",
+            "labels": {
+                "rotation": -45,
+                "style": {
+                    "fontSize": "13px",
+                    "fontFamily": "Verdana, sans-serif"
+                }
+            }
+        },
+        "legend": {
+            "enabled": false
+        },
+        "tooltip": {
+            "pointFormat": "Work Records: <b>{point.y:f} </b>"
+        },
+        "series": [{
+            "data": [],
+            "dataLabels": {
+                "enabled": true,
+                "rotation": -90,
+                "color": "#FFFFFF",
+                "align": "right",
+                "format": "{point.y:f}",
+                "y": 10, 
+                "style": {
+                    "fontSize": "13px",
+                    "fontFamily": "Verdana, sans-serif"
+                }
+            }
+        }],
+  
+        "exporting": {
+            "buttons": {
+                "contextButton": {
+                    "menuItems": ["printChart",
+                        "downloadPNG",
+                        "downloadJPEG",
+                        "downloadPDF",
+                        "downloadSVG",
+                        "downloadCSV", "downloadXLS"
+  
+                    ]
+                }
+            }
+        }
+    }

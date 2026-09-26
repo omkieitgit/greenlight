@@ -1,0 +1,67 @@
+<h3>Export Property</h3>
+<form  [formGroup]="exportForm" >
+    <div>
+      <div class="form-group row m-b-15">
+          <div class="col-md-4">
+              <label class="col-form-label">Export</label>
+          </div>
+        <div class="col-md-6">
+            <select formControlName="export_name" class="form-control" [ngClass]="{'is-invalid': submitted && f.export_name.errors }">
+                <ng-container *ngIf="exportAccess else wholeSaleBuyer">
+                    <option value="">Select Export</option>
+                    <option value="export_url">Export URL</option>
+                    <!-- <option value="export_custom">Custom Export</option> -->
+                    <option value="export_40detail">Export 40 Details</option>
+                    <!-- <option value="export_acquistion">Acquistion Export</option> -->
+                    <option value="export_bidder">Bidders Export</option>
+                    <option value="export_texas">Auction</option>
+                    <option value="export_winding_bidder">Winning Bidder Report</option>
+                    <!-- <option value="export_quickview">Quickview</option> -->
+                    <option value="export_hoa">HOA</option>
+                    <!-- <option value="export_equity">Equity</option> -->
+                    <option value="export_redemption">Redemption Report</option>
+                    <option value="export_subto">SubTo Report</option>
+                    <option value="export_texas_auction">TX Auction</option>
+                    <option value="export_redemption_excess_fund">Redemption & Excess Fund</option>
+                </ng-container>
+            </select>    
+            <div *ngIf="f.export_name.errors" class="invalid-feedback">
+                <div *ngIf="f.export_name.errors.required">Export URL is required</div>
+            </div>
+          </div>
+      </div>
+      <div class="form-group row m-b-15">
+          <div class="col-md-4">
+              <label class="col-form-label">Export </label>
+          </div>
+          <div class="col-md-6">
+              <select formControlName="export_type" class="form-control" [ngClass]="{'is-invalid': submitted && f.export_type.errors }">
+                  <option value="csv">CSV</option>
+                  <option value="pdf">PDF</option>
+                  <option value="xls">XLS</option>
+              </select>
+              <div *ngIf="f.export_type.errors" class="invalid-feedback">
+                    <div *ngIf="f.export_type.errors.required">Export type is required</div>
+                </div>
+          </div>
+      </div>
+      
+      <mat-dialog-actions align="end">
+        <button mat-button mat-dialog-close>Cancel</button>
+        <button mat-button (click)="export_data(this.exportForm)">Export</button>
+      </mat-dialog-actions>
+    </div>
+  </form>
+
+  <ng-template #wholeSaleBuyer>
+    <option value="">Select Export</option>
+    <option value="export_url">Export URL</option>
+    <option value="export_40detail">Export 40 Details</option>
+    <!-- <option value="export_acquistion">Acquistion Export</option> -->
+    <option value="export_hoa">HOA Export</option>
+    <!-- <option value="export_equity">Equity</option>
+    <option value="export_quickview">Quickview</option> -->
+    <option value="export_redemption">Redemption Report</option>
+    <option value="export_texas">Auction</option>
+    <option value="export_texas_auction">TX Auction</option>
+</ng-template>

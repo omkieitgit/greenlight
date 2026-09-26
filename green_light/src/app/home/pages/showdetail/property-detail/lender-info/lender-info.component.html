@@ -1,0 +1,84 @@
+<div class="parent-loader">
+        <!-- Loader DIV -->
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <!-- Loader DIV -->
+
+        <div *ngIf="client_name || lender_list || deed_info" class="table-responsive m-t-10">
+                <table class="table table-bordered table-condensed">
+                        <tbody>
+                                <tr *ngIf="client_name">
+                                        <td><strong>Client Name</strong></td>
+                                        <td width="60%">{{ client_name}}</td>
+                                </tr>
+                                <tr>
+                                        <td>Lender Name</td>
+                                        <td>
+                                                <table width="100%">
+                                                        <tr *ngFor="let lender of lender_list">
+                                                                <td><strong>{{lender?.lender_name}}</strong></td>
+                                                                <td width="60%">{{lender?.total_funder_amount | currency }}</td>
+                                                        </tr>
+                                                </table>
+                                        </td>
+                                </tr>
+                                <tr *ngIf="deed_info">
+                                        <td><strong>Total Deed to Deed</strong></td>
+                                        <td width="60%">{{ deed_info }}</td>
+                                </tr>
+                        </tbody>
+                </table>
+        </div>
+
+        <div *ngIf="burnrate_info" class="table-responsive m-t-10">
+                <table class="table table-bordered table-condensed">
+                        <tbody>
+                                <tr>
+                                        <td><strong>Total Actual Burn Rate</strong></td>
+                                        <td width="60%">
+                                                <table width="100%">
+                                                       <thead>
+                                                               <tr>
+                                                                       <th>Total</th>
+                                                                       <th>Monthly</th>
+                                                                       <th>Weekly</th>
+                                                                       <th>Daily</th>
+                                                               </tr>
+                                                       </thead> 
+                                                       <tbody>
+                                                               <tr>
+                                                                       <td>{{burnrate_info?.total_actualburn_rate}}</td>
+                                                                       <td>{{burnrate_info?.monthly_total_actualburn_rate}}</td>
+                                                                       <td>{{burnrate_info?.weekly_total_actualburn_rate}}</td>
+                                                                       <td>{{burnrate_info?.daily_total_actualburn_rate}}</td>
+                                                               </tr>
+                                                       </tbody>
+                                                </table>
+                                        </td>
+                                </tr>
+                                <tr>
+                                        <td><strong>Total Estimate Burn Rate</strong></td>
+                                        <td width="60%">
+                                                <table width="100%">
+                                                       <thead>
+                                                               <tr>
+                                                                       <th>Total</th>
+                                                                       <th>Monthly</th>
+                                                                       <th>Weekly</th>
+                                                                       <th>Daily</th>
+                                                               </tr>
+                                                       </thead> 
+                                                       <tbody>
+                                                               <tr>
+                                                                       <td>{{ (estimate_info?.total_amount) | currency }}</td>
+                                                                       <td>{{(estimate_info?.total_amount/12) | currency}}</td>
+                                                                       <td>{{(estimate_info?.total_amount/48) | currency}}</td>
+                                                                       <td>{{(estimate_info?.total_amount/365) | currency}}</td>
+                                                               </tr>
+                                                       </tbody>
+                                                </table>
+                                        </td>
+                                </tr>
+                        </tbody>
+                </table>
+        </div>
+</div>

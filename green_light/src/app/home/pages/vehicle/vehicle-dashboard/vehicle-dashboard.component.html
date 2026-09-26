@@ -1,0 +1,52 @@
+<app-attention-warning></app-attention-warning>
+<panel [collapse]='false' (valueChange)='panelExpand($event)' title="VEHICLE INFO">
+
+        <div class="col-md-2">
+                <label class="col-form-label">&nbsp;</label>
+                <a href="javascript:;" class="form-control m-b-0 btn btn-sm btn-primary" [routerLink]="['/home/vehicle/create']" >
+                        Create Vehicle Input
+                </a>
+        </div>
+        <div *ngIf="vehicleInfo" class="table-responsive m-t-10 table-fixed-header">
+                <table class="table table-bordered table-condensed">
+                        <thead>
+                                <tr>
+                                        <th>State</th>
+                                        <th>County</th>
+                                        <th>Case Number</th>
+                                        <th>Sale Type</th>
+                                        <th>Sale Date</th>
+                                        <th>Sale Time</th>
+                                        <th>Sale Location</th>
+                                        <th>Trustee</th>
+                                        <th>petitioner</th>
+                                        <th>Action</th>
+                                </tr>
+                        </thead>
+                        <tbody>
+                                
+                          <tr *ngFor="let vehicle of vehicleInfo">
+                            <td style="white-space: nowrap;">{{vehicle.state}}</td>
+                            <td style="white-space: nowrap;">{{vehicle.county}}</td>
+                            <td>{{vehicle.case_number}}</td>
+                            <td>{{vehicle.sale_type}}</td>
+                            <td>{{vehicle.sale_date}}</td>
+                            <td>{{ vehicle.sale_time }}</td>
+                            <td>{{vehicle.sale_location}}</td>
+                            <td>{{vehicle.trustee}}</td>
+                            <td>{{vehicle.petitioner}}</td>
+                            <td class="p-5">
+                                    <!-- <a href="javascript:;" (click)="removevehicleSheet(vehicle.id)">
+                                            <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                    </a> -->
+                                    <a href="javascript:;" [routerLink]="['/home/vehicle/detail/'+vehicle?.id]">
+                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                    </a>
+                            </td>
+                            
+                          </tr>
+                        </tbody>
+                </table>
+        </div>
+        
+</panel>

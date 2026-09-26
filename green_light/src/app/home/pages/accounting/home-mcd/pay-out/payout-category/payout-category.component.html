@@ -1,0 +1,89 @@
+<fieldset>  
+        <legend>{{title}}</legend> 
+        <form *ngIf="!viewAccessOnly" [formGroup]="payOutForm">
+                <!-- one row start-->
+                <div class="form-group row m-b-5" >
+                <div class="col-md-3 _navbar_search">
+                        <label class="col-form-label">Category</label>
+                        <mat-form-field appearance="outline" >
+                                <input type="text" matInput formControlName="category_id" [matAutocomplete]="auto" [ngClass]="{ 'is-invalid': submitted && f.category_id.errors }" >
+                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onChangeCategory($event)" >
+                                        <mat-option *ngFor="let category of filteredOptions | async" [value]="category">{{category.category_name}}</mat-option>
+                                        <mat-option value="new">Add New</mat-option>
+                                </mat-autocomplete>
+                        </mat-form-field>
+                        <div *ngIf="f.category_id.errors" class="invalid-feedback">
+                                <div *ngIf="f.category_id.errors.required">Category is required</div>
+                        </div>
+                </div>
+
+                <div *ngIf="showCatName" class="col-md-2">
+                        <label class="col-form-label">Category Name</label>
+                        <input type="text" class="form-control m-b-0" placeholder="Category Name" formControlName="category_name" [ngClass]="{ 'is-invalid': submitted && f.category_name.errors }">
+                        <div *ngIf="f.category_name.errors" class="invalid-feedback">
+                                <div *ngIf="f.category_name.errors.required">Category name is required</div>
+                        </div>
+                </div>
+                <div class="col-md-2">
+                        <label class="col-form-label">Amount</label>
+                        <div class="input-group">
+                                <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fa fa-dollar-sign"></i></span>
+                                </div>
+                                <input type="text" class="form-control m-b-0" placeholder="Amount" formControlName="amount" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }">
+                                <div *ngIf="f.amount.errors" class="invalid-feedback">
+                                        <div *ngIf="f.amount.errors.required">Amount is required</div>
+                                </div>
+                        </div>
+                </div>
+                
+                <div class="col-md-2">
+                <label class="col-form-label">&nbsp;</label>
+                <button (click) ="!loading && validateForm(this.payOutForm)"class="form-control m-b-0 btn btn-sm btn-primary">
+                        Save
+                        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                </button>
+                </div>
+                </div>
+        </form>
+                <div class="table-responsive m-t-10">
+                        <table class="table table-bordered table-condensed">
+                                <tr>
+                                <th>{{title}}</th>
+                                <th>Amount</th>
+                                <th>Action</th>
+                                </tr>
+                                <tbody>
+                                <tr *ngFor="let payout of payoutList">
+                                <td>{{payout?.category?.category_name}}</td>
+                                <td>{{payout.amount | currency }}</td>
+                                <td class="p-5">
+                                        <ng-container *ngIf="!viewAccessOnly">
+                                                <a href="javascript:;" (click)="removePayout(payout.id)">
+                                                        <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                </a>
+                                                <a href="javascript:;" (click)="editPayout(payout)">
+                                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                </a>
+                                        </ng-container>
+                                        
+                                </td>
+
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                <td  colspan="1" align="right" ><strong>{{totalTitle}}</strong></td>
+                                <td>
+                                        {{  ( sumPipe.transform(payoutList,'amount')) | currency }}
+                                        <!-- {{  calTotalAmount('amount') | currency }} -->
+                                        
+                                </td>
+                                <td><ng-container *ngIf="showTotal">{{ (totalCostsBtoC-sumPipe.transform(payoutList,'amount')) | currency  }} </ng-container></td>
+                                </tr>
+                                </tfoot>
+                        </table>
+                </div>
+
+        
+</fieldset>

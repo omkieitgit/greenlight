@@ -1,0 +1,35 @@
+<div  class="form-group row m-b-5" [ngClass]="{'m-t-20':marginTop}">   
+        <div class="col-md-3">
+                <label class="col-form-label" [ngClass]="{'font-weight-normal':isNormalFont}">{{subTotalTitle}}</label>
+        </div>      
+        <div class="col-md-2"> 
+                <ng-container *ngIf="editableField; else estReadonlyField">
+                        <input type="text" name="est_funds_prior_closing" [value]="(estimate_amount?estimate_amount:0) | currency" class="form-control" #estimate_amount_val appOnBlurSave (updatedValue)="autoSave($event)"/>
+                </ng-container>
+                <ng-template #estReadonlyField>
+                        <div class="form-control" [ngClass]="{'text-box-border':!isNormalFont}">
+                                {{ estimate_amount | currency }}
+                        </div>
+                </ng-template>
+        </div>
+        <div class="col-md-2">
+                <div class="form-control" [ngClass]="{'text-box-border':!isNormalFont}">
+                        {{ actual_amount | currency  }}
+                </div>
+        </div>
+        <div class="col-md-2">
+                <div class="form-control" [ngClass]="{'text-box-border':!isNormalFont}">
+                     {{(estimate_amount - actual_amount) | currency }}   
+                </div>
+        </div>
+        <div class="col-md-2">
+                <ng-container *ngIf="editableField; else buyerReadonlyField">
+                        <input  type="text" name="buyer_funds_prior_closing" class="form-control _calc_amount" [value]="(buyer_amount?buyer_amount:0) | currency"  #buyer_amount_val appOnBlurSave (updatedValue)="autoSave($event)"/>           
+                </ng-container>
+                <ng-template #buyerReadonlyField>
+                        <div class="form-control" [ngClass]="{'text-box-border':!isNormalFont}">
+                                {{ buyer_amount | currency  }}
+                        </div>
+                </ng-template>
+        </div>
+</div>

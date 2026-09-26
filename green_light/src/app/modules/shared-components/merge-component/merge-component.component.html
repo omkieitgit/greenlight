@@ -1,0 +1,33 @@
+<h3>Merge Record</h3>
+<div class="estate-property invite_height">
+  <!-- <div  *ngIf="loader" class="loading">
+    <img src="assets/img/loading.gif" />
+  </div> -->
+
+  <table class="table">
+    <thead class="thead-striped">
+      <tr>
+        <th scope="col">Primary House Id</th>
+        <th scope="col">Merge House Id</th>
+        <th scope="col">Match Data</th>
+        <th scope="col">Different Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let merged of mergePropertyList">
+        <td>{{merged.primary_house_id }} ( {{merged.primary_house_count}} )</td>
+        <td>{{merged.merge_house_id }} ( {{merged.merge_house_count}} )</td>
+        <td>{{merged.merge_data}}</td>
+        <td>{{merged.diff_data}}</td>
+       
+      </tr>    
+    </tbody>
+  </table>
+  
+</div>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button mat-raised-button class="btn-primary" (click)="!loading && validateForm()">
+        Merge
+    </button>
+</mat-dialog-actions>

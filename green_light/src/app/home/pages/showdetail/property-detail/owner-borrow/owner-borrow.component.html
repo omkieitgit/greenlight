@@ -1,0 +1,31 @@
+<div class="estate-property">
+  <!-- begin col-6 -->
+  <div class="col-lg-12 p-0 _property_info">
+    <!-- begin panel -->
+    <panel (valueChange)='panelExpand($event)' title="Owner & Borrower Info">
+      <app-loader [loading]="loading"></app-loader>
+      <ng-container *ngIf="ownerBorrowLoading">
+        
+
+        <owner [owner_info]="owner_info" 
+              [document_owner]="document_owner" 
+              [owner_borrower_info]="owner_borrower_info" 
+              (ownerInfo)="OwnerChangeInfo($event)"></owner>
+  
+        <app-borrow [borrower_info]="borrower_info" 
+            [document_borrower]="document_borrower" 
+            [owner_borrower_info]="owner_borrower_info" 
+            [owner_data]="owner_data"></app-borrow>  
+      </ng-container>
+
+      <app-document *ngIf="ownerBorrowLoading"
+      [document_type_list]="owner_document_type_list"
+      [property_id]="property_id" 
+      [document_info]="document_owner" 
+      document_url="owner_document" 
+      doc_primary_key="id" 
+      [doc_count_id]="owner"></app-document>
+            
+    </panel>
+  </div>
+</div>

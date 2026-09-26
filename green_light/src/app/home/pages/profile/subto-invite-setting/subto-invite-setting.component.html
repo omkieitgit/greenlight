@@ -1,0 +1,94 @@
+
+<app-attention-warning></app-attention-warning>
+<div class="card row parent-loader">
+  <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+  <div class="row col-md-12 p-t-20">
+    <div class="col-md-9">
+      <p>
+      <strong>Please select the County or Counties you want.</strong><br/>
+      Disclaimer: You will only receive the State and County of your choice on your email.  
+      </p>
+      <form [formGroup]="inviteSettingFormSecond">
+        <div class="form-group row m-b-10">
+          <div class="col-md-4">
+            <label class="col-form-label">State</label>
+            </div>
+            <div class="col-md-6">
+              <select class="form-control" formControlName="state" [ngClass]="{ 'is-invalid': submitted1 && g.state.errors }"  (change)="getCountyList($event.target.value)" >
+                <option value="">Please select the State you want</option>
+                <option [value]="state.key" *ngFor="let state of states | keyvalue">{{state.value}}</option>
+              </select>
+            </div>
+        </div>
+        <div class="form-group row m-b-10">
+            <div class="col-md-4">
+              <label class="col-form-label">County</label>
+            </div>
+            <div class="col-md-6">
+              <select class="form-control" formControlName="county" [ngClass]="{ 'is-invalid': submitted1 && g.county.errors }" >
+                <option value="">Please select the Counties you want</option>
+                <option value="All">All</option>
+                <option [value]="country" *ngFor="let country of countries">{{country}}</option>
+              </select>
+            </div>
+        </div>
+        <div *ngIf="user_info.current_role=='admin'" class="form-group row m-b-10">
+          <div class="col-md-4">
+            <label class="col-form-label">Sub to</label>
+          </div>
+          <div class="col-md-6">
+            <select class="form-control" formControlName="user_id" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }" >
+              <option [value]="buyer.id" *ngFor="let buyer of wholesale_buyer_list">{{buyer.name}}</option>
+            </select>  
+          </div>
+        </div>
+        <div class="form-group row m-b-10">
+          <div class="col-md-10 pull-right">
+            <button type="button" (click)="validateForm(this.inviteSettingFormSecond)"class=" btn btn-sm btn-primary pull-right" value="Save"  >
+              Save Setting
+            </button> 
+          </div>
+        </div>
+       
+      </form>
+    </div>
+  </div>
+  <div *ngIf="user_info.current_role=='admin'" class="col-md-9">
+    <div class="form-group row m-b-10">
+      <!-- <div class="col-md-12"> -->
+        <div class="col-md-4">
+          <label class="col-form-label">Sub To</label>
+        </div>
+        <div class="col-md-6">
+          <select class="form-control" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }" (change)="getResultList($event.target.value)" >
+            <option [value]="buyer.id" *ngFor="let buyer of wholesale_buyer_list">{{buyer.name}}</option>
+          </select>  
+        </div>
+      <!-- </div> -->
+    </div>
+  </div>
+   
+
+  <div class="row col-md-12 p-t-20 p-b-40">
+      <div class="col-md-9">
+        <div class="form-group row m-b-10">
+          <mat-chip-list aria-label="Fish selection">
+            <div *ngFor="let inviteSetting of inviteSettingResult">
+              <mat-chip *ngIf="inviteSetting.request_type==3" [selectable]="selectable" [removable]="removable">
+                <ng-container *ngIf="user_info.current_role=='admin'">{{inviteSetting?.user?.first_name+' '+inviteSetting?.user?.last_name}} - </ng-container>
+                  {{inviteSetting.state}} - {{inviteSetting.county}}
+                  <mat-icon  matChipRemove (click)="removeInviteSetting(inviteSetting.id)" >cancel</mat-icon>
+              </mat-chip>
+            </div>
+          </mat-chip-list>
+        </div> 
+      </div>
+  </div>
+</div>
+
+
+    
+   
+
+  
+

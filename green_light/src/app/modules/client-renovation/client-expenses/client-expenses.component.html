@@ -1,0 +1,17 @@
+<panel title="Client Expenses" (valueChange)='panelExpand($event)'>
+  <div class="parent-loader">
+      <!-- Loader DIV -->
+      <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+      <!-- Loader DIV -->   
+      <app-common-renovation *ngIf="loadingRenovation" 
+        [property_id]="property_id" 
+        [section_type]="section_type" 
+        [renovationResult]="clientExpenseResult" 
+        [lenderList]="lenderList"
+        [lenderByAmount]="lenderByAmount"
+        [recipients_info]="recipients_info"
+        (addUpdateInvoice)="updateInvoiceInfo($event)"
+        (updateOrderBy)="getRenovationOrderBy($event)">
+      </app-common-renovation>
+  </div>
+</panel>

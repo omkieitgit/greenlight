@@ -1,0 +1,523 @@
+<div class="row">
+    <div class="alert alert-secondary bg-white">
+        <span class="text-warning semi-bold">ATTENTION/WARNING:</span> THESE TRANSACTIONS INVOLVE RISK. YOU MAY LOSE SOME OR ALL OF YOUR CAPITAL. The services offered may not be suitable for you. You must do your own due diligence and verify any information provided. We encourage you to seek advice from an independent financial advisor, real estate professional, accountant, tax advisor and/or attorney. Unless otherwise stated, the figures shown in all documents provided (including, but not limited to, information regarding title, ownership, liens, tax liens, taxes, current property values, after repair property values, and costs of repairs or renovations) are NOT guaranteed to be accurate and are estimates only. Some estimates are high; some are low. There are NO representations being made that any transaction will achieve profits similar to those being shown and there are NO GUARANTEES OF RESULTS OR PROFITS. DO NOT ENTER INTO THESE TRANSACTIONS UNLESS YOU ARE PREPARED TO LOSE SOME OR ALL OF YOUR CAPITAL.
+    </div>
+</div>
+<div class="row case-input">
+  <!-- begin col-6 -->
+  <div class="col-lg-12">
+    <div class="case-input-title">
+      CASE INPUT
+    </div>
+    <form [formGroup]="spForm">
+      <!-- one row start-->
+      <div class="form-group row m-0 m-t-10 case-input-header">
+        <div class="col-md-2">
+          <label class="col-form-label">STATE</label>
+          <select class="form-control m-b-0" formControlName="state" placeholder="Please Select State">
+            <option value="NC">North Carolina</option>
+            <option value="AL">Alabama</option>
+            <option value="AK">Alaska</option>
+            <option value="AZ">Arizona</option>
+            <option value="AR">Arkansas</option>
+            <option value="CA">California</option>
+            <option value="CO">Colorado</option>
+            <option value="CT">Connecticut</option>
+            <option value="DE">Delaware</option>
+            <option value="DC">District Of Columbia</option>
+            <option value="FL">Florida</option>
+            <option value="GA">Georgia</option>
+            <option value="HI">Hawaii</option>
+            <option value="ID">Idaho</option>
+            <option value="IL">Illinois</option>
+            <option value="IN">Indiana</option>
+            <option value="IA">Iowa</option>
+            <option value="KS">Kansas</option>
+            <option value="KY">Kentucky</option>
+            <option value="LA">Louisiana</option>
+            <option value="ME">Maine</option>
+            <option value="MD">Maryland</option>
+            <option value="MA">Massachusetts</option>
+            <option value="MI">Michigan</option>
+            <option value="MN">Minnesota</option>
+            <option value="MS">Mississippi</option>
+            <option value="MO">Missouri</option>
+            <option value="MT">Montana</option>
+            <option value="NE">Nebraska</option>
+            <option value="NV">Nevada</option>
+            <option value="NH">New Hampshire</option>
+            <option value="NJ">New Jersey</option>
+            <option value="NM">New Mexico</option>
+            <option value="NY">New York</option>
+            <!--<option value="NC">North Carolina</option>-->
+            <option value="ND">North Dakota</option>
+            <option value="OH">Ohio</option>
+            <option value="OK">Oklahoma</option>
+            <option value="OR">Oregon</option>
+            <option value="PA">Pennsylvania</option>
+            <option value="RI">Rhode Island</option>
+            <option value="SC">South Carolina</option>
+            <option value="SD">South Dakota</option>
+            <option value="TN">Tennessee</option>
+            <option value="TX">Texas</option>
+            <option value="UT">Utah</option>
+            <option value="VT">Vermont</option>
+            <option value="VA">Virginia</option>
+            <option value="WA">Washington</option>
+            <option value="WV">West Virginia</option>
+            <option value="WI">Wisconsin</option>
+            <option value="WY">Wyoming</option>
+          </select>
+        </div>         
+      
+        <div class="col-md-2">
+          <label class="col-form-label">COUNTY</label>
+          <select class="form-control m-b-0" formControlName="county" placeholder="Please select county">
+            <option value="" selected="">Please select county</option>
+            <option>Alamance</option>
+            <option>Alexander</option>
+            <option>Alleghany</option>
+            <option>Anson</option>
+            <option>Ashe</option>
+            <option>Avery</option>
+            <option>Beaufort</option>
+            <option>Bertie</option>
+            <option>Bladen</option>
+            <option>Brunswick</option>
+            <option>Buncombe</option>
+            <option>Burke</option>
+            <option>Cabarrus</option>
+            <option>Caldwell</option>
+            <option>Camden</option>
+            <option>Carteret</option>
+            <option>Caswell</option>
+            <option>Catawba</option>
+            <option>Chatham</option>
+            <option>Cherokee</option>
+            <option>Chowan</option>
+            <option>Clay</option>
+            <option>Cleveland</option>
+            <option>Columbus</option>
+            <option>Craven</option>
+            <option>Cumberland</option>
+            <option>Currituck</option>
+            <option>Dare</option>
+            <option>Davidson</option>
+            <option>Davie</option>
+            <option>Duplin</option>
+            <option>Durham</option>
+            <option>Edgecombe</option>
+            <option>Forsyth</option>
+            <option>Franklin</option>
+            <option>Gaston</option>
+            <option>Gates</option>
+            <option>Graham</option>
+            <option>Granville</option>
+            <option>Greene</option>
+            <option>Guilford</option>
+            <option>Halifax</option>
+            <option>Harnett</option>
+            <option>Haywood</option>
+            <option>Henderson</option>
+            <option>Hertford</option>
+            <option>Hoke</option>
+            <option>Hyde</option>
+            <option>Iredell</option>
+            <option>Jackson</option>
+            <option>Johnston</option>
+            <option>Jones</option>
+            <option>Lee</option>
+            <option>Lenoir</option>
+            <option>Lincoln</option>
+            <option>Macon</option>
+            <option>Madison</option>
+            <option>Martin</option>
+            <option>McDowell</option>
+            <option>Mecklenburg</option>
+            <option>Mitchell</option>
+            <option>Montgomery</option>
+            <option>Moore</option>
+            <option>Nash</option>
+            <option>New Hanover</option>
+            <option>Northampton</option>
+            <option>Onslow</option>
+            <option>Orange</option>
+            <option>Pamlico</option>
+            <option>Pasquotank</option>
+            <option>Pender</option>
+            <option>Perquimans</option>
+            <option>Person</option>
+            <option>Pitt</option>
+            <option>Polk</option>
+            <option>Randolph</option>
+            <option>Richmond</option>
+            <option>Robeson</option>
+            <option>Rockingham</option>
+            <option>Rowan</option>
+            <option>Rutherford</option>
+            <option>Sampson</option>
+            <option>Scotland</option>
+            <option>Stanly</option>
+            <option>Stokes</option>
+            <option>Surry</option>
+            <option>Swain</option>
+            <option>Transylvania</option>
+            <option>Tyrrell</option>
+            <option>Union</option>
+            <option>Vance</option>
+            <option>Wake</option>
+            <option>Warren</option>
+            <option>Washington</option>
+            <option>Watauga</option>
+            <option>Wayne</option>
+            <option>Wilkes</option>
+            <option>Wilson</option>
+            <option>Yadkin</option>
+            <option>Yancey</option>
+            
+          </select>
+        </div>            
+      
+        <div class="col-md-2 ">
+          <label class="col-form-label">&nbsp;</label>
+          <select class="form-control m-b-0" formControlName="range" >
+            <option value="1">1</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="40">40</option>
+            <option value="100">100</option>
+          </select>
+        </div>
+
+        <div class="col-md-1">
+          <label class="col-form-label">&nbsp;</label>
+          <button class="form-control  btn m-b-0 btn-primary">+</button>
+        </div>             
+
+        <div class="col-md-1">
+          <label class="col-form-label">&nbsp;</label>
+          <button class="form-control m-b-0 btn btn-sm btn-primary">SAVE</button>
+        </div> 
+        <div class="col-md-2">
+          <label class="col-form-label">&nbsp;</label>
+          <button class="form-control m-b-0 btn btn-sm btn-primary">MY CASE #</button>         
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">&nbsp;</label>
+          <button class="form-control m-b-0 btn btn-sm btn-primary">COUNTY CASE #</button>         
+        </div>
+      </div>
+      <!-- one row end -->
+
+      <div class="case-input-content">
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-2">
+            <label class="col-form-label">CASE NUMBER</label>
+            <input type="text" form class="form-control m-b-0" formControlName="case_number" />
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">MORTGAGOR-GRANTOR 1</label>
+            <input type="text" class="form-control m-b-0" formControlName="mortgagor_grantor_1"  />
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">MORTGAGOR-GRANTOR 2</label>
+            <input type="text" class="form-control m-b-0" formControlName="mortgagor_grantor_2" />
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">SALE TYPE</label>
+            <select class="form-control" formControlName="sale_type" >
+              <option value="">Select Sale Type</option>
+              <option>Mortgage Foreclosure</option>
+              <option>Mortgage Foreclosure- 1st Lien</option>
+              <option>Mortgage Foreclosure - 2nd Lien</option>
+              <option>Mortgage Foreclosure - 3rd Lien</option>
+              <option>HOA Sale</option>
+              <option>Tax Sale</option>
+              <option>Estate Sale</option>
+              <option>Judicial</option>
+              <option>Non Judicial</option>
+              <option>Struck Off</option>
+              <option>Surplus</option>
+              <option>REO</option>
+              <option>Short Sale</option>
+              <option>Requested Record</option>
+              <option>Appointment</option>
+              <option>FSBO</option>
+              <option>REIA</option>
+              <option>NONE</option>
+              <option>Timeshare</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">INSTRUMENT #(DT)</label>
+            <input type="text" class="form-control m-b-0" formControlName="instrument" />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">BOOK</label>
+            <input type="text" class="form-control m-b-0" formControlName="book" />
+          </div>
+
+        </div>
+        <!-- one row end -->
+
+        <!-- one row start-->
+        <div class="form-group row m-b-0"> 
+          
+          <div class="col-md-2">
+            <label class="col-form-label">PAGE</label>
+            <input type="text" class="form-control m-b-0" formControlName="page" />
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">STR|APPT BP OR INST #</label>
+            <input type="text" class="form-control m-b-0" formControlName="str" />
+          </div>  
+        
+          <div class="col-md-2">
+            <label class="col-form-label">SALE PLACE</label>
+            <input type="text" class="form-control m-b-0" formControlName="sale_place" />
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">SALE DATE</label>
+            <my-date-picker name="sale_date" [options]="myDatePickerOptions"
+              formControlName="sale_date" (dateChanged)="onDateChanged($event)" class="" placeholder="YYYY-MM-DD"></my-date-picker>
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">SALE TIME</label>
+            <select class="form-control m-b-0" formControlName="sale_time">
+              <option value="12:00 am">12:00 am</option>
+              <option value="12:30 am">12:30 am</option>
+              <option value="1:00 am">1:00 am</option>
+              <option value="1:30 am">1:30 am</option>
+              <option value="2:00 am">2:00 am</option>
+              <option value="2:30 am">2:30 am</option>
+              <option value="3:00 am">3:00 am</option>
+              <option value="3:30 am">3:30 am</option>
+              <option value="4:00 am">4:00 am</option>
+              <option value="4:30 am">4:30 am</option>
+              <option value="5:00 am">5:00 am</option>
+              <option value="5:30 am">5:30 am</option>
+              <option value="6:00 am">6:00 am</option>
+              <option value="6:30 am">6:30 am</option>
+              <option value="7:00 am">7:00 am</option>
+              <option value="7:30 am">7:30 am</option>
+              <option value="8:00 am">8:00 am</option>
+              <option value="8:30 am">8:30 am</option>
+              <option value="9:00 am">9:00 am</option>
+              <option value="9:30 am">9:30 am</option>
+              <option value="10:00 am">10:00 am</option>
+              <option value="10:30 am">10:30 am</option>
+              <option value="11:00 am">11:00 am</option>
+              <option value="11:30 am">11:30 am</option>
+              <option value="12:00 pm">12:00 pm</option>
+              <option value="12:30 pm">12:30 pm</option>
+              <option value="1:00 pm">1:00 pm</option>
+              <option value="1:30 pm">1:30 pm</option>
+              <option value="2:00 pm">2:00 pm</option>
+              <option value="2:30 pm">2:30 pm</option>
+              <option value="3:00 pm">3:00 pm</option>
+              <option value="3:30 pm">3:30 pm</option>
+              <option value="4:00 pm">4:00 pm</option>
+              <option value="4:30 pm">4:30 pm</option>
+              <option value="5:00 pm">5:00 pm</option>
+              <option value="5:30 pm">5:30 pm</option>
+              <option value="6:00 pm">6:00 pm</option>
+              <option value="6:30 pm">6:30 pm</option>
+              <option value="7:00 pm">7:00 pm</option>
+              <option value="7:30 pm">7:30 pm</option>
+              <option value="8:00 pm">8:00 pm</option>
+              <option value="8:30 pm">8:30 pm</option>
+              <option value="9:00 pm">9:00 pm</option>
+              <option value="9:30 pm">9:30 pm</option>
+              <option value="10:00 pm">10:00 pm</option>
+              <option value="10:30 pm">10:30 pm</option>
+              <option value="11:00 pm">11:00 pm</option>
+              <option value="11:30 pm">11:30 pm</option>
+            </select>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">OPENING BID</label>
+            <input type="text" class="form-control m-b-0" formControlName="opening_bid" />
+          </div>
+        </div>
+        <!-- one row end -->
+
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-2">
+            <label class="col-form-label">PARCEL ID # </label>
+            <input type="text" class="form-control m-b-0" formControlName="parcel_id" />
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">PROPERTY ADDRESS </label>
+            <input type="text" class="form-control m-b-0" formControlName="propety_address" />
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">CITY</label>
+            <input type="text" class="form-control m-b-0" formControlName="city" />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">ZIPCODE</label>
+            <input type="text" class="form-control m-b-0" formControlName="zipcode" />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">TRUSTEE ADDRESS</label>
+            <input type="text" class="form-control m-b-0" formControlName="trustee_address" /> 
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">TRUSTEE URL</label>
+            <input type="text" class="form-control m-b-0" formControlName="trustee_url" />
+          </div>
+        </div>
+       
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-2">
+            <label class="col-form-label">HOA NAME</label>
+            <input type="text" class="form-control m-b-0" formControlName="hoa_name" />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">ACCOUNT NUMBER</label>
+            <input type="text" class="form-control m-b-0" formControlName="account_number" />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">LEGAL NOTICE</label>
+            <input type="text" class="form-control m-b-0" formControlName="legal_notice" />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">LEGAL NOTICE SOURCE URL</label>
+            <input type="text" class="form-control m-b-0" formControlName="legal_notice_url" />
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">NOS</label>
+            <select class="form-control m-b-0" formControlName="nos" placeholder="Please Select State">
+              <option value="" selected="selected">Select User</option>
+              <option value="1371">Hall Scott</option>
+              <option value="1420">James Madison</option>
+              <option value="1471">Marcus Anthony</option>
+              <option value="495">Mary Manning</option>
+              <option value="1505">Maverick Michael</option>
+              <option value="1426">MAJKEN NADIA</option>
+              <option value="1186">Neal Isom</option>
+              <option value="491">Peter Sommers</option>
+              <option value="1019">Reanne Kona</option>
+              <option value="1207">Sam Mall</option>
+              <option value="1425">SAMMI DAVIS</option>
+              <option value="618">SK </option>
+              <option value="1394">Sophia Lorren</option>
+              <option value="1439">Tadd Ueda</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">NOS DATE</label>
+            <my-date-picker name="nos_date" [options]="myDatePickerOptions"
+              formControlName="nos_date" (dateChanged)="onDateChanged($event)" class="" placeholder="YYYY-MM-DD"></my-date-picker>
+          </div>
+        </div>
+        <!-- one row end -->
+        <div class="form-group row m-b-10 m-t-10">
+          <div class="col-md-2">
+            <input type="file" class="form-control btn btn-sm btn-primary" value="Choose File">         
+          </div>
+          <div class="col-md-2">
+            <select name="doc_type" class="form-control">
+                <option>Select Doc type</option>
+                <option value="nos">NOS</option>
+                <option value="rpfs">RPFS</option>
+                <option value="upst">UPST</option>
+                <option value="faof">FAOF</option>
+                <option value="vcap_nos">VCAP NOS</option>
+                <option value="vcap_rpfs">VCAP RPFS</option>
+                <option value="vcap_upst">VCAP UPST</option>
+                <option value="tax_sale_rpfs">Tax Sale RPFS</option>
+                <option value="tax_sale_upst">Tax Sale UPST</option>
+                <option value="frar">FRAR</option>
+                <option value="appointment">Appointment</option>
+                <option value="notice_of_hearning">Notice of Hearning</option>
+                <option value="postponement">Postponement</option>
+                <option value="notice_of_cancellation">Notice of Cancellation</option>
+              </select>                
+          </div>
+          <div class="col-md-2">
+              <button class="form-control  btn btn-sm btn-primary">Upload</button>
+          </div>
+        </div>
+        <div class="col-md-8 col-xs-12 table-responsive">
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>Date</th>
+                    <th>Document Type</th>
+                    <th>Case #</th>
+                    <th>Uploaded By</th>
+                    <th>Uploaded Date</th>
+                </tr>
+                <tr>
+                    <td>2018-09-10</td>
+                    <td>Other (Alpha Beta)</td>
+                    <td><a href="#">DEED Book/Page</a></td>
+                    <td>Rati</td>
+                    <td>2018-09-11 12:00 MN</td>
+                <tr>
+                <tr>
+                    <td>2018-09-10</td>
+                    <td>Deed</td>
+                    <td><a href="#">DEED Book/Page</a></td>
+                    <td>Rati</td>
+                    <td>2018-09-11 12:00 MN</td>
+                <tr>
+                <tr>
+                    <td>2018-09-10</td>
+                    <td>Deed</td>
+                    <td><a href="#">DEED Book/Page</a></td>
+                    <td>Willow</td>
+                    <td>2018-09-11 12:00 MN</td>
+                <tr>
+
+                </tr>
+            </table>
+        </div>
+        <!-- one row start-->
+        <div class="form-group row m-b-0">
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button class="form-control m-b-0 btn btn-sm btn-primary">SAVE</button>
+          </div>
+          
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button class="form-control m-b-0 btn btn-sm btn-primary">CLEAR</button>
+          </div>
+          <div class="col-md-4">
+            &nbsp;
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button class="form-control m-b-0 btn btn-sm btn-primary">SEARCH</button>
+          </div>
+          
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button class="form-control m-b-0 btn btn-sm btn-primary">PROPERTY INPUT FORM</button>
+          </div>
+          
+          
+        </div>
+        <!-- one row end -->
+      </div>
+
+
+    </form>
+  </div>
+  <!-- end col-12 -->
+</div>
+<!-- row end -->

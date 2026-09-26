@@ -1,0 +1,410 @@
+<h3>Get Deposit/Exclusive Lender</h3>
+<mat-dialog-content class="parent-loader">
+
+  <form [formGroup]="depositLenderForm" class="parent-loader">
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Deed to Deed</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <input formControlName="turn_around_time" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.turn_around_time.errors }">
+            <div *ngIf="f.turn_around_time.errors" class="invalid-feedback">
+              <div *ngIf="f.turn_around_time.errors.required">Please enter Deed to Deed.</div>
+            </div>
+        </div>
+      </div>  
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Rate of Return</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <input formControlName="rate_of_return" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.rate_of_return.errors }">
+            <div *ngIf="f.rate_of_return.errors" class="invalid-feedback">
+              <div *ngIf="f.rate_of_return.errors.required">Please enter Rate of Return.</div>
+            </div>
+        </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Renovation Risk</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <select formControlName="renovation_risk" id="renovation_risk" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.renovation_risk.errors }">
+                <option value="Low Risk <$15,000.00">Low Risk &lt;$15,000.00</option>
+                <option value="Moderate Risk  $15,000.00 - $30,000.00">Moderate Risk  $15,000.00 - $30,000.00</option>
+                <option value="High Risk $30,000.00+">High Risk $30,000.00+</option>
+            </select>
+            <div *ngIf="f.renovation_risk.errors" class="invalid-feedback">
+              <div *ngIf="f.renovation_risk.errors.required">Please enter Renovation Risk.</div>
+            </div>
+        </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Are you funding the deposit?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.funding_deposit.errors }">
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="funding_deposit" id="funding_deposit_yes" value="yes" checked />  
+                <label for="funding_deposit_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="estimated_values_ab" id="funding_deposit_no" value="no"  />
+                <label for="funding_deposit_no">No</label>
+              </div>
+              <div *ngIf="f.funding_deposit.errors" class="invalid-feedback">
+                <div *ngIf="f.funding_deposit.errors.required">Please select repairs amount.</div>
+              </div>
+          </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">How much to bring the loan current?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <input formControlName="loan_current" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.loan_current.errors }">
+            <div *ngIf="f.loan_current.errors" class="invalid-feedback">
+              <div *ngIf="f.loan_current.errors.required">Please enter contact number.</div>
+            </div>
+        </div>
+      </div>  
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">How much is needed for Deposit?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <input formControlName="needed_for_deposit" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.needed_for_deposit.errors }">
+            <div *ngIf="f.needed_for_deposit.errors" class="invalid-feedback">
+              <div *ngIf="f.needed_for_deposit.errors.required">Please enter contact number.</div>
+            </div>
+        </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Renovations/Additional Costs</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <input formControlName="needed_for_renovation" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.needed_for_renovation.errors }">
+            <div *ngIf="f.needed_for_renovation.errors" class="invalid-feedback">
+              <div *ngIf="f.needed_for_renovation.errors.required">Please enter contact number.</div>
+            </div>
+        </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Miscelainous Fees</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <input formControlName="miscelainous_fees" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.miscelainous_fees.errors }">
+            <div *ngIf="f.miscelainous_fees.errors" class="invalid-feedback">
+              <div *ngIf="f.miscelainous_fees.errors.required">Please enter contact number.</div>
+            </div>
+        </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Is the Estimated Values Filled out accurately A to B?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.estimated_values_ab.errors }">
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="estimated_values_ab" id="estimated_values_ab_yes" value="yes" checked />  
+                <label for="estimated_values_ab_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="estimated_values_ab" id="estimated_values_ab_no" value="no"  />
+                <label for="estimated_values_ab_no">No</label>
+              </div>
+              <div *ngIf="f.estimated_values_ab.errors" class="invalid-feedback">
+                <div *ngIf="f.estimated_values_ab.errors.required">Please select repairs amount.</div>
+              </div>
+          </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Is the Estimated Values Filled Out B to C?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.estimated_values_bc.errors }">
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="estimated_values_bc" id="estimated_values_bc_yes" value="yes" checked />  
+                <label for="estimated_values_bc_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="estimated_values_bc" id="estimated_values_bc_no" value="no"  />
+                <label for="estimated_values_bc_no">No</label>
+              </div>
+              <div *ngIf="f.estimated_values_bc.errors" class="invalid-feedback">
+                <div *ngIf="f.estimated_values_bc.errors.required">Please select repairs amount.</div>
+              </div>
+          </div>
+      </div> 
+
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Do you have your Full Scope of Work?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.full_scope_work.errors }">
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="full_scope_work" id="full_scope_work_yes" value="yes" checked />  
+                <label for="full_scope_work_yes">Yes</label>
+              </div>
+              <div class="radio radio-css radio-inline">
+                <input type="radio" formControlName="full_scope_work" id="full_scope_work_no" value="no"  />
+                <label for="full_scope_work_no">No</label>
+              </div>
+              <div *ngIf="f.full_scope_work.errors" class="invalid-feedback">
+                <div *ngIf="f.full_scope_work.errors.required">Please select Full Scope of Work.</div>
+              </div>
+          </div>
+      </div> 
+
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Do you have Full Material List?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.full_material_list.errors }">
+            <div class="radio radio-css radio-inline">
+              <input type="radio" formControlName="full_material_list" id="full_material_list_yes" value="yes" checked />  
+              <label for="full_material_list_yes">Yes</label>
+            </div>
+            <div class="radio radio-css radio-inline">
+              <input type="radio" formControlName="full_material_list" id="full_material_list_no" value="no"  />
+              <label for="full_material_list_no">No</label>
+            </div>
+            <div *ngIf="f.full_material_list.errors" class="invalid-feedback">
+              <div *ngIf="f.full_material_list.errors.required">Please select Full Material List.</div>
+            </div>
+          </div>
+      </div> 
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Do you have your timeline?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <div class="form-group row m-b-0">
+                <div class="col-md-4" [ngClass]="{ 'is-invalid': submitted && f.your_timeline.errors }">
+                  <div class="radio radio-css radio-inline">
+                    <input type="radio" formControlName="your_timeline" id="your_timeline" value="yes" checked />  
+                    <label for="your_timeline">Yes</label>
+                  </div>
+                  <div class="radio radio-css radio-inline">
+                    <input type="radio" formControlName="your_timeline" id="your_timeline" value="no"  />
+                    <label for="your_timeline">No</label>
+                  </div>
+                  <div *ngIf="f.your_timeline.errors" class="invalid-feedback">
+                    <div *ngIf="f.your_timeline.errors.required">Please select timeline.</div>
+                  </div>
+                </div>
+            </div> 
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">How many rental properties do you currently own?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="purchased_over" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.purchased_over.errors }">
+          <div *ngIf="f.purchased_over.errors" class="invalid-feedback">
+            <div *ngIf="f.purchased_over.errors.required">Please enter rental properties do you currently own.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">How many fix n flip transactions have you completed over the past 2 years?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="flip_transactions" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.flip_transactions.errors }">
+          <div *ngIf="f.flip_transactions.errors" class="invalid-feedback">
+            <div *ngIf="f.flip_transactions.errors.required">Please enter flip transactions.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">How many properties do you have under rehab currently?</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="rehab_currently" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.rehab_currently.errors }">
+          <div *ngIf="f.rehab_currently.errors" class="invalid-feedback">
+            <div *ngIf="f.rehab_currently.errors.required">Please enter under rehab currently.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">P1 Value</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="p1_value" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.p1_value.errors }">
+          <div *ngIf="f.p1_value.errors" class="invalid-feedback">
+            <div *ngIf="f.p1_value.errors.required">Please enter P1 Value.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">P1 ADOM</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="p1_adom" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.p1_adom.errors }">
+          <div *ngIf="f.p1_adom.errors" class="invalid-feedback">
+            <div *ngIf="f.p1_adom.errors.required">Please enter P1 ADOM.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">P2 Value</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="p2_value" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.p2_value.errors }">
+          <div *ngIf="f.p2_value.errors" class="invalid-feedback">
+            <div *ngIf="f.p2_value.errors.required">Please enter P2 Value.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">P2 ADOM</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="p2_adom" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.p2_adom.errors }">
+          <div *ngIf="f.p2_adom.errors" class="invalid-feedback">
+            <div *ngIf="f.p2_adom.errors.required">Please enter P2 ADOM.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">P3 Value</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="p3_value" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.p3_value.errors }">
+          <div *ngIf="f.p3_value.errors" class="invalid-feedback">
+            <div *ngIf="f.p3_value.errors.required">Please enter P3 Value.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">P3 ADOM</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="p3_adom" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.p3_adom.errors }">
+          <div *ngIf="f.p3_adom.errors" class="invalid-feedback">
+            <div *ngIf="f.p3_adom.errors.required">Please enter P3 ADOM.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Wholetail Value</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="wholetail_value" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.wholetail_value.errors }">
+          <div *ngIf="f.wholetail_value.errors" class="invalid-feedback">
+            <div *ngIf="f.wholetail_value.errors.required">Please enter Wholetail Value.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Rental Rate</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <input formControlName="rental_rate" class="form-control" type="text" [ngClass]="{ 'is-invalid': submitted && f.rental_rate.errors }">
+          <div *ngIf="f.rental_rate.errors" class="invalid-feedback">
+            <div *ngIf="f.rental_rate.errors.required">Please enter Rental Rate.</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Loan Type</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+            <select formControlName="loan_type" id="loan_type" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.loan_type.errors }">
+              <option value="12% and 5.75 Points">12% and 5.75 Points</option>
+              <option value="20% Deposit">20% Deposit</option>
+            </select>
+            <div *ngIf="f.loan_type.errors" class="invalid-feedback">
+              <div *ngIf="f.loan_type.errors.required">Please enter loan type.</div>
+            </div>
+        </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-12">
+            <label class="col-form-label">Please Explain your Funding Request in the Note Box Below.</label>
+          </div>
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-10">
+              <textarea autosize [minRows]="5" formControlName="deposit_notes" [ngClass]="{ 'is-invalid': submitted && f.deposit_notes.errors }" class="form-control m-b-0"></textarea>
+              <div *ngIf="f.deposit_notes.errors" class="invalid-feedback">
+                <div *ngIf="f.deposit_notes.errors.required">Please enter note.</div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-raised-button mat-dialog-close>Close</button>
+  <button mat-button mat-raised-button class="btn-primary" (click)="validateForm(this.depositLenderForm)">
+    Submit
+    <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+  </button>
+</mat-dialog-actions>
+  

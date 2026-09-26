@@ -1,0 +1,21 @@
+<div class="form-group row justify-content-center p-10 m-0 border" [ngClass]="{'border-bottom-0':!border_bottom}">
+        <div class="col-md-3"> <label class="col-form-label">{{title}}:</label> </div>
+        <div class="col-md-4">
+                <app-more-field *ngIf="moreField" 
+                        [property_id]="property_id" 
+                        [additionalField]="additionalField" 
+                        [fieldType]="fieldType"
+                        [totalAirBnb]="totalAirBnb"
+                        [totalFundsPriorClosing]="totalFundsPriorClosing"
+                        (totalAmount)="totalOtherAmount($event)">
+                </app-more-field>  
+        </div>
+        <!-- <div class="col-md-3" *ngIf="isNetProfit else notNetProfit">
+                {{ (payoutTotalAmount | netProfit:(!border_bottom?'beforeFinance':''))   | currency }}
+        </div> -->
+        <div class="col-md-3">{{ amount | currency }}</div>
+
+        <!-- <ng-template #notNetProfit>
+                <div class="col-md-3">{{ amount | currency }}</div>
+        </ng-template> -->
+</div>

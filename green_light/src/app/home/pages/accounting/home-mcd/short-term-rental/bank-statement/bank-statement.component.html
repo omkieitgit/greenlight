@@ -1,0 +1,127 @@
+<panel  title="Bank Statement" (valueChange)='panelExpand($event)'>
+        <div class="parent-loader">
+                <!-- Loader DIV -->
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <!-- Loader DIV -->
+
+
+                <form [formGroup]="bankStatementForm">
+                        <!-- one row start-->
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Date</label>
+                                        <my-date-picker name="trans_date" [options]="myDatePickerOptions" formControlName="trans_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                        <div *ngIf="f.trans_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                <div *ngIf="f.trans_date.errors.required">Date is required</div>
+                                        </div> 
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Transaction Description</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="trans_desc" [ngClass]="{ 'is-invalid': submitted && f.trans_desc.errors }" />   
+                                        <div *ngIf="f.trans_desc.errors" class="invalid-feedback">
+                                                <div *ngIf="f.trans_desc.errors.required">Amount is required</div>
+                                        </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Amount</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="amount" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />   
+                                        <div *ngIf="f.amount.errors" class="invalid-feedback">
+                                                <div *ngIf="f.amount.errors.required">Amount is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Deposit In</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="deposit_in" [ngClass]="{ 'is-invalid': submitted && f.deposit_in.errors }" />   
+                                        <div *ngIf="f.deposit_in.errors" class="invalid-feedback">
+                                                <div *ngIf="f.deposit_in.errors.required">Deposit In is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Link</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="link" [ngClass]="{ 'is-invalid': submitted && f.link.errors }" />   
+                                        <div *ngIf="f.link.errors" class="invalid-feedback">
+                                                <div *ngIf="f.link.errors.required">Link is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Listing</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="listing" [ngClass]="{ 'is-invalid': submitted && f.listing.errors }" />   
+                                        <div *ngIf="f.listing.errors" class="invalid-feedback">
+                                                <div *ngIf="f.listing.errors.required">listing is required</div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div  class="form-group row m-b-5" >
+                                
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Type</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="trans_type" [ngClass]="{ 'is-invalid': submitted && f.trans_type.errors }" />   
+                                        <div *ngIf="f.trans_type.errors" class="invalid-feedback">
+                                                <div *ngIf="f.trans_type.errors.required">Type is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Renter TR</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="renter_tr" [ngClass]="{ 'is-invalid': submitted && f.renter_tr.errors }" />   
+                                        <div *ngIf="f.renter_tr.errors" class="invalid-feedback">
+                                                <div *ngIf="f.renter_tr.errors.required">Renter TR is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button (click) ="validateForm(this.bankStatementForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                </div>
+                        </div>
+                        
+                </form>
+                <fieldset>
+                        <legend>Bank Statement</legend> 
+                        <div class="table-responsive m-t-10">
+                                <table class="table table-bordered table-condensed">
+                                        <tr>
+                                        <th>Date</th>
+                                        <th>Transaction Description</th>
+                                        <th>Amount</th>
+                                        <th>Deposit In</th>
+                                        <th>Link</th>
+                                        <th>List</th>
+                                        <th>Type</th>
+                                        <th>Renter TR</th>
+                                        <th>Action</th>
+                                        </tr>
+                                        <tbody>
+                                        <tr *ngFor="let statement of bankStatementList">
+                                        <td>{{statement.trans_date}}</td>
+                                        <td class="break">{{statement.trans_desc}}</td>
+                                        <td>{{statement.amount| currency}}</td>
+                                        <td>{{statement.deposit_in}}</td>
+                                        <td  class="break">{{statement.link}}</td>
+                                        <td>{{statement.listing}}</td>
+                                        <td>{{statement.trans_type }}</td>
+                                        <td>{{statement.renter_tr}}</td>
+                                        <td class="p-5">
+                                                <a href="javascript:;" (click)="removeBankStatement(statement.id)">
+                                                        <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                </a>
+                                                <a href="javascript:;" (click)="editBankStatement(statement)">
+                                                        <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                </a>
+                                        </td>
+
+                                        </tr>
+                                        </tbody>
+                                        <tfoot>
+                                                <tr>
+                                                <td  colspan="2" align="right" ><strong>Total:</strong></td>
+                                                <td>{{ (bankStatementList|sum:'amount') | currency }}</td>
+                                                <td colspan="6"></td>
+                                                </tr>
+                                        </tfoot>
+                                        
+                                </table>
+                        </div>
+                </fieldset>
+        </div>
+</panel>

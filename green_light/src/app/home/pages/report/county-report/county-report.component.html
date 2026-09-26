@@ -1,0 +1,111 @@
+<app-attention-warning></app-attention-warning>
+
+<div class="card row p-10" >
+  <form [formGroup]="reportForm">
+    <div class="form-group row m-b-20">
+        <div class="col-md-1">
+                <label class="col-form-label">STATE</label>
+        </div>
+        <div class="col-md-2">
+                <select class="form-control" formControlName="state" >
+                        <option value="">Select State</option>
+                        <option [value]="state.key" *ngFor="let state of states | keyvalue">{{state.value}}</option>
+                </select>  
+        </div>
+        <!-- <div class="col-md-1">
+                <label class="col-form-label">DATE</label>
+        </div>
+        <div class="col-md-4">
+                <div class="input-group date_range">
+                        <my-date-picker name="from" class="form-control"  [options]="myDatePickerOptions" formControlName="from" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                        <span class="input-group-addon">to</span>
+                        <my-date-picker name="to" class="form-control"  [options]="myDatePickerOptions" formControlName="to" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                </div>
+        </div> -->
+        <div class="col-md-1">
+                <label class="col-form-label">SALE DATE</label>
+        </div>
+        <div class="col-md-4">
+                <div class="input-group date_range">
+                        <my-date-picker name="sale_date_from" class="form-control"  [options]="myDatePickerOptions" formControlName="sale_date_from" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                        <span class="input-group-addon">to</span>
+                        <my-date-picker name="sale_date_to" class="form-control"  [options]="myDatePickerOptions" formControlName="sale_date_to" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                </div>
+        </div>
+      
+        <div class="col-md-2">
+                <button class="form-control m-b-0 btn btn-sm btn-primary" (click)="showUserReport()">
+                        Show Report
+                        <i *ngIf="loadingContent" class="fa fa-spin fa-spinner"></i> 
+                </button>
+        </div>
+      
+    </div>
+    <div class="row">
+      <app-loader [loading]="loadingContent"></app-loader>
+      <div class="col-lg-12">
+        <div [chart]="mapChart"></div>
+      </div>
+      <!-- begin col-6 -->
+      <div class="col-lg-12">
+        <!-- begin panel -->
+        <panel [collapse]='false'  title="{{selected_state }} County List report">
+          <div class="tab-content">
+            <!-- begin tab-pane -->
+            <div class="tab-pane fade active show  parent-loader" id="general-tab">
+              <!-- <app-loader [loading]="loadingContent"></app-loader> -->
+              <!-- begin table-responsive -->
+              <div *ngIf="resultData" class="table-responsive">
+                <table class="table table-bordered table-condensed">
+                    <tr>
+                      <th>County Name</th>
+                      <th>Total</th>
+                      <th>1st Liens</th>	
+                      <th>Inferior Liens</th>
+                      <th>HOAs</th>
+                      <th>Tax Sales</th>
+                      <th>Subtos</th>
+                      <th>Full List</th>
+                    </tr>
+                  <tbody>
+                    <tr *ngFor="let report of resultData">
+                        <td>{{report?.county }}</td>
+                        <td>{{report?.total}}</td>
+                        <td>{{report?.first_liens }}</td>
+                        <td>{{report?.inferior_liens}}</td>
+                        <td>{{report?.hoa_liens }}</td>
+                        <td>{{report?.tax_liens}}</td>  
+                        <td>{{report?.sub_to}}</td>
+                        <td><a href="javascript:;" (click)="exportReport(report?.county)">Export</a></td>
+                      </tr>
+                  </tbody>
+                  <!-- <tfoot *ngIf="moreBtn">
+                    <tr>
+                      <td colspan="3" align="center">
+                        <button  class="btn btn-primary btn-sm" (click)="!loader && viewMore()" >
+                          Load More
+                          <i *ngIf="loader" class="fa fa-spin fa-spinner"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  </tfoot> -->
+                </table>
+              </div>
+              <!-- <div *ngIf="!loadingContent && reportResult.length==0">
+                No Result Found
+              </div> -->
+              <!-- end table-responsive -->
+            </div>
+            <!-- end tab-pane -->
+          </div>
+        
+
+        </panel>
+        <!-- end panel -->
+      </div>
+        <!-- begin col-6 -->
+      
+    </div>
+    <!-- one row end -->
+  </form>
+</div>

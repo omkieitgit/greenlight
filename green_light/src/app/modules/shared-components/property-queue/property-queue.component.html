@@ -1,0 +1,91 @@
+<div class="row card property_queue m-t-5 ">
+    <div class="card-body">
+        <div class="form-group row">
+            <div class="col-md-3">
+                <h3>PROPERTY QUEUE</h3>
+            </div>
+            <div class="col-md-9">
+                <form [formGroup]="propertyQueueForm">
+                    <select (change)="showList($event)" #list_id class="form-control pull-left  col-md-4 m-r-5" formControlName="prop_queue_list">
+                        <option value="">Select List</option>
+                        <option *ngFor="let list of list_data" [value]="list.list_id">{{list.name}}</option>
+                    </select>
+                    <div *ngIf="listFlag" class="side_loader pull-left"></div>
+    
+                </form>
+            </div>
+        </div>
+
+        <div class="parent-loader">
+            <!-- Loader DIV -->
+            <div *ngIf="listFlag"  class="child-loader"><span class="spinner-small "></span></div>
+            <!-- Loader DIV -->
+
+            <div class="form-group row">
+                    <div class="col-md-8">
+                      
+                            <app-propert-export [house_ids]="house_ids"></app-propert-export>
+                            <button class="btn btn-sm btn-primary m-b-5" (click)="delete_whole_list(list_id)">Delete Whole List <div [ngClass]="{'btn_loader': removeFlag }"></div></button>
+                            <button  class="btn btn-sm btn-primary  m-b-5" (click)="show_route()">Show Route</button>
+                            <button *ngIf="!selectPropertFlag" class="btn btn-primary btn-sm  m-b-5" (click)="select_all()">SELECT ALL</button>
+                            <button *ngIf="selectPropertFlag" class="btn btn-primary btn-sm  m-b-5" (click)="un_select_all()">UNSELECT ALL</button>
+                        
+                    </div>
+                    <div class="col-md-4 pull-right">
+                        <input type="text" name="list_name" #list_name id="list_name" placeholder="List name" class="form-control col-md-6 pull-left m-r-5 m-b-5" />
+                        <button class="btn btn-sm btn-primary m-b-5" (click)="save_me(list_name)" >Save Me <div [ngClass]="{'btn_loader': saveFlag }"></div></button>
+                        <!-- Not Needed in New Design, @Rativardhan added Comment -->
+                        <!-- <button  class="btn btn-primary">Refresh Me</button> -->
+                    </div>
+            </div>
+            <div *ngIf="!queueFlag">
+                <div class="card mb-2 borer_dotted property_queue" id="property_queue_{{property_queue.property_queue_list_houses_id}}" *ngFor="let property_queue of property_queue_list">
+                    <div class="row no-gutters">
+                        <div class="col-md-2">
+                            <div class="card-body">
+                                <div class="checkbox checkbox-css">
+                                    <input id="queue_{{property_queue.property_queue_list_houses_id}}" type="checkbox" (click)="$event.stopPropagation()"  (change)="clickEvt($event)" value="{{property_queue.property_queue_list_houses_id}}"/>
+                                    <label for="queue_{{property_queue.property_queue_list_houses_id}}">
+                                        <img src="{{property_queue?.house.front_picture?.url}}" class="card-img" style="max-width: 125px;">
+                                    </label>
+                                </div>
+                            </div>    
+                        </div>
+                        <div class="col-md-10" >
+                            <div class="card-body">
+                                <h5 class="card-title" style="cursor: pointer;" [routerLink]="['/home/showdetail/'+property_queue.house_id+'/'+(property_queue.house.address|slugify)]" >
+                                    {{property_queue.house.address}},{{property_queue.house.city}},{{property_queue.house.county}},{{property_queue.house.state}},{{property_queue.house.zip}}
+                                </h5>
+                                <p class="card-text"  style="cursor: pointer;" [routerLink]="['/home/showdetail/'+property_queue.house_id+'/'+(property_queue.house.address|slugify)]" >
+                                    LDUB: {{property_queue.house.last_sale_details?.last_bidder?.last_date_to_upset_bid}},
+                                    SP#: {{property_queue.house.last_sale_details?.case_number}},
+                                    SD#: {{property_queue.house.last_sale_details?.sale_date}},
+                                    ST#: {{property_queue.house.last_sale_details?.sale_time}},
+                                    PRECINCT#: {{property_queue.house.last_sale_details?.priceint}},
+                                    OB#: {{property_queue.house.last_sale_details?.opening_bid}},
+                                    WB: {{property_queue.house.last_sale_details?.last_bidder?.winning_bid}},
+                                    1L: {{property_queue.house.first_liens?.lender}},
+                                    1LA: {{property_queue.house.first_liens?.lien_amount}},
+                                    1LD: {{property_queue.house.first_liens?.date_recorded}},
+                                    CMA/ARV: {{property_queue.house.last_cma_arv_recommendations?.recommended_cma_arv}}
+                                </p>
+                                <p class="card-text">
+                                        <button [routerLink]="['/home/quick-view/'+property_queue.house_id+'/'+(property_queue.house.address|slugify)]" class="btn btn-primary">Quickview</button>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    
+            </div>
+            <div *ngIf="queueFlag">
+                <div class="search_property_info form-group row" id="remove_not_available" style="padding: 15px; font-weight: bold;margin-top:15px;" >
+                    Property not available.
+                </div>
+            </div>
+        </div>
+
+        <app-here-map *ngIf="route_list.length>0" lat="37.579412513438385" lng="-88" width="100%" height="500px" zoom="5" [show_route_info]="route_list"></app-here-map>
+        
+    </div>
+</div>

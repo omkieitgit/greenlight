@@ -1,0 +1,23 @@
+<panel title="Renovation Cost, Incidental costs, Carry costs" (valueChange)='panelExpand($event)'>
+    <fieldset class="parent-loader">
+         <!-- Loader DIV -->
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <!-- Loader DIV -->
+        <div *ngIf="openPanel">
+            <app-burn-rate *ngIf="burnRatelist && ric_cost_data" 
+                [property_id]="property_id" 
+                [openPanel]="openPanel" 
+                [burnRateList]="burnRatelist" 
+                [actualBurnRateData]="ric_cost_data?.atual_burn_rate" 
+                [burn_rate_detail]="ric_cost_data?.burn_rate_detail" 
+                [payout]="ric_cost_data?.payout" 
+                [viewAccessOnly]="viewAccessOnly"
+                (updateBurnRate)="updateBurnRateInfo($event)">
+            </app-burn-rate>
+            <app-category-by-cost *ngIf="ric_cost_data"  [property_id]="property_id" [categoryByInfo]="ric_cost_data.category_by_costs" [clientRenovation]="clientRenovation" [openPanel]="openPanel"></app-category-by-cost>
+            <app-incidental-costs *ngIf="ric_cost_data" [property_id]="property_id" [incidentalInfo]="ric_cost_data.incidental_costs" [clientRenovation]="clientRenovation" [openPanel]="openPanel"></app-incidental-costs>
+            <app-carry-costs *ngIf="ric_cost_data" [property_id]="property_id"  [carryInfo]="ric_cost_data.carry_costs"  [clientRenovation]="clientRenovation" [openPanel]="openPanel"></app-carry-costs>
+            <app-renovation-costs *ngIf="ric_cost_data"  [property_id]="property_id" [renovationInfo]="ric_cost_data.renovation_costs" [clientRenovation]="clientRenovation" [openPanel]="openPanel"></app-renovation-costs>
+        </div>
+    </fieldset>
+</panel>

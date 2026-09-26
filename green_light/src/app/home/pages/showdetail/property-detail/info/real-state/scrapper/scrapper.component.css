@@ -1,0 +1,10 @@
+._scrapper td:first-child{
+    width: 20%;
+}
+
+._scrapper td:last-child{
+    width: 80%;
+}
+._history td{
+    width: auto !important;
+}

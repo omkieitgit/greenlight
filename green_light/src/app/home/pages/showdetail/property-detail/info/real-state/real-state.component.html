@@ -1,0 +1,210 @@
+<!-- Loder & Messages -->
+  <div class="alerts text-center">
+    <div *ngIf="loadingMessage" class="alert">
+      <p>Loading...</p>
+    </div>
+    <div *ngIf="propErr" class="alert">
+      {{ propErrMsg }}
+   </div>
+  </div>
+<!-- Loder & Messages -->
+<form [formGroup]="realStateForm" [appDisableElement]="realStateForm" *ngIf="!propErr" class="parent-loader _property_info">
+  
+  <!-- Loader DIV -->
+  <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+  <!-- Loader DIV -->
+
+    <fieldset >
+        <legend>Local Real Estate Details</legend>
+        <!-- one row start-->
+        <div class="form-group row m-b-5">
+          <div class="col-md-2">
+            <label class="col-form-label">Zillow URL</label>
+            <span [appLink]="f.zillow_url.value"></span>
+            <input type="text" formControlName="zillow_url" #zillow_search_url [ngClass]="{ 'is-invalid': submitted && f.zillow_url.errors }" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.zillow_url.errors" class="invalid-feedback">
+                  <div *ngIf="f.zillow_url.errors.required">Zillow URL required</div>
+              </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Zestimate</label>
+            <input type="text" formControlName="zestimate" class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.zestimate.errors }" appOnBlurSave (updatedValue)="autoSave($event)"/>          
+            <div *ngIf="f.zestimate.errors" class="invalid-feedback">
+              <div *ngIf="f.zestimate.errors.required">Zestimate is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button *hideElement="true" (click)="zillow_search_property(zillow_search_url.value,'Zillow')" class="form-control  btn btn-sm btn-primary">
+              Zillow Search
+              <div [ngClass]="{'btn_loader': zillow_loader }"></div>
+            </button>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Redfin URL</label>
+            <span [appLink]="f.redfin_url.value"></span>
+            <input type="text" formControlName="redfin_url" class="form-control m-b-0" #redfin_search_url  [ngClass]="{ 'is-invalid': submitted && f.redfin_url.errors }"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.redfin_url.errors" class="invalid-feedback">
+              <div *ngIf="f.redfin_url.errors.required">Redfin URL is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Redfin Est</label>
+            <input type="text" formControlName="redfin_est" class="form-control m-b-0"   appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.redfin_est.errors" class="invalid-feedback">
+              <div *ngIf="f.redfin_est.errors.required">Redfin Est is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button *hideElement="true" (click)="redfin_search_property(redfin_search_url.value,'redfin')" class="form-control  btn btn-sm btn-primary">
+              Redfin Search
+              <div [ngClass]="{'btn_loader': redfin_loader }"></div>
+            </button>
+          </div>
+         
+        </div>
+        <!-- one row end -->
+
+        <!-- one row start-->
+        <div class="form-group row m-b-5">
+          <div class="col-md-2">
+            <label class="col-form-label">Realtor URL</label>
+            <span [appLink]="f.realtor_url.value"></span>
+            <input type="text" formControlName="realtor_url" #realtor_search_url class="form-control m-b-0" [ngClass]="{ 'is-invalid': submitted && f.realtor_url.errors }"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.realtor_url.errors" class="invalid-feedback">
+              <div *ngIf="f.realtor_url.errors.required">Realtor URL is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Realtor Est</label>
+            <input type="text" formControlName="realtor_est" class="form-control m-b-0"   appOnBlurSave (updatedValue)="autoSave($event)"/>          
+            <div *ngIf="f.realtor_est.errors" class="invalid-feedback">
+              <div *ngIf="f.realtor_est.errors.required">Realtor Est is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button  *hideElement="true" (click)="realtor_search_property(realtor_search_url.value,'Realtor')" class="form-control btn btn-sm btn-primary">
+              Realtor Search
+              <div [ngClass]="{'btn_loader': realtor_loader }"></div>
+            </button>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Trulia URL</label>
+            <span [appLink]="f.truila_url.value"></span>
+            <input type="text" formControlName="truila_url"  #truila_search_url class="form-control m-b-0"  [ngClass]="{ 'is-invalid': submitted && f.truila_url.errors }"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.truila_url.errors" class="invalid-feedback">
+              <div *ngIf="f.truila_url.errors.required">Trulia URL is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Trulia Est</label>
+            <input type="text" formControlName="truila_est" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)" />
+            <div *ngIf="f.truila_est.errors" class="invalid-feedback">
+              <div *ngIf="f.truila_est.errors.required">Trulia Est is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button  *hideElement="true" (click)="search_property(truila_search_url.value,'Trulia')" class="form-control btn btn-sm btn-primary">
+              Trulia Search
+              <div [ngClass]="{'btn_loader': trulia_loader }"></div>
+            </button>
+          </div>
+        </div>
+        <!-- one row end -->
+
+        <!-- one row start-->
+        <div class="form-group row m-b-5">
+          <div class="col-md-2">
+            <label class="col-form-label">Har URL </label>
+            <span [appLink]="f.har_url.value"></span>
+            <input type="text" formControlName="har_url" class="form-control m-b-0" #har_search_url [ngClass]="{ 'is-invalid': submitted && f.har_url.errors }"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.har_url.errors" class="invalid-feedback">
+              <div *ngIf="f.har_url.errors.required">Har URL is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Har Est</label>
+            <input type="text" formControlName="har_est" class="form-control m-b-0"   appOnBlurSave (updatedValue)="autoSave($event)"/>          
+            <div *ngIf="f.har_est.errors" class="invalid-feedback">
+              <div *ngIf="f.har_est.errors.required">Har Est is required</div>
+            </div>
+          </div>
+          <div class="col-md-2" *hideElement="true" >
+            <label class="col-form-label">&nbsp;</label>
+            <button (click)="har_search_property(har_search_url.value,'Har')" class="form-control btn btn-sm btn-primary">
+              Har Search
+              <div [ngClass]="{'btn_loader': har_loader }"></div>
+            </button>
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">Estately URL </label>
+            <span [appLink]="f.gui_url.value"></span>
+            <input type="text" formControlName="gui_url" class="form-control m-b-0" #gui_search_url [ngClass]="{ 'is-invalid': submitted && f.gui_url.errors }"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.gui_url.errors" class="invalid-feedback">
+              <div *ngIf="f.gui_url.errors.required">Estately URL is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Estately Est</label>
+            <input type="text" formControlName="gui_est" class="form-control m-b-0"   appOnBlurSave (updatedValue)="autoSave($event)"/>          
+            <div *ngIf="f.gui_est.errors" class="invalid-feedback">
+              <div *ngIf="f.gui_est.errors.required">Estately Est is required</div>
+            </div>
+          </div>
+          <div class="col-md-2" *hideElement="true" >
+            <label class="col-form-label">&nbsp;</label>
+            <button (click)="gui_search_property(gui_search_url.value,'Gui')" class="form-control btn btn-sm btn-primary">
+              Estately Search
+              <div [ngClass]="{'btn_loader': gui_loader }"></div>
+            </button>
+          </div>
+
+        </div>
+        <div class="form-group row m-b-5">
+          <div class="col-md-2">
+            <label class="col-form-label">Movoto URL </label>
+            <span [appLink]="f.movoto_url.value"></span>
+            <input type="text" formControlName="movoto_url" class="form-control m-b-0" #movoto_search_url [ngClass]="{ 'is-invalid': submitted && f.movoto_url.errors }"  appOnBlurSave (updatedValue)="autoSave($event)"/>
+            <div *ngIf="f.movoto_url.errors" class="invalid-feedback">
+              <div *ngIf="f.movoto_url.errors.required">Movoto URL is required</div>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Movoto Est</label>
+            <input type="text" formControlName="movoto_est" class="form-control m-b-0"   appOnBlurSave (updatedValue)="autoSave($event)"/>          
+            <div *ngIf="f.movoto_est.errors" class="invalid-feedback">
+              <div *ngIf="f.movoto_est.errors.required">Movoto Est is required</div>
+            </div>
+          </div>
+          <div class="col-md-2" *hideElement="true" >
+            <label class="col-form-label">&nbsp;</label>
+            <button (click)="movoto_search_property(movoto_search_url.value,'Movoto')" class="form-control btn btn-sm btn-primary">
+              Movoto Search
+              <div [ngClass]="{'btn_loader': movoto_loader }"></div>
+            </button>
+          </div>
+
+          <div class="col-md-2">
+            <label class="col-form-label">Beenverified URL</label>
+            <span [appLink]="f.beenverified_url.value"></span>
+            <input type="text" formControlName="beenverified_url" class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)" />
+            <div *ngIf="f.beenverified_url.errors" class="invalid-feedback">
+              <div *ngIf="f.beenverified_url.errors.required">Beenverified URL is required</div>
+            </div>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            
+            <button  *hideElement="true" type="button"  (click)="validateForm(this.realStateForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+              </button>
+          </div> 
+        </div>
+        <!-- one row end -->
+    </fieldset>
+</form>

@@ -1,0 +1,221 @@
+<fieldset *ngIf="!viewAccessOnly">  
+        <legend>Burn Rate</legend> 
+        <form  [formGroup]="burnRateForm">
+            <div class="form-group row">
+                    <input type="hidden" formControlName="id" /> 
+                    <div class="col-md-2 _navbar_search">
+                            <label class="col-form-label">SUB-CATEGORIES</label>
+                            <mat-form-field appearance="outline" >
+                                <input type="text" matInput formControlName="category" [matAutocomplete]="auto">
+                                <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFn">
+                                    <mat-option *ngFor="let sub_cat of  filteredOptions | async" [value]="sub_cat">{{sub_cat.category_name}}</mat-option>
+                                </mat-autocomplete>
+                            </mat-form-field>
+                    </div>
+                    <div class="col-md-4">
+                            <label class="col-form-label">DESCRIPTION</label>
+                            <input type="text" formControlName="description"  class="form-control m-b-0" placeholder="DESCRIPTION"/> 
+                    </div>
+                    <div class="col-md-2">
+                            <label class="col-form-label">AMOUNT</label>
+                            <input type="text" formControlName="amount"  class="form-control m-b-0" placeholder="AMOUNT"/> 
+                    </div>
+                    <div class="col-md-2 _navbar_search">
+                        <label class="col-form-label">BURN RATE TYPE</label>
+                        <mat-form-field appearance="outline" >
+                            <input type="text" matInput formControlName="burn_rate_type" [matAutocomplete]="auto1">
+                            <mat-autocomplete #auto1="matAutocomplete">
+                                <mat-option [value]="'estimated'">Estimated</mat-option>
+                                <mat-option  [value]="'actual'">Actual</mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                
+                    <div class="col-md-2">
+                            <label class="col-form-label">&nbsp;</label>
+                            <button class="form-control m-b-0 btn btn-sm btn-primary" (click)="validateForm(burnRateForm)">
+                                    Save
+                                    <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+                            </button>
+                    </div>
+            </div>
+        </form>
+</fieldset>
+<fieldset>  
+    <legend>Estimated Burn Rate</legend> 
+    <div class="form-group row">
+        <div class="col-md-12">
+            <div class="table-responsive table-fixed-header">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Annual</th>
+                            <th>Monthly</th>
+                            <th>Weekly</th>
+                            <th>Daily</th> 
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="burnRateInfo.length>0">
+                            <tr *ngFor="let burnRate of burnRateInfo">
+                                <td>{{burnRate?.category?.category_name}}</td>
+                                <td>{{burnRate.description}}</td>
+                                <td>{{burnRate.amount | currency }}</td>
+                                <td>{{(burnRate.amount/12) | currency }}</td>
+                                <td>{{ (burnRate.amount/48) | currency }}</td>
+                                <td>{{ (burnRate.amount/360) | currency  }}</td>
+                                <td>
+                                    <a href="javascript:;" (click)="removeBurnRate(burnRate.id)">
+                                    <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                    </a>
+                                    <a href="javascript:;" (click)="editburnRate(burnRate)">
+                                    <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="burnRateInfo.length==0">
+                            <tr>
+                                <td colspan="7" class="text-center font-weight-bold">No Record Found </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                    <tfoot *ngIf="burnRateInfo.length>0">
+                        <tr>
+                            <th colspan="2" class="text-right">Estimated Annual Burnrate</th>
+                            <th>{{ totalAmount | currency }}</th>
+                            <th>{{ totalAmount/12 | currency }}</th>
+                            <th>{{ (totalAmount/48) | currency }} </th>
+                            <th>{{ (totalAmount/360) | currency }}</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="text-right">Estimated Monthly cost for draw request</th>
+                            <th></th>
+                            <th>{{ totalAmount/12 | currency }}</th>
+                            <th colspan="4"></th>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="col-form-label">Actual  A to B</label>
+        </div>
+        <div class="col-md-2">
+            {{payout?.close_date_a_to_b}}
+        </div>
+        <div class="col-md-2">
+            <label class="col-form-label">Actual Hud B to C</label>
+        </div>
+        <div class="col-md-2">
+            {{payout?.close_date_b_to_c}}
+        </div> 
+        <div class="col-md-2">
+            <label class="col-form-label">Total Deed to Deed</label>
+        </div>
+        <div class="col-md-2">{{numberdays}}</div>
+    </div>
+    
+</fieldset>
+
+<fieldset>  
+    <legend>Actual Burn Rate</legend> 
+
+    <div class="form-group row">
+        <div class="col-md-12">
+            <div class="table-responsive table-fixed-header">
+                <table class="table table-bordered table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Actual</th>
+                            <th>Actual Months</th>
+                            <th>Monthly</th>
+                            <th>Weekly</th>
+                            <th>Daily</th> 
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngIf="actualBurnRateInfo && actualBurnRateInfo.length>0">
+                            <tr *ngFor="let burnRate of actualBurnRateInfo">
+                                <td>{{burnRate?.category?.category_name}}</td>
+                                <td>{{burnRate.description}}</td>
+                                <td>{{burnRate.amount | currency }}</td>
+                                <td></td>
+                                <td>{{(burnRate.amount/12) | currency }}</td>
+                                <td>{{ (burnRate.amount/48) | currency }}</td>
+                                <td>{{ (burnRate.amount/360) | currency  }}</td>
+                                <td>
+                                    <a href="javascript:;" (click)="removeBurnRate(burnRate.id)">
+                                    <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                    </a>
+                                    <a href="javascript:;" (click)="editburnRate(burnRate)">
+                                    <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        
+                        </ng-container>
+                        <ng-container *ngIf="actualBurnRateInfo">
+                            <tr *ngFor="let actual of actualBurnRateData">
+                                <td>{{actual?.category?.category_name}}</td>
+                                <td></td>
+                                <td style="width:15%;position: relative;" >
+                                    <!-- {{actual.total_amount | currency }} -->
+                                    <input type="text" name="amount"  #actualAmount [value]="actual.total_amount" appOnBlurSave (updatedValue)="autoSaveActual($event,actual)" class="form-control m-b-0"  placeholder="Amount"/>
+                                </td>
+                                <td width="30" style="position: relative;">
+                                        <input type="text" name="actual_months"  #actualMonths [value]="actual.actual_months" appOnBlurSave (updatedValue)="autoSave($event,actual)" class="form-control m-b-0"  placeholder="Month"/>
+                                    </td>
+                                <td>{{actual.total_amount/actualMonths.value | currency }}</td>
+                                <td>{{ (actual.total_amount/(actualMonths.value*4)) | currency }}</td>
+                                <td>{{ (actual.total_amount/(actualMonths.value*30)) | currency  }}</td>
+                                <td></td>
+                            </tr>
+                        </ng-container>
+                        <ng-container *ngIf="actualBurnRateInfo.length==0 && !actualBurnRateInfo">
+                            <tr>
+                                <td colspan="8" class="text-center font-weight-bold">No Record Found </td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                    <tfoot *ngIf="burnRateInfo.length>0">
+                        <th colspan="2" class="text-right">Total</th>
+                        <th>{{totalActual | currency }}</th>
+                        <th></th>
+                        <th>{{ totalAmountActual | currency }}</th>
+                        <th>{{ (totalAmountActual/4) | currency }} </th>
+                        <th>{{ (totalAmountActual/30) | currency }}</th>
+                        <th></th>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-md-2">
+            <label class="col-form-label">Actual  A to B</label>
+        </div>
+        <div class="col-md-2">
+            {{payout?.close_date_a_to_b}}
+        </div>
+        <div class="col-md-2">
+            <label class="col-form-label">Actual Hud B to C</label>
+        </div>
+        <div class="col-md-2">
+            {{payout?.close_date_b_to_c}}
+        </div> 
+        <div class="col-md-2">
+            <label class="col-form-label">Total Deed to Deed</label>
+        </div>
+        <div class="col-md-2">{{numberdays}}</div>
+    </div>
+</fieldset>

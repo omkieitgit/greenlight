@@ -1,0 +1,26 @@
+<form [formGroup]="mcdUserForm">
+        <!-- one row start-->
+        <div class="form-group row m-b-5" >
+        <div class="col-md-3">
+                <label class="col-form-label">Select Wholesale Buyer</label>
+        </div>
+        <div class="col-md-3 _navbar_search">
+                <mat-form-field appearance="outline" >
+                        <input type="text" matInput formControlName="user_id" [matAutocomplete]="auto" [ngClass]="{ 'is-invalid': submitted && f.user_id.errors }" >
+                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onChangeCategory($event)" >
+                                <mat-option *ngFor="let user of filteredOptions | async" [value]="user">{{user.first_name+' '+user.last_name }}</mat-option>
+                        </mat-autocomplete>
+                </mat-form-field>
+                <div *ngIf="f.user_id.errors" class="invalid-feedback">
+                        <div *ngIf="f.user_id.errors.required">Name is required</div>
+                </div>
+        </div>
+
+        <div class="col-md-2">
+        <button (click) ="!loading && validateForm(this.mcdUserForm)"class="form-control m-b-0 btn btn-sm btn-primary">
+                Save
+                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+        </button>
+        </div>
+        </div>
+</form>

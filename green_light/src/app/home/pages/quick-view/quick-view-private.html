@@ -1,0 +1,515 @@
+
+
+<app-attention-warning></app-attention-warning>
+
+<div class="quick-view row parent-loader" >
+     <!-- Loader DIV -->
+    <div *ngIf="loader"  class="child-loader"><span class="spinner-small "></span></div>
+    <!-- Loader DIV -->
+    <ng-container *ngIf="!loader">
+        <div class="form-group col-md-12">
+            <app-add-me-btn [property_id]="property_id"></app-add-me-btn>
+            <app-add-to-alarm [property_id]="property_id"></app-add-to-alarm>
+            <app-wholesale-retail [property_id]="property_id"></app-wholesale-retail>
+            <button (click)="data_info()" class="m-r-5 mt-1 mt-sm-0 btn btn-sm btn-primary">DATA</button>
+            <app-common-notes class="mt-1  mt-sm-0" [note_name]="notes_btn.note_name" [noteSetting]="notes_btn" (updateNotesDetail)="updatedNotes($event)"></app-common-notes>
+        </div> 
+        
+        <div #content class="col-md-12" id="contentToConvert">
+            <div class="form-group row m-b-10">
+                <div class="col-md-12">
+                    <app-common-notes [note_name]="notes_detail.note_name" [noteSetting]="notes_detail" [resetFormSubject]="resetFormSubject.asObservable()"></app-common-notes>
+                </div>
+            </div>
+            
+            <div id="print_property" class="form-group row m-b-0">
+                <div class="col-md-6">
+
+                    <fieldset>
+                        <legend>
+                            <a href="javascript:;" [routerLink]="['/home/showdetail/'+result?.house_id+'/'+(result.address|slugify)]">
+                                <b>{{result?.address}}</b>
+                            </a>
+                        </legend>
+                        <div  style="cursor: pointer;" (click)="propertyDetail()">
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Address</label></div>
+                                <div class="col-md-8">
+                                    {{ result?.address }} {{ result?.city }} {{ result?.state }} {{ result?.zip }}
+                                </div>
+                            </div>
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Sale Date</label></div>
+                                <div class="col-md-8">{{getData(result?.last_sale_details?.sale_date) }} {{getData(result?.last_sale_details?.sale_time) }}</div>
+                            </div>
+                    
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Case Number</label></div>
+                                <div class="col-md-8">{{getData(result?.last_sale_details?.case_number)}}</div>
+                            </div>
+                    
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Opening Bid</label></div>
+                                <div class="col-md-8">{{getData(result?.last_sale_details?.opening_bid)}}</div>
+                            </div>
+                    
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Sale Type</label></div>
+                                <div class="col-md-8">{{property_config?.sale_type[result?.last_sale_details?.sale_type] }}</div>
+                            </div>
+    
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Sale Status</label></div>
+                                <div class="col-md-8">{{property_config?.sale_status[result?.last_sale_details?.sale_status] }}</div>
+                            </div>
+                    
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">County</label></div>
+                                <div class="col-md-8">{{getData(result?.county)}}</div>
+                            </div>
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Trustee Name</label></div>
+                                <div class="col-md-8">{{getData(result?.last_sale_details?.trustee)}}</div>
+                            </div>
+                            <!-- <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Buy It Request</label></div>
+                                <div class="col-md-8" *ngIf="!loader && result?.buy_it_request.length>0">
+                                    <p *ngFor="let buyIt of result?.buy_it_request">
+                                        {{buyIt}}
+                                    </p>
+                                </div>
+                            </div> -->
+
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Lender Request</label></div>
+                                <div class="col-md-8" *ngIf="!loader && result?.lender_request.length>0">
+                                    <p *ngFor="let lender of result?.lender_request">
+                                        {{lender}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Contact Owner</label></div>
+                                <div class="col-md-8" *ngIf="!loader && result?.subto_request.length>0">
+                                    <p *ngFor="let subto of result?.subto_request">
+                                        {{subto}}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <ng-container *ngIf="result?.owner_info?.length>0; else blankTemp">
+                                <div *ngFor="let owner of result?.owner_info; let i=index" class="form-group row m-b-0">
+                                    <div class="col-md-4"><label class="col-form-label">Owner Name {{i+1}}</label></div>
+                                    <div class="col-md-8 ">{{getData( owner?.full_name)}} Phone# {{getData(owner?.phone)}}</div>
+                                </div>
+                            </ng-container>
+
+                            <ng-template #blankTemp>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-4"><label class="col-form-label">Owner Name</label></div>
+                                    <div class="col-md-8 ">Not available</div>
+                                </div>
+                            </ng-template>
+                            
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">CMA/ARV</label></div>
+                                <div class="col-md-8  ">{{getData(result?.last_cma_arv_recommendations?.recommended_cma_arv)}}</div>
+                            </div>
+                            <div class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">County Value</label></div>
+                                <div class="col-md-8 ">{{getData(result?.county_value)}}</div>
+                            </div>
+                            <div *ngIf="result?.first_liens?.lien_amount && result?.first_liens?.date_recorded" class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">1st Lien Amount & Date</label></div>
+                                <div class="col-md-8 ">{{ result?.first_liens?.lien_amount?(getLienData(result?.first_liens,'lien_amount')):'---'  }} {{ result?.first_liens?.date_recorded?(getLienData(result?.first_liens,'date_recorded') | date:'MM/dd/yyyy'):'---'  }}</div>
+                            </div>
+                            <div  *ngIf="result?.second_liens?.lien_amount && result?.second_liens?.date_recorded" class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">2nd Lien Date</label></div>
+                                <div class="col-md-8 ">{{ result?.second_liens?.lien_amount?(getLienData(result?.second_liens,'lien_amount')):'---'  }} {{ result?.second_liens?.date_recorded?(getLienData(result?.second_liens,'date_recorded') | date:'MM/dd/yyyy'):'-'  }}</div>
+                            </div>
+                            <div  *ngIf="result?.third_liens?.lien_amount && result?.third_liens?.date_recorded" class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">3rd Lien Amount & Date</label></div>
+                                <div class="col-md-8 ">{{ result?.third_liens?.lien_amount?(getLienData(result?.third_liens,'lien_amount')):'---'  }} {{ result?.third_liens?.date_recorded?(getLienData(result?.third_liens,'date_recorded') | date:'MM/dd/yyyy'):'-'  }}</div>
+                            </div>
+                            <div  *ngIf="result?.other_liens?.lien_amount && result?.other_liens?.date_recorded" class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Other Lien Date</label></div>
+                                <div class="col-md-8 ">{{ result?.other_liens?.lien_amount?(getLienData(result?.other_liens,'lien_amount')):'---'  }} {{ result?.other_liens?.date_recorded?(getLienData(result?.other_liens,'date_recorded') | date:'MM/dd/yyyy'):'-'  }}</div>
+                            </div>
+                            <div  *ngIf="result?.hoa_liens?.hoa_lien_amount && result?.hoa_liens?.date_of_hoa_lien" class="form-group row m-b-0">
+                                <div class="col-md-4"><label class="col-form-label">Hoa Lien Date</label></div>
+                                <div class="col-md-8 ">{{ result?.hoa_liens?.hoa_lien_amount?(getLienData(result?.hoa_liens,'hoa_lien_amount')):'---'  }} {{ result?.hoa_liens?.date_of_hoa_lien?(getLienData(result?.hoa_liens,'date_of_hoa_lien') | date:'MM/dd/yyyy'):'-'  }}</div>
+                            </div>
+                            <ng-container *ngFor="let comps of result?.cma_arv_recommendations">
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-4"><label class="col-form-label">{{ compsName[comps.info_added_by] }}</label></div>
+                                    <div class="col-md-8 ">
+                                        {{ comps?.user?comps?.user?.first_name +' '+ comps?.user?.last_name:'' }}
+                                        {{ comps.date | date:'MM/dd/yyyy' }}
+                                        {{ comps?.recommended_cma_arv?'$'+comps?.recommended_cma_arv:'' }}
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        
+                       
+                        <app-favourite [isFavourite]="isFavourite"></app-favourite>
+                        
+                    </fieldset>
+
+                </div>
+                <div class="col-md-6">
+                    <fieldset>
+                        <legend>
+                            <a href="https://maps.apple.com/?q={{address}}" *ngIf="device=='iPhone'" target="_blank">
+                                Click Here to View Google Map
+                            </a>
+                            <a href="https://maps.google.com/?q={{address}}" *ngIf="device!='iPhone'"  target="_blank">
+                                Click Here to View Google Map
+                            </a>
+                        </legend>
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-12">
+                                <img src="{{result?.front_picture?.url}}" style="width: 100%" />
+                            </div>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-6 pull-right">
+                    <button  (click)="printPropertyInfo('print_property')" class="m-r-5 m-b-5 btn btn-sm btn-primary align-self-stretch">Print</button>
+                </div>
+                <div class="col-md-6"><label class="col-form-label"></label></div>
+            </div>
+            <div class="form-group row m-b-0">
+                <div class="col-md-6">
+                    <fieldset>
+                        <legend><b>Property Information</b></legend>
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Total Living Square Feet</label></div>
+                            <div class="col-md-8 ">{{getData(result?.total_living_sqft)}}</div>
+                        </div>
+            
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Year Built</label></div>
+                            <div class="col-md-8 ">{{getData(result?.year_built)}}</div>
+                        </div>
+            
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Bed</label></div>
+                            <div class="col-md-8 ">{{getData(result?.bed)}}</div>
+                        </div>
+            
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Bath</label></div>
+                            <div class="col-md-8 ">{{getData(result?.bath)}}</div>
+                        </div>
+            
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Lot Size</label></div>
+                            <div class="col-md-8 ">{{getData(result?.lot_acreage_sf)}}</div>
+                        </div>
+            
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">View Full Property Details</label></div>
+                            <div class="col-md-8 ">
+                                <a href="javascript:;" [routerLink]="['/home/showdetail/'+result?.house_id+'/'+(result.address|slugify)]">
+                                    Click Here
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Legal Description</label></div>
+                            <div class="col-md-8 ">{{getData(result?.property_descriptions?.legal_description)}}</div>
+                        </div>
+
+                        <!-- <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Total Property Taxes Owed</label></div>
+                            <div class="col-md-8 ">----</div>
+                        </div> -->
+
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Parcel ID</label></div>
+                            <div class="col-md-8 ">{{getData(result?.parcel_id1)}}</div>
+                        </div>
+                        
+                        <div *ngIf="result?.borrower_info?.full_name" class="form-group row m-b-0">
+                            <div class="col-md-4"><label class="col-form-label">Borrower Name</label></div>
+                            <div class="col-md-8 ">{{getData(result?.borrower_info?.full_name)}}</div>
+                        </div>
+                       
+                    </fieldset>
+                </div>
+            </div>    
+            
+            <div class="form-group row m-b-0">
+                <div class="col-md-12 quickview">
+                    <fieldset>
+                        <legend><b>Quick Comp</b></legend>
+        
+                        <div class="form-group row m-b-0">
+                            <div class="col-md-4">                
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Property Address</label></div>
+                                    <div class="col-md-6  ">{{getData(result?.address)}}, {{getData(result?.county)}}, {{getData(result?.city)}}, {{getData(result?.state)}}, {{getData(result?.zip)}} </div>
+                                </div>
+            
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Year Built</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.year_built)}}</div>
+                                </div>
+            
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Total Living Square Feet</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.total_living_sqft)}}</div>
+                                </div>
+            
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Beds</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.beds)}}</div>
+                                </div>
+            
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Bath</label></div>
+                                    <div class="col-md-4 ">{{getData(result?.bath)}}</div>
+                                </div>
+            
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Notes of Condition</label></div>
+                                    <div class="col-md-4 "></div>
+                                </div>
+            
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Acres/lot square feet</label></div>
+                                    <div class="col-md-4 ">{{getData(result?.lot_acreage_sf)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Sale Date</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.last_sale_details?.sale_date)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Opening Bid</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.last_sale_details?.opening_bid)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Sale Note</label></div>
+                                    <div class="col-md-6 "></div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Trustee</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.last_sale_details?.trustee)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Auction Time</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.last_sale_details?.sale_time)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">CMA/ARV</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.last_cma_arv_recommendations?.recommended_cma_arv)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">County</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.county)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Zestimate</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.local_real_estate_details?.zestimate)}}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">1st Lien Amount</label></div>
+                                    <div class="col-md-4 ">{{ result?.first_liens?.lien_amount?(getLienData(result?.first_liens,'lien_amount')):'---'  }} </div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Date of 1st Lien</label></div>
+                                    <div class="col-md-6 ">{{ result?.first_liens?.lien_amount?(getLienData(result?.first_liens,'date_recorded')):'---'  }} </div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">DT Book/Page</label></div>
+                                    <div class="col-md-6 ">{{ result?.first_liens?.lien_amount?(getLienData(result?.first_liens,'dt_book_page')):'---'  }}</div>
+                                </div>
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Owner Full Name</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.last_owner_info?.full_name)}}</div>
+                                </div>  
+                                
+                                <div class="form-group row m-b-0">
+                                    <div class="col-md-6"><label class="col-form-label">Borrower Full Name</label></div>
+                                    <div class="col-md-6 ">{{getData(result?.borrower_info?.full_name)}}</div>
+                                </div>  
+                            </div><!-- Section 1 -->
+                            
+                            <ng-container *ngIf="result?.cma_arv_recommendations.length>0">
+                                
+                                <ng-container  *ngFor="let cma_arv of comp_type | keyvalue:asIsOrder">
+                                    <!-- <div><h4>{{cma_arv.value}}</h4></div> -->
+                                    <ng-container *ngIf="getCompResult(result?.cma_arv_recommendations,cma_arv.key)">
+                                        <div class="col-md-4  m-t-10" >
+                                            <ng-container  *ngFor="let wholesale of comp_obj | keyvalue:asIsOrder">
+                                                <div class="form-group row m-b-0" *ngIf="getCompResult(result?.cma_arv_recommendations,cma_arv.key) && getCompResult(result?.cma_arv_recommendations,cma_arv.key)[wholesale.key]">
+                                                    <div class="col-md-6"><label class="col-form-label">{{cma_arv.value}} {{wholesale.value}}</label></div>
+                                                    <div class="col-md-6 ">
+                                                        <ng-container *ngIf="urlInfo(wholesale.key); else urlOption">
+                                                            {{ getLienData(getCompResult(result?.cma_arv_recommendations,cma_arv.key),wholesale.key)  }}
+                                                        </ng-container>
+        
+                                                        <ng-template #urlOption>
+                                                            <a *ngIf="getLienData(getCompResult(result?.cma_arv_recommendations,cma_arv.key),wholesale.key) !='Not available'" href="{{getLienData(getCompResult(result?.cma_arv_recommendations,cma_arv.key),wholesale.key)}}" target="_blank">
+                                                                {{wholesale.value}}
+                                                            </a>
+                                                        </ng-template>
+                                                    </div>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+                                    </ng-container>
+                                   
+                                </ng-container>
+                            </ng-container>                  
+                        </div>
+                    
+                    </fieldset>
+                </div>
+            </div>
+            
+
+            <div class="form-group row m-b-0">
+                <div class="col-md-12 quickview" >
+                    <fieldset>
+                        <legend> <b>1st Lien</b> </legend>
+                        <div class="row">
+                            <ng-container  *ngFor="let firstLien of lien_obj | keyvalue:asIsOrder">
+                                <ng-container  *ngIf="result?.first_liens && result?.first_liens[firstLien.key]" >
+                                    <div [ngClass]="{'col-md-12':(firstLien.key=='amortization_annual_interest' || firstLien.key=='modification_book_page')}"></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group row m-b-0">
+                                            <div class="col-md-6"><label class="col-form-label">{{firstLien.value}}</label></div>
+                                            <div class="col-md-6 ">{{ getLienData(result?.first_liens,firstLien.key)  }}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+        
+            <div class="form-group row m-b-0">
+                <div class="col-md-12 quickview">
+                    <fieldset>
+                        <legend><b>2nd Lien</b></legend>
+                        <div class="row">
+                            <ng-container  *ngFor="let secondLien of lien_obj | keyvalue:asIsOrder">
+                                <ng-container *ngIf="result?.second_liens && result?.second_liens[secondLien.key]">
+                                    <div [ngClass]="{'col-md-12':(secondLien.key=='amortization_annual_interest' || secondLien.key=='modification_book_page')}"></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group row m-b-0">
+                                            <div class="col-md-6"><label class="col-form-label">{{secondLien.value}}</label></div>
+                                            <div class="col-md-6 ">{{ getLienData(result?.second_liens,secondLien.key)  }}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>lele
+                    </fieldset>
+                </div>
+            </div>
+            
+         
+            <div *ngIf="result?.third_liens" class="form-group row m-b-0">
+                <div class="col-md-12 quickview">
+                    <fieldset>
+                        <legend><b>3rd Lien</b></legend>
+                        <div class="row">
+                            <ng-container  *ngFor="let thirdLien of lien_obj | keyvalue:asIsOrder">
+                                <ng-container *ngIf="result?.third_liens && result?.third_liens[thirdLien.key]">
+                                    <div [ngClass]="{'col-md-12':(thirdLien.key=='amortization_annual_interest' || thirdLien.key=='modification_book_page')}"></div>
+                                    <div class="col-md-4">
+                                        <div class="form-group row m-b-0">
+                                            <div class="col-md-6"><label class="col-form-label">{{thirdLien.value}}</label></div>
+                                            <div class="col-md-6 ">{{ getLienData(result?.third_liens,thirdLien.key)  }}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div *ngIf="result?.tax_liens"  class="form-group row m-b-0">
+                <div class="col-md-12 quickview">
+                    <fieldset>
+                        <legend><b>Hoa Lien</b></legend>
+                        <div class="row">
+                            <ng-container  *ngFor="let hoaLien of hoalien_obj | keyvalue:asIsOrder">
+                                <ng-container *ngIf="result?.hoa_liens && result?.hoa_liens[hoaLien.key]">
+                                    <div class="col-md-4">
+                                        <div class="form-group row m-b-0">
+                                            <div class="col-md-6"><label class="col-form-label">{{hoaLien.value}}</label></div>
+                                            <div class="col-md-6 ">{{ getLienData(result?.hoa_liens,hoaLien.key)  }}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <div *ngIf="result?.tax_liens"  class="form-group row m-b-0">
+                <div class="col-md-12 quickview">
+                    <fieldset>
+                        <legend><b>Tax Lien</b></legend>
+                        <div class="row">
+                            <ng-container  *ngFor="let taxLien of taxlien_obj | keyvalue:asIsOrder">
+                                <ng-container *ngIf="result?.tax_liens && result?.tax_liens[taxLien.key]">
+                                    <div class="col-md-4">
+                                        <div class="form-group row m-b-0">
+                                            <div class="col-md-6"><label class="col-form-label">{{taxLien.value}}</label></div>
+                                            <div class="col-md-6 ">{{ getLienData(result?.tax_liens,taxLien.key)  }}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            <div *ngIf="result?.other_liens" class="form-group row m-b-0">
+                <div class="col-md-12 quickview">
+                    <fieldset>
+                        <legend><b>Other Lien</b></legend>
+                        <div class="row">
+                            <ng-container  *ngFor="let otherLien of otherlien_obj | keyvalue:asIsOrder">
+                                <ng-container *ngIf="result?.other_liens && result?.other_liens[otherLien.key]">
+                                    <!-- <div [ngClass]="{'col-md-12':(thirdLien.key=='amortization_annual_interest' || thirdLien.key=='modification_book_page')}"></div> -->
+                                    <div class="col-md-4">
+                                        <div class="form-group row m-b-0">
+                                            <div class="col-md-6"><label class="col-form-label">{{otherLien.value}}</label></div>
+                                            <div class="col-md-6 ">{{ getLienData(result?.other_liens,otherLien.key)  }}</div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+            
+            <!-- <div class="form-group row m-t-20">
+                <div class="col-md-12">
+                   <strong>
+                    Note: If you have questions, clarifications or requests, on this record, please don't hesitate to contact us on MSteam or the chatbox below. Thank you.
+                   </strong>
+                </div>
+            </div> -->
+           
+        </div>
+      
+        <!-- <button (click)="toggle()" id="bt">
+            {{buttonName}}
+        </button> -->
+    </ng-container>
+</div>

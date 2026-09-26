@@ -1,0 +1,18 @@
+<h3>Property Queue</h3>
+<form [formGroup]="addMeForm">
+    <div class="form-group row m-b-40">
+        <div class="col-md-10">
+            <select formControlName="list_id" class="form-control" [ngClass]="{ 'is-invalid': submitted && addMeForm.controls.list_id.errors }">
+              <option *ngFor="let list of list_data" [value]="list.list_id">{{list.name}}</option>
+            </select>
+            <div *ngIf="addMeForm.controls.list_id.errors" class="invalid-feedback">
+                <div *ngIf="addMeForm.controls.list_id.errors.required">Please select Property Queue list.</div>
+            </div>
+        </div>
+    </div>
+    
+    <mat-dialog-actions align="end">
+      <button mat-button mat-dialog-close>Cancel</button>
+      <button mat-button (click)="validateForm(this.addMeForm)">Save</button>
+    </mat-dialog-actions>
+</form>

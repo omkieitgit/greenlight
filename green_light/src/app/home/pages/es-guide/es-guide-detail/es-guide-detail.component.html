@@ -1,0 +1,10 @@
+
+<h3 mat-dialog-title>{{data.title}}</h3>
+
+<mat-dialog-content class="es_guide">
+    <div [innerHtml]="data.description | safeHtml"></div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

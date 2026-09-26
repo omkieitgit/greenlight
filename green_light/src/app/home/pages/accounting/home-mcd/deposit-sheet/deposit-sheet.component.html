@@ -1,0 +1,136 @@
+<panel  title="Deposit Spreadsheet" (valueChange)='panelExpand($event)'>
+        <div class="parent-loader">
+                <!-- Loader DIV -->
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <!-- Loader DIV -->
+                <form [formGroup]="depositSheetForm">
+                        <!-- one row start-->
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Date</label>
+                                        <my-date-picker name="deposit_date" [options]="myDatePickerOptions" formControlName="deposit_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                        <div *ngIf="f.deposit_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                <div *ngIf="f.deposit_date.errors.required">Date is required</div>
+                                        </div> 
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Transaction</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="transaction" [ngClass]="{ 'is-invalid': submitted && f.transaction.errors }" />   
+                                        <div *ngIf="f.transaction.errors" class="invalid-feedback">
+                                                <div *ngIf="f.transaction.errors.required">Trans is required</div>
+                                        </div>
+                                </div>
+                               
+                                <div class="col-md-2">
+                                        <label class="col-form-label">LLC</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="llc_name" [ngClass]="{ 'is-invalid': submitted && f.llc_name.errors }" />   
+                                        <div *ngIf="f.llc_name.errors" class="invalid-feedback">
+                                                <div *ngIf="f.llc_name.errors.required">llc name is required</div>
+                                        </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">SP Number</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="sp_number" [ngClass]="{ 'is-invalid': submitted && f.sp_number.errors }" />   
+                                        <div *ngIf="f.sp_number.errors" class="invalid-feedback">
+                                                <div *ngIf="f.sp_number.errors.required">sp_number is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">County</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="county" [ngClass]="{ 'is-invalid': submitted && f.county.errors }" />   
+                                        <div *ngIf="f.county.errors" class="invalid-feedback">
+                                                <div *ngIf="f.county.errors.required">county is required</div>
+                                        </div>
+                                </div>
+
+                        </div>
+
+                        <div class="form-group row m-b-5 m-t-20" >
+                                <div class="col-md-6">
+                                        <app-deposit-lender [depositSheetForm]="depositSheetForm" [deposit_lender_list]="deposit_lender_list" [deposit_lender]="deposit_lender"></app-deposit-lender>
+                                </div>
+                                <div class="col-md-6">
+                                    <app-deposit-link [depositSheetForm]="depositSheetForm" [deposit_link]="deposit_link"></app-deposit-link>
+                                </div>   
+                               
+                        </div>
+
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button (click) ="validateForm(this.depositSheetForm)" class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                </div>
+                        </div>
+                </form> 
+                						
+                <div *ngIf="depositSheetInfo" class="table-responsive m-t-10 table-fixed-header">
+                        <table class="table table-bordered table-condensed">
+                                <thead>
+                                        <tr>
+                                                <th>Date</th>
+                                                <th>Trans #</th>
+                                                <th> In Amount for Bidding LLC'S</th>
+                                                <th> Out Amount for Bidding LLC'S</th>
+                                                <th> RUNNING BALANCE  in Bidding Accounts</th>
+                                                <th>Checksum</th>
+                                                <ng-container *ngFor="let lender of deposit_lender_category">
+                                                      <th>{{lender.lender_name}}</th>
+                                                </ng-container>
+                                                <th>LLC</th>
+                                                <th>SP Number</th>
+                                                <th>County</th>
+                                                <ng-container *ngFor="let link of deposit_link_category">
+                                                      <th>{{link.link_name}}</th>
+                                                </ng-container>
+                                                <th>Action</th>
+                                              </tr>
+                                </thead>
+                                <tbody>
+                                        
+                                  <tr *ngFor="let deposit of depositSheetInfo">
+                                    <td style="white-space: nowrap;">{{deposit.deposit_date}}</td>
+                                    <td style="white-space: nowrap;">{{deposit.transaction}}</td>
+                                    <td>{{deposit.in_amount_bidding| currency}}</td>
+                                    <td>{{deposit.out_amount_bidding| currency}}</td>
+                                    <td>{{deposit.running_balance| currency}}</td>
+                                    <td>{{  (deposit.deposit_lender | depositSheet:'checksum') | currency}}</td>
+                                    <ng-container *ngFor="let lender of deposit_lender_category">
+                                        <td>{{  (deposit.deposit_lender | depositSheet:lender.id) | currency}}</td>
+                                    </ng-container>
+                                    
+                                    <td>{{deposit.llc_name}}</td>
+                                    <td>{{deposit.sp_number}}</td>
+                                    <td>{{deposit.county}}</td>
+                                    <ng-container *ngFor="let link of deposit_link_category">
+                                        <td class="break" innerHtml="{{ (deposit.deposit_link | depositLink:link.link_name) }}" ></td>
+                                    </ng-container>
+                                    <td class="p-5">
+                                            <a href="javascript:;" (click)="removeDepositSheet(deposit.id)">
+                                                    <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                            </a>
+                                            <a href="javascript:;" (click)="editdepositSheet(deposit)">
+                                                <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                            </a>
+                                    </td>
+                                    
+                                  </tr>
+                                </tbody>
+                                <tfoot>
+                                  <tr>
+                                    <td  colspan="2" align="right" ><strong>Total:</strong></td>
+                                    <td>{{ (depositSheetInfo|sum:'in_amount_bidding') | currency }}</td>
+                                    <td>{{ (depositSheetInfo|sum:'out_amount_bidding') | currency}}</td>
+                                    <td></td>
+                                    <td>{{  (depositSheetInfo | depositSheet:'totalChecksum') | currency}}</td>
+                                    <ng-container *ngFor="let lender of deposit_lender_category">
+                                        <td>{{  (depositSheetInfo | depositSheet:lender.id:'grandTotal') | currency}}</td>
+                                    </ng-container>
+                                    <td [attr.colspan]="deposit_link_category.length+4"></td>
+                                  </tr>
+                                </tfoot>
+                        </table>
+                </div>
+                        
+        </div>
+</panel>

@@ -1,0 +1,59 @@
+<panel title="Accounting Documents" (valueChange)='panelExpand($event)'>
+     <!-- one row start-->
+     <div class="form-group row m-b-5 m-t-5">
+      <div class="col-md-2">
+        <div class="checkbox checkbox-css">
+              <input type="checkbox" id="accountingDocument" value="" (change)="$event.target.checked?(showPropertyList=true): (showPropertyList=false)">
+              <label for="accountingDocument">Documents</label>
+          </div>
+      </div>
+    </div>
+    <!-- one row end -->
+    <form *ngIf="!viewAccessOnly" [formGroup]="clientDocumentForm" class="parent-loader">
+       <!-- Loader DIV -->
+      <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+      <!-- Loader DIV -->
+      
+      <!-- one row start-->
+      <div class="form-group row m-b-5 m-t-5">     
+        <div class="col-md-2 _navbar_search">
+            <mat-form-field appearance="outline" >
+                <input type="text" matInput formControlName="property_document_type" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFn">
+                    <mat-option *ngFor="let sub_cat of  filteredOptions | async" [value]="sub_cat">{{sub_cat.category_name}}</mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <!-- <select formControlName="property_document_type" [ngClass]="{ 'is-invalid': submitted && f.property_document_type.errors }" class="form-control m-b-0" >
+              <option value="">Select Accounting Document Type</option> 
+            <option [value]="property.key" *ngFor="let property of property_document_type_list | keyvalue">{{property.value}}</option>
+          </select>   -->
+          <div *ngIf="f.property_document_type.errors" class="invalid-feedback">
+            <div *ngIf="f.property_document_type.errors.required">Doc type is required</div>
+          </div>      
+        </div>
+        <!-- <div class="col-md-2">
+            <input type="text" formControlName="doc_other_name" placeholder="Other Name" class="form-control m-b-0" />
+        </div> -->
+        <div class="col-md-2">
+            <input type="text" formControlName="amount" placeholder="Amount" class="form-control m-b-0" />
+        </div>
+        <div class="col-md-2">
+              <my-date-picker name="prop_document_date" [options]="myDatePickerOptions" formControlName="prop_document_date"  (dateChanged)="onDateChanged($event)" class="" placeholder="MM/DD/YYYY"></my-date-picker>
+        </div>
+        <div class="col-md-2">
+          <input type="file" [ngClass]="{ 'is-invalid': f.property_file.hasError('required') }" class="form-control m-b-0" #fileUploading class="form-control btn btn-sm btn-primary" value="Choose File" name="property_file"  multiple (change)="uploadHandler($event)">     
+          <div *ngIf="f.property_file.hasError('required')" class="error_message">File is required</div>     
+        </div>
+          <div class="col-md-2">
+              <button class="form-control  btn btn-sm btn-primary" (click)="fileUploader(fileUploading, $event)" >Upload</button>
+          </div>
+      </div>
+      <!-- one row end-->
+    </form>  
+      <!-- one row start-->
+      <div *ngIf="showPropertyList">
+        <sort #documentListChanged [config]='config' [data]='documentData' [columns]='columns' (rowDelete)="rowDelete($event)"></sort>
+      </div>
+      <!-- one row end--> 
+
+  </panel>

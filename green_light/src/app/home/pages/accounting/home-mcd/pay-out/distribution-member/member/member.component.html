@@ -1,0 +1,62 @@
+<td style="width:10%" align="right"><strong>{{ mcdlender.lender_name}}</strong></td>
+<td width="width:50%">
+        <div  class="form-group row m-10">
+                <ng-container *ngIf="!noCalProfit.includes(mcdlender.lender_name.toLowerCase()); else defaultDiv ">
+                        <div class="col-md-4">Profit</div>
+                        <div class="col-md-4">{{ memberProfit | currency}}</div>
+                </ng-container>
+                <ng-template #defaultDiv>
+                        <div class="col-md-8"></div>
+                </ng-template>
+                <div class="col-md-2">{{ mcdlender.percentage}}%</div>
+                <div class="col-md-2">{{ calculateTotalAmount()  | currency}}</div>
+        </div>
+        <ng-container *ngIf="!estateLLCName.includes(mcdlender.lender_name.toLowerCase())">
+                <div  class="form-group row m-10">
+                        <div class="col-md-4">Contributed</div>
+                        <div class="col-md-4">{{ mcdlender?.amount | currency }}</div>
+                        <div class="col-md-4"></div>
+                </div>
+                <div  class="form-group row m-10">
+                        <div class="col-md-4">Already Distributed</div>
+                        <div class="col-md-4">-{{ mcdlender?.returned_amount  | currency }}</div>
+                        <div class="col-md-4"></div>
+                </div>
+                <div  class="form-group row m-10">
+                        <div class="col-md-4">Pts. & Interest</div>
+                        <div class="col-md-4">{{ memberPointAndInt.toFixed(2) | currency }}</div>
+                        <div class="col-md-4"></div>
+                </div>
+        </ng-container>
+        
+        <div  class="form-group row m-10">
+                <div class="col-md-8">
+                        <app-more-field 
+                                [property_id]="property_id"
+                                [additionalField]="additionalField"
+                                [fieldType]="fieldType"
+                                [lender_id]="mcdlender.id"
+                                (totalAmount)="updateMoreInfo($event)">
+                        </app-more-field>  
+                </div>
+                <div class="col-md-4"></div>
+        </div>
+</td>
+<td style="width:40%">
+        <form [formGroup]="distributionForm" [appDisableElement]="distributionForm">
+                <div class="form-group row m-0 p-0">
+                        <div class="col-md-3 m-0 p-0">
+                                <input type="text" [value]="'test'" formControlName="deposit_return_no" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event,mcdlender.id)"/>
+                        </div>
+                        <div class="col-md-3 m-0 p-0">
+                                <input type="text"   formControlName="wiriing_routing_no" class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event,mcdlender.id)"/>
+                        </div>
+                        <div class="col-md-3 m-0 p-0">
+                                <input type="text"  formControlName="bank_ac_no"  class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event,mcdlender.id)"/>
+                        </div>
+                        <div class="col-md-3 m-0 p-0">
+                                <input type="text"  formControlName="bank_name"  class="form-control m-b-0" appOnBlurSave (updatedValue)="autoSave($event,mcdlender.id)"/>
+                        </div>
+                </div>
+        </form>
+</td>

@@ -1,0 +1,12 @@
+
+  
+
+  <app-attention-warning></app-attention-warning>
+  <div class="estate_content" *ngIf="!loading" class="loading">
+      <img src="assets/img/loading.gif" />
+  </div>
+  <div class="estate_content row card"  *ngIf="my_favourite_property"> 
+      <div class="card-body"  > 
+        <app-search-result [searchResult]="my_favourite_property" [loading]="loading" [totalRecord]="totalRecord" [searchField]="searchField" [limit]="limit"></app-search-result>
+    </div>
+  </div>

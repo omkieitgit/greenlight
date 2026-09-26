@@ -1,0 +1,174 @@
+<panel [collapse]='collapse' title="Other Lien"[appHideContent]="mortgageLienOtherForm" (checkContentEvent)="showHidePanel($event)">
+  <!-- Loder & Messages -->
+  <form [formGroup]="mortgageLienOtherForm" *ngIf="!propErr" [appDisableElement]="mortgageLienOtherForm" class="parent-loader _property_info">
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <fieldset>
+      <input type="hidden" formControlName="mortgage_id" />  
+      <div class="form-group row m-b-5">
+        <div class="col-md-9">&nbsp;</div>
+          <div class="col-md-1">
+              <app-common-notes [note_name]="notes_btn.note_name" [noteSetting]="notes_btn" (updateNotesDetail)="updatedNotes($event)"></app-common-notes>
+          </div>
+          <!-- <div class="col-md-2">
+            <label class="col-form-label" *ngIf="sale_info">
+              <a href="javascript:;" *ngIf="sale_info" (click)="viewSaleInfo()">View Notice of Foreclosure</a>
+            </label>
+          </div> -->
+      </div>
+       
+      <!-- one row start-->       
+      <div class="form-group row m-b-5">
+        <div class="col-md-2">
+          <label class="col-form-label">Lender</label>
+          <div class="position-relative">
+            <input type="text" class="form-control m-b-0" formControlName="lender"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Lien Amount</label>
+          <div class="position-relative">
+            <input type="text" class="form-control m-b-0" formControlName="lien_amount"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+          </div>
+        </div> 
+        <div class="col-md-2">
+            <label class="col-form-label">Date Recorded</label>
+            <div class="position-relative">
+              <my-date-picker name="date_recorded" [options]="myDatePickerOptions" formControlName="date_recorded"  (dateChanged)="onDateChanged($event,otherDateInput)" #otherDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+          </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Book/Page or Instrument #</label>
+          <div class="position-relative">
+            <input type="text" class="form-control m-b-0" formControlName="book_page_assignment_bp"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Assignment BP</label>
+          <div class="position-relative">
+            <input type="text" class="form-control m-b-0" formControlName="assignment_bp"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+          </div>
+        </div>  
+                 
+      </div>
+      
+       <!-- one row start-->       
+       <div class="form-group row m-b-5">
+        <div class="col-md-4">          
+          <div class="checkbox checkbox-css">               
+            <input type="checkbox" id="redemptionInfo_other" formControlName="redemption_info" [checked]="otherLienRed" (change)="otherLienRed = !otherLienRed" >    
+            <label for="redemptionInfo_other">REDEMPTION INFO</label>         
+          </div>
+        </div>
+        <div class="col-md-4"></div>                                 
+      </div>
+         
+      <div class="form-group row m-b-5" *ngIf="otherLienRed">
+        <div class="col-md-2">
+          <label class="col-form-label">Redemption Notice Inst #</label>
+          <input type="text" class="form-control m-b-0" formControlName="redemption_notice"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Redemption Date</label>
+          <my-date-picker [options]="myDatePickerOptions" formControlName="redemption_date"  (dateChanged)="onDateChanged($event,redDateInput)" #redDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">&nbsp;</label>
+          <div class="checkbox checkbox-css">               
+            <input type="checkbox" id="other_red_by_owner" formControlName="red_by_owner"   appOnBlurSave (updatedValue)="autoSave($event)">    
+            <label for="other_red_by_owner">Redeemed By Owner</label>         
+          </div>
+        </div>
+        <div class="col-md-2">
+          <label class="col-form-label">Redemption Expires</label>
+          <my-date-picker [options]="myDatePickerOptions" formControlName="redemption_expires"  (dateChanged)="onDateChanged($event,redExDateInput)" #redExDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+        </div>                    
+      </div>
+      <!-- one row end -->
+
+      <app-common-notes [note_name]="notes_detail.note_name" [noteSetting]="notes_detail" [resetFormSubject]="resetFormSubject.asObservable()"></app-common-notes>
+      
+      <app-document 
+            [document_type_list]="property_document_type_list"
+            [property_id]="property_id" 
+            [document_info]="lienOtherData.mortgage_other_document" 
+            document_url="mortgage_other_document" 
+            [mortgage_id]="lienOtherData.mortgage_id"
+            doc_primary_key="document_mortgage_other_id" 
+            [doc_count_id]="lien"></app-document>
+
+            <!-- one row start-->       
+          <div class="form-group row m-b-5">
+            <div class="col-md-2">
+              <label class="col-form-label">Property Signature</label>             
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="OtherOwner1" formControlName="prop_sign_owner_1">    
+                <label for="OtherOwner1">Owner 1</label>         
+              </div> 
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="OtherOwner2" formControlName="prop_sign_owner_2" >    
+                <label for="OtherOwner2">Owner 2</label>         
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="OtherOwner3" formControlName="prop_sign_owner_3" >    
+                <label for="OtherOwner3">Owner 3</label>         
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="OtherOwner4" formControlName="prop_sign_owner_4" >    
+                <label for="OtherOwner4">Owner 4</label>         
+              </div>
+            </div>                    
+          </div>
+          <!-- one row end -->
+  
+          <!-- one row start-->       
+          <div class="form-group row m-b-5">
+            <!-- <div class="col-md-4">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="OtherCompanyCurr" formControlName="company_not_ct_rcd" >    
+                <label for="OtherCompanyCurr">Company Not Current at time of Recording Deed of Trust</label>         
+              </div>
+            </div> -->
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="OtherDtcFirCheck" formControlName="dtc_first_check" >    
+                <label for="OtherDtcFirCheck">DTC - First Check</label>         
+              </div>
+              <div [innerHTML]="amortization.get_checked_info(lienOtherData.check_by,1)"></div>  
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="OtherDtcSecCheck" formControlName="dca_second_check" >    
+                <label for="OtherDtcSecCheck">DCA - Second Check</label>         
+              </div>
+              <div [innerHTML]="amortization.get_checked_info(lienOtherData.check_by,2)"></div>  
+  
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="OtherDtcFinCheck" formControlName="dca_final_check" >    
+                <label for="OtherDtcFinCheck">DCA - Final Check</label>         
+              </div>
+              <div [innerHTML]="amortization.get_checked_info(lienOtherData.check_by,3)"></div>  
+            </div>     
+                             
+          </div>
+
+      <div class="form-group row m-b-5 m-t-10">
+        <div class="col-md-10"></div>
+        <div class="col-md-2" *hideElement="true">
+          <button type="button"  (click)="validateForm(this.mortgageLienOtherForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+            <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+          </button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</panel>

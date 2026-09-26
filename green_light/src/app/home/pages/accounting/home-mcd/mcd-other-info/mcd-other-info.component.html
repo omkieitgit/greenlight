@@ -1,0 +1,66 @@
+<form [appDisableElement]="homeMcdOtherInfoForm" [formGroup]="homeMcdOtherInfoForm" class="parent-loader">
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" ><label class="col-form-label">Property Address:</label></div>
+                <div class="col-md-8">{{property_info?.address}}</div>
+        </div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" >
+                        <label class="col-form-label">1099:</label></div>
+                <div class="col-md-8">
+                        <a href="https://www.irs.gov/pub/irs-pdf/f1099msc.pdf">https://www.irs.gov/pub/irs-pdf/f1099msc.pdf</a>
+                </div>
+        </div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" ><label class="col-form-label">W9:</label></div>
+                <div class="col-md-8"><a href="https://www.irs.gov/pub/irs-pdf/fw9.pdf">https://www.irs.gov/pub/irs-pdf/fw9.pdf</a></div>
+        </div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" ><label class="col-form-label">Client Name:</label></div>
+                <div class="col-md-4">
+                        <select  class="form-control m-b-0"  formControlName="client_id" (change)="onChangeClient($event)" [ngClass]="{ 'is-invalid': submitted && f.client_name.errors }">
+                                <option *ngFor="let client of client_list" value="{{client.id}}">{{client?.client_name}}</option>
+                                <option value="new">Add New</option>
+                        </select>
+                </div>
+                <div *ngIf="showClientBox" class="col-md-4">
+                        <input type="text" class="form-control m-b-0" formControlName="client_name" [ngClass]="{ 'is-invalid': submitted && f.client_name.errors }"/>
+                </div>
+        </div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" ><label class="col-form-label">Payers Name:</label></div>
+                <div class="col-md-4">
+                        <select  class="form-control m-b-0"  formControlName="payers_id" (change)="onChangePayer($event)" [ngClass]="{ 'is-invalid': submitted && f.payers_id.errors }">
+                                <option *ngFor="let payers of payers_list" value="{{payers.id}}">{{payers?.payers_name}}</option>
+                                <option value="new">Add New</option>
+                        </select>
+                </div>
+                <div *ngIf="showPayerBox" class="col-md-4">
+                        <input type="text" class="form-control m-b-0" formControlName="payers_name" [ngClass]="{ 'is-invalid': submitted && f.payers_name.errors }"/>
+                </div>
+        </div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" ><label class="col-form-label">Payers Address:</label></div>
+                <div class="col-md-4">
+                        <input type="text" class="form-control m-b-0" formControlName="payers_address" [ngClass]="{ 'is-invalid': submitted && f.payers_address.errors }"/>
+                </div>
+        </div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" ><label class="col-form-label">Payers Tin:</label></div>
+                <div class="col-md-4">
+                        <input type="text" class="form-control m-b-0" formControlName="payers_tin" [ngClass]="{ 'is-invalid': submitted && f.payers_tin.errors }"/>
+                </div>
+                       </div>
+        <div class="form-group row m-b-5" >
+                <div class="col-md-4 col-form-label" ><label class="col-form-label">Property Status:</label></div>
+                <div class="col-md-4">
+                        <select  class="form-control m-b-0"  formControlName="is_sold" [ngClass]="{ 'is-invalid': submitted && f.is_sold.errors }">
+                                <option value="active">Active</option>
+                                <option value="sold">Sold</option>
+                        </select>
+                </div>
+                <div class="col-md-2" *hideElement="true">
+                        <button (click) ="validateForm(this.homeMcdOtherInfoForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                </div>
+        </div>
+</form>

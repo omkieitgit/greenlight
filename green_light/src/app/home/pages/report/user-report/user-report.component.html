@@ -1,0 +1,63 @@
+
+<div class="row">
+	<!-- begin col-6 -->
+	<div class="col-lg-6">
+		<!-- begin panel -->
+        <panel [collapse]='false'  title="User List">
+                <div class="tab-content">
+                        <!-- begin tab-pane -->
+                        <div class="tab-pane fade active show" id="general-tab">     
+                        <!-- begin table-responsive -->
+                        <div *ngIf="reportResult.length>0" class="table-responsive">
+                        <table class="table table-bordered table-condensed">
+                                <tr>
+                                <th>House ID</th>
+                                <th>Address</th>
+                                <th>County</th>
+                                <th>State</th>
+                                <th>Name</th>
+                                <th>Date</th>
+                                <th>Rate</th>				
+                                </tr>
+                        <tbody>
+                                <tr *ngFor="let report of reportResult">
+                                <td><a href="javascript:;" [routerLink]="['/home/showdetail/'+report[0]+'/'+(report[1]|slugify)]" target="_blank">{{report[0] }}</a> </td>
+                                <td>{{report[1] }}</td>
+                                <td>{{report[2] }}</td>
+                                <td>{{report[3] }}</td>
+                                <td>{{requestData?.name}}</td>
+                                <td>{{report[4] | date:'MM/dd/yyyy' }}</td>
+                                <td>{{report[5] }}</td>
+                                </tr>
+                        </tbody>
+                        <tfoot *ngIf="moreBtn">
+                                <tr>
+                                <td colspan="7" align="center">
+                                <button  class="btn btn-primary btn-sm" (click)="!loader && getloadmorepages()" >
+                                Load More
+                                <i *ngIf="loader" class="fa fa-spin fa-spinner"></i>
+                                </button>
+                                </td>
+                                </tr>
+                        </tfoot>
+                        </table>
+                        </div>
+                        <div *ngIf="reportResult.length==0">
+                        No Result Found
+                        </div>
+                        <!-- end table-responsive -->
+                        </div>
+                        <!-- end tab-pane -->
+                </div>
+        </panel>
+<!-- end panel -->
+  </div>
+  	<!-- begin col-6 -->
+	<div class="col-lg-6">
+		<!-- begin panel -->
+                <panel [collapse]='false'  title="User Statics of 6 Months">
+                        <div  [chart]="user_report_chart"></div>
+		</panel>
+		<!-- end panel -->
+        </div>
+</div>

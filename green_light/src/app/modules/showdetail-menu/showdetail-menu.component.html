@@ -1,0 +1,44 @@
+
+<ul  class="nav nav-pills justify-content-start">
+  <li class="nav-item">
+    <a class="nav-link " [ngClass]="{'active':activeClass=='property'}" id="property" [routerLink]="['/home/showdetail/'+property_id+'/'+slug_address]">
+      
+      <span class="d-sm-none"><strong>PROPERTY DETAILS</strong></span>
+      <span class="d-sm-block d-none"><strong>PROPERTY DETAILS</strong></span>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="cma-arv" [ngClass]="{'active':activeClass=='cma-arv'}" [routerLink]="['/home/showdetail/'+property_id+'/'+slug_address+'/cma-arv']">
+      <span class="d-sm-none"><strong>CMA/ARV</strong></span>
+      <span class="d-sm-block d-none"><strong>CMA/ARV</strong></span>
+    </a>
+  </li>
+  <li class="nav-item" *accountingTab="true">
+    <a class="nav-link" [ngClass]="{'active':activeClass=='accounting'}" id="accounting" [routerLink]="['/home/showdetail/'+property_id+'/'+slug_address+'/accounting']">
+      <span class="d-sm-none"><strong>ACCOUNTING</strong></span>
+      <span class="d-sm-block d-none"><strong>ACCOUNTING</strong></span>
+    </a>
+  </li>
+ 
+  <li class="nav-item">
+    <a class="nav-link" id="document"  [ngClass]="{'active':activeClass=='document'}" [routerLink]="['/home/showdetail/'+property_id+'/'+slug_address+'/document']">
+      <span class="d-sm-none"><strong>DOCUMENTS</strong></span>
+      <span class="d-sm-block d-none"><strong>DOCUMENTS</strong></span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" id="document"  [ngClass]="{'active':activeClass=='subto'}" [routerLink]="['/home/showdetail/'+property_id+'/'+slug_address+'/subto']">
+      <span class="d-sm-none"><strong>STRATEGY</strong></span>
+      <span class="d-sm-block d-none"><strong>STRATEGY</strong></span>
+    </a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link" id="terms" [ngClass]="{'active':activeClass=='terms'}" [routerLink]="['/home/showdetail/'+property_id+'/'+slug_address+'/terms']">
+      <span class="d-sm-none"><strong>TERMS & DEFINITIONS</strong></span>
+      <span class="d-sm-block d-none"><strong>TERMS & DEFINITIONS</strong></span>
+    </a>
+  </li>
+</ul>  
+

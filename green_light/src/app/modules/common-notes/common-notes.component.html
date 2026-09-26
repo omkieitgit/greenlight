@@ -1,0 +1,69 @@
+
+<ng-container *ngIf="(noteDetail && noteBtn); else seprateBtnDetail">
+    <fieldset *ngIf="property_id">
+        <legend class="p-b-10 notes-title">
+            {{title}} Notes
+        <div class="pull-right" *noteBtnEnable="note_name">
+            <button class="form-control btn btn-sm btn-primary" (click)="addNotes()">{{note_info?.btn_title}}</button>
+        </div>
+        </legend> 
+        <div *ngIf="common_notes.length>0" class="form-group m-b-0 parent-loader">
+            <app-loader [loading]="loading"></app-loader>
+            <ng-container  *ngFor="let note of common_notes; let i=index">
+                <div class="row m-b-5" appMatchHeight="es-read-more">
+                    <div class="col-md-11 es-read-more" [ngClass]="{'notes-read-more':i!=notes_index }">
+                        <span [innerHTML]="note?.notes | replaceLineBreak"></span>  - {{note?.user?.first_name}} {{ note?.created_at*1000 | date:'MM/dd/yyyy, h:mm a' }}
+                        <a *ngIf="userRole && user_info?.id==note?.user_id" href="javascript:;" (click)="deleteNotes(note?.id,i)" title="Delete Notes">
+                            <i class="fas fa-fw m-r-10 fa-trash-alt text-danger"></i>
+                        </a>
+                        <a *ngIf="userRole && user_info?.id==note?.user_id" href="javascript:;" (click)="editNotes(note?.id,i)" title="Edit Notes">
+                            <i class="fas fa-fw m-r-10 fa-pencil-alt"></i>
+                        </a>
+                    </div>
+                    <div class="col-md-1">
+                        <a href="javascript:;" class="readmore" *ngIf="i!=notes_index" (click)="toggleList(i)" >More</a>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </fieldset>
+</ng-container>
+
+
+<ng-template #seprateBtnDetail>
+    <ng-container *ngIf="noteBtn">
+        <ng-container *noteBtnEnable="note_name">
+            <a href="javascript:;" class="btn btn-sm btn-primary" (click)="addNotes()">{{note_info?.btn_title}}</a>
+        </ng-container>
+
+        <ng-container *ngIf="(userRole=='wholesale_buyer' || userRole=='home_buyer') && cma_arv_type=='wholesale_buyer'">
+            <a href="javascript:;" class="btn btn-sm btn-primary" (click)="addNotes()">{{note_info?.btn_title}}</a>
+        </ng-container>
+
+    </ng-container>
+    
+    <ng-container *ngIf="noteDetail && property_id">
+        <fieldset *ngIf="common_notes.length>0">
+            <legend class="p-b-10 notes-title"> {{title}} Notes</legend> 
+            <div class="form-group m-b-0 parent-loader">
+                <app-loader [loading]="loading"></app-loader>
+                <ng-container  *ngFor="let note of common_notes; let i=index">
+                    <div class="row m-b-5" appMatchHeight="es-read-more">
+                        <div class="col-md-11 es-read-more" [ngClass]="{'notes-read-more':i!=notes_index }">
+                            <span  [innerHTML]="note?.notes  | replaceLineBreak"></span>  - {{note?.user?.first_name}} {{ note?.created_at*1000 | date:'MM/dd/yyyy, h:mm a' }}
+                            <a *ngIf="userRole && user_info?.id==note?.user_id" href="javascript:;" (click)="deleteNotes(note?.id,i)" title="Delete Notes">
+                                <i class="fas fa-fw m-r-10 fa-trash-alt text-danger"></i>
+                            </a>
+                            <a *ngIf="userRole && user_info?.id==note?.user_id" href="javascript:;" (click)="editNotes(note?.id,i)" title="Edit Notes">
+                                <i class="fas fa-fw m-r-10 fa-pencil-alt"></i>
+                            </a>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="javascript:;" class="readmore" *ngIf="i!=notes_index" (click)="toggleList(i)" >More</a>
+                        </div>
+                    </div>
+                </ng-container>
+            </div>
+        </fieldset>
+    </ng-container>
+</ng-template>

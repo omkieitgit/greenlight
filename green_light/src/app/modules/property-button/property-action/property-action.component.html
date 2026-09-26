@@ -1,0 +1,15 @@
+<div *ngIf="property_id">
+    <app-add-me-btn [property_id]="property_id"></app-add-me-btn>
+    <app-add-to-alarm [property_id]="property_id"></app-add-to-alarm>
+    <button  class=" m-r-5 btn btn-sm btn-primary">Lock Me</button>
+    <button  [routerLink]="['/home/quick-view/'+property_id+'/'+(address|slugify) ]" class=" m-r-5 btn btn-sm btn-primary">Quick View</button>
+    <button (click)="expand_all($event)" class="m-r-5 btn btn-sm btn-primary">Expand All</button>
+    <app-wholesale-retail [property_id]="property_id"></app-wholesale-retail>
+    <button  class=" m-r-5 btn btn-sm btn-primary" (click)="getSubToPropety()">SubTo</button>
+  <!-- <div class="col-md-1">
+    <button  (click)="openDialog('passOnIt')" class="form-control m-b-0 btn btn-sm btn-primary">Pass On It</button>
+  </div>
+  <div class="col-md-1">
+    <button  (click)="openDialog('areaInvite')" class="form-control m-b-0 btn btn-sm btn-primary">Area Invite</button>
+  </div> -->
+</div>

@@ -1,0 +1,45 @@
+<fieldset>
+        <legend>Document links</legend>     
+        <div [formGroup]="depositSheetForm">
+                <div formArrayName="more_link_data">
+                        <div class="form-group row m-b-5">
+                                <div class="col-md-4">
+                                        <label class="col-form-label">Link Name</label>
+                                </div>
+                                <div class="col-md-6">
+                                        <label class="col-form-label">Link</label>
+                                </div>
+                        </div>
+                        <div  [formGroupName]="i"  *ngFor="let priceObj of depositSheetForm.get('more_link_data')['controls']; let i = index;">
+                        
+                                <div id="{{i}}" class="form-group row m-b-5">
+                                        <input type="hidden" formControlName="id">
+                                        <div class="col-md-4">
+                                                <input type="text" formControlName="link_name"  class="form-control m-b-0" />
+                                                <div *ngIf="priceObj.controls.link_name.errors" class="invalid-feedback">
+                                                        <div *ngIf="priceObj.controls.link_name.errors.required">Link name is required</div>
+                                                </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                                <input type="text" formControlName="link" class="form-control m-b-0" />         
+                                                <div *ngIf="priceObj.controls.link.errors" class="invalid-feedback">
+                                                        <div *ngIf="priceObj.controls.link.errors.required">Amount is required</div>
+                                                </div>
+                                                
+                                        </div>
+                                        <div class="col-md-2 col-form-label">
+                                                <a *ngIf="depositSheetForm.controls.more_link_data.length>1" href="javascript:;" (click)="removePriceInputField(i,priceObj.get('id').value)">
+                                                        <i *ngIf="!loading" class="fa fa-times-circle text-danger m-r-5"></i>
+                                                </a>
+                                                <a  *ngIf="depositSheetForm.controls.more_link_data.length==i+1" href="javascript:;" (click)="addPriceInputField()">
+                                                                <i *ngIf="!loading" class="fa fa-plus-circle"></i>
+                                                </a> 
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+        
+        </div>
+</fieldset>
+
+       

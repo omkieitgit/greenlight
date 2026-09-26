@@ -1,0 +1,11 @@
+<h3 mat-dialog-title>Invited List</h3>
+<mat-dialog-content class="parent-loader">
+    <ng-container *ngIf="data">
+        <p *ngFor="let item of data | keyvalue">
+          {{item.value}}
+        </p>
+    </ng-container>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

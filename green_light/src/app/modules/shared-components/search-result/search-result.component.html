@@ -1,0 +1,70 @@
+<div *ngIf="searchResult" class="estate_content">
+    
+     <!-- Loader DIV -->
+     <div *ngIf="!loading"  class="child-loader"><span class="spinner-small "></span></div>
+     <!-- Loader DIV -->
+     <div class="row p-t-20 borer_dotted bottom_search_result m-r-1 m-l-1" *ngIf="searchResult" >
+        <div class="col-md-6 ">
+            HIT COUNT: {{totalRecord}}
+        </div>
+        <div class="pull-right col-md-6 text-right">
+            <pagination-controls (pageChange)="pageChanged($event)" directionLinks="true"
+            responsive="true"
+            previousLabel="Previous"
+            nextLabel="Next"
+            screenReaderPaginationLabel="Pagination"
+            screenReaderPageLabel="page"
+            screenReaderCurrentLabel="You're on page"></pagination-controls>
+        </div>
+    </div>
+    <div class="row search_result p-t-10 p-b-10 "  *ngIf="loading && isFilterShow" >
+        <div class="col-md-6">
+            <app-propert-export [house_ids]="house_ids"></app-propert-export>
+        </div>
+        <div class="col-md-6">
+            <div class="pull-right">
+                <button *ngIf="!selectPropertFlag" class="btn btn-primary btn-sm" (click)="select_all()">SELECT ALL</button>
+                <button *ngIf="selectPropertFlag" class="btn btn-primary btn-sm" (click)="un_select_all()">UNSELECT ALL</button>
+                <button *ngIf="isMerge" class="btn btn-primary btn-sm" (click)="cancleMerge()">CANCEL</button>
+                <button *ngIf="!isMerge" class="btn btn-primary btn-sm" (click)="mergeProperty()">MERGE RECORDS?</button>
+                <button *ngIf="isMerge" class="btn btn-primary btn-sm" (click)="mergeRecords()">MERGE RECORDS</button>
+                
+                <button *ngIf="userRole=='admin'" class="btn btn-primary btn-sm" (click)="deleteSelectPorperty()"><i class="fa fa-trash"></i> DELETE</button>
+            </div>
+        </div>
+        <!-- <button class="btn">MERGE RECORDS</button>  -->
+    </div>
+    <div class="row estate-search-result" *ngIf="loading">
+        <a  href="javascript:;" class="col-md-12" target="_blank" [routerLink]="['/home/showdetail/'+search.house_id+'/'+(search.address|slugify) ]" *ngFor="let search of searchResult | paginate: { itemsPerPage: limit, currentPage: offset,totalItems:totalRecord }">
+            <div class="p-t-5 p-b-5 search_property_info">
+                <app-property-detail [property]="search" 
+                    [isMerge]="isMerge"
+                    (valueChange)='displayCounter($event)' 
+                    (removeValueChange)='removeHouseIds($event)'
+                    (mergePrimaryValue)="setPrimaryProperty($event)"
+                    (removeAlarm)="removeAlarm($event)"
+                    [isFilterShow]="isFilterShow"
+                    [removedAlarm]="removedAlarm"
+                    ></app-property-detail>
+            </div>
+        </a>
+    </div>
+
+   
+   
+    <div class="row p-t-20 borer_dotted  bottom_search_result m-r-1 m-l-1" *ngIf="searchResult">
+        <div class="col-md-6 ">
+            TOTAL COUNT: {{totalRecord}}
+        </div>
+        <div class="pull-right col-md-6 text-right">
+                <pagination-controls (pageChange)="pageChanged($event)" directionLinks="true"
+                responsive="true"
+                previousLabel="Previous"
+                nextLabel="Next"
+                screenReaderPaginationLabel="Pagination"
+                screenReaderPageLabel="page"
+                screenReaderCurrentLabel="You're on page"></pagination-controls>
+        </div>
+    </div>
+</div>
+

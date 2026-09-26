@@ -1,0 +1,118 @@
+<panel  title="Trust Ledger Statement" (valueChange)='panelExpand($event)'>
+        <div class="parent-loader">
+                <!-- Loader DIV -->
+                <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                <!-- Loader DIV -->
+                <form [formGroup]="lenderForm">
+                        <!-- one row start-->
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Date</label>
+                                        <my-date-picker name="statement_date" [options]="myDatePickerOptions" formControlName="statement_date"  (dateChanged)="onDateChanged($event)" placeholder="MM/DD/YYYY"></my-date-picker>
+                                        <div *ngIf="f.statement_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                <div *ngIf="f.statement_date.errors.required">Date is required</div>
+                                        </div> 
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Trans #</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="transaction" [ngClass]="{ 'is-invalid': submitted && f.transaction.errors }" />   
+                                        <div *ngIf="f.transaction.errors" class="invalid-feedback">
+                                                <div *ngIf="f.transaction.errors.required">Trans is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Payee</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="payee" [ngClass]="{ 'is-invalid': submitted && f.payee.errors }" />   
+                                        <div *ngIf="f.payee.errors" class="invalid-feedback">
+                                                <div *ngIf="f.payee.errors.required">Payee Name is required</div>
+                                        </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Description</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="description" [ngClass]="{ 'is-invalid': submitted && f.description.errors }" />   
+                                        <div *ngIf="f.description.errors" class="invalid-feedback">
+                                                <div *ngIf="f.description.errors.required">Description is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Deposit</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="deposit" [ngClass]="{ 'is-invalid': submitted && f.deposit.errors }" />   
+                                        <div *ngIf="f.deposit.errors" class="invalid-feedback">
+                                                <div *ngIf="f.deposit.errors.pattern">Deposit should be number</div>
+                                        </div>
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Payment</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="payment" [ngClass]="{ 'is-invalid': submitted && f.payment.errors }" />   
+                                        <div *ngIf="f.payment.errors" class="invalid-feedback">
+                                                <div *ngIf="f.payment.errors.pattern">Payment should be number</div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2">
+                                        <input type="hidden" class="form-control m-b-0" formControlName="balance" [ngClass]="{ 'is-invalid': submitted && f.balance.errors }" />   
+                                        <label class="col-form-label">Document Url</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="doc_org_name" [ngClass]="{ 'is-invalid': submitted && f.doc_org_name.errors }" />   
+                                        <div *ngIf="f.doc_org_name.errors" class="invalid-feedback">
+                                                <div *ngIf="f.doc_org_name.errors.required">Please enter document url</div>
+                                        </div>
+                                        <!-- <label class="col-form-label">Document</label>
+                                        <input type="file"  class="form-control m-b-0" #document class="form-control btn btn-sm btn-primary" value="Choose File" name="document"  multiple (change)="uploadHandler($event)">  -->
+                                </div>
+
+                                <div class="col-md-2">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button (click) ="validateForm(this.lenderForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                </div>
+                        </div>
+                        
+                </form> 
+                						
+                <div class="table-responsive m-t-10 table-fixed-header">
+                        <table class="table table-bordered table-condensed">
+                                <thead>
+                                        <tr>
+                                                <th>Date</th>
+                                                <th>Trans #</th>
+                                                <th>Payee</th>
+                                                <th>Description</th>
+                                                <th>Deposit</th>
+                                                <th>Payment</th>
+                                                <th>Balance</th>
+                                                <th>Document</th>
+                                                <th>Action</th>
+                                        </tr>
+                                </thead>
+                                <tbody>
+                                  
+                                  <tr *ngFor="let lender of trustLedgerInfo">
+                                    <td>{{lender.statement_date}}</td>
+                                    <td>{{lender.transaction}}</td>
+                                    <td>{{lender.payee}}</td>
+                                    <td>{{lender.description}}</td>
+                                    <td>{{lender.deposit}}</td>
+                                    <td>{{lender.payment}}</td>
+                                    <td>{{ lender.remaningBalace}}</td>
+                                    <td class="break">
+                                        <a *ngIf="lender.doc_org_name; else other_content" href="{{lender?.url?.doc_store_name?lender?.url?.doc_store_name:lender.doc_org_name}}" target="_blank" [title]="lender.doc_org_name">View</a>
+                                        <ng-template #other_content>{{lender.doc_org_name}}</ng-template>
+                                    </td>
+                                    <td class="p-5">
+                                            <a href="javascript:;" (click)="removeLenderStatement(lender.id)">
+                                                    <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                            </a>
+                                            <a href="javascript:;" (click)="editLenderStatement(lender)">
+                                                <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                            </a>
+                                    </td>
+                                    
+                                  </tr>
+                                </tbody>
+                        </table>
+                </div>
+                        
+        </div>
+</panel>

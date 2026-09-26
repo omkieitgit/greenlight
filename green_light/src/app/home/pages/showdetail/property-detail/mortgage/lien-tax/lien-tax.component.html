@@ -1,0 +1,247 @@
+
+<panel [collapse]='collapse' title="TAX Lien" [appHideContent]="mortgageTaxForm" (checkContentEvent)="showHidePanel($event)">
+  <form [formGroup]="mortgageTaxForm" *ngIf="!propErr" [appDisableElement]="mortgageTaxForm" class="parent-loader _property_info" (ngSubmit)="validateForm(this.mortgageTaxForm)">
+      <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+      <fieldset>
+        <input type="hidden" formControlName="mortgage_id" />            
+        <!-- <legend>HOA Lien</legend> -->
+        <!-- one row start-->       
+        <div class="form-group row m-b-5"> 
+          <div class="col-md-2">
+            <div class="checkbox checkbox-css">
+              <input type="checkbox" id="tax_lien_foreclosing" formControlName="tax_lien_foreclosing" >    
+              <label for="tax_lien_foreclosing">Tax Lien Foreclosing</label>         
+            </div>
+          </div>         
+          <div class="col-md-2">
+            <div class="checkbox checkbox-css">
+              <input type="checkbox" id="defective_notice_tax" formControlName="defective_notice_tax" (change)="defectiveLien($event)">    
+              <label for="defective_notice_tax">Defective Notice of Sale</label>         
+            </div>
+          </div>
+          <div class="col-md-5">
+            &nbsp;
+          </div>
+          <div class="col-md-1">
+            <app-common-notes [note_name]="notes_btn.note_name" [noteSetting]="notes_btn" (updateNotesDetail)="updatedNotes($event)"></app-common-notes>
+        </div>  
+        <div *ngIf="sale_info && (sale_info.sale_type=='6' || sale_info.sale_type=='24')" class="col-md-2">
+          <label class="col-form-label" *ngIf="sale_info">
+            <a href="javascript:;" (click)="viewSaleInfo()">View Notice of Foreclosure</a>
+          </label>
+        </div>   
+          
+         </div>
+        <!-- one row end -->
+        <div *ngIf="!manualSearchFlag">
+            <!-- one row start-->       
+          <div class="form-group row m-b-5">
+            <div class="col-md-2">
+              <label class="col-form-label">Plaintiff</label>
+              <input type="text" class="form-control m-b-0" formControlName="tax_name"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Judgment Amount</label>
+              <input type="text" class="form-control m-b-0" formControlName="tax_lien_amount"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+            </div> 
+            <div class="col-md-2">
+              <label class="col-form-label">Judgment Date</label>
+              <my-date-picker name="date_of_tax_lien" [options]="myDatePickerOptions" formControlName="date_of_tax_lien"  (dateChanged)="onDateChanged($event,taxLienDateInput)" #taxLienDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">BP or Instrument#</label>
+              <input type="text" class="form-control m-b-0" formControlName="tax_lien_instrument"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Cause#</label>
+              <input type="text" class="form-control m-b-0" formControlName="tax_lien_cause"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+            </div>  
+            <div class="col-md-2">
+              <label class="col-form-label">Sheriff or Constable</label>
+              <input type="text" class="form-control m-b-0" formControlName="sheriff_tax"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+            </div>
+          </div>
+          <div class="form-group row m-b-5">
+            <div class="col-md-2">
+              <label class="col-form-label">
+                Estimate Excess Funds
+              </label>
+              <input type="text" class="form-control m-b-0" formControlName="es_excess_funds" appOnBlurSave (updatedValue)="autoSave($event)"/> 
+            </div> 
+          </div>
+            <!-- one row start-->       
+            <div class="form-group row m-b-5">
+              <div class="col-md-4">          
+                <div class="checkbox checkbox-css">               
+                  <input type="checkbox" id="LinetaxForeclosureRes_{{lien}}" formControlName="foreclosure_result" [checked]="taxLienFor" (change)="taxLienFor = !taxLienFor" >    
+                  <label for="LinetaxForeclosureRes_{{lien}}">FORECLOSURE RESULT</label>         
+                </div>
+              </div>
+              <div class="col-md-4"></div>                                 
+            </div>
+            <!-- one row end -->
+        
+            <!-- one row start-->       
+            <div class="form-group row m-b-5" *ngIf="taxLienFor">
+              <div class="col-md-2">
+                <label class="col-form-label">TRDeed Instrument #</label>
+                <input type="text" class="form-control m-b-0" formControlName="trdeep_instrument"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">TRDeed Date</label>
+                <my-date-picker [options]="myDatePickerOptions" formControlName="trdeed_date"  (dateChanged)="onDateChanged($event,trDateInput)" #trDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Winning Bidder</label>
+                <input type="text" class="form-control m-b-0" formControlName="winning_bidder"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+              <div class="col-md-2">
+                <label class="col-form-label">Winning Bid $</label>
+                <input type="text" class="form-control m-b-0" formControlName="winning_bid"  appOnBlurSave (updatedValue)="autoSave($event)"/> 
+              </div>
+                                 
+            </div>
+            <!-- one row end -->
+          <!-- one row start-->       
+             <div class="form-group row m-b-5">
+                <div class="col-md-2">          
+                  <div class="checkbox checkbox-css">               
+                    <input type="checkbox" id="redemptionInfo_tax" formControlName="redemption_info" [checked]="taxLienRed" (change)="taxLienRed = !taxLienRed" >    
+                    <label for="redemptionInfo_tax">REDEMPTION INFO</label>         
+                  </div>
+                </div>                
+              </div>
+                 
+              <div class="form-group row m-b-5" *ngIf="taxLienRed">
+                <div class="col-md-2">
+                  <label class="col-form-label">Tax Code</label>
+                  <select name="1stLien_tax_code" id="1stLien_tax_code" formControlName="tax_code"  class="form-control m-b-0"  appOnBlurSave (updatedValue)="autoSave($event)">
+                      <option value="0">Select Tax Code</option>
+                      <option [value]="code.key" *ngFor="let code of tax_code | keyvalue">{{code.value}}</option>
+                  </select>
+                </div>  
+                <div class="col-md-2">
+                  <label class="col-form-label">Redemption Expires</label>
+                  <my-date-picker [options]="myDatePickerOptions" formControlName="redemption_expires"  (dateChanged)="onDateChanged($event,redExDateInput)" #redExDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                </div> 
+                <div class="col-md-2">
+                  <label class="col-form-label">&nbsp;</label>
+                  <div class="checkbox checkbox-css">               
+                    <input type="checkbox" id="red_by_owner" formControlName="red_by_owner"   appOnBlurSave (updatedValue)="autoSave($event)">    
+                    <label for="red_by_owner">Redeemed By Owner</label>         
+                  </div>
+                </div>
+                <div class="col-md-2">
+                  <label class="col-form-label">Redemption Notice Inst #</label>
+                  <input type="text" class="form-control m-b-0" formControlName="redemption_notice" appOnBlurSave (updatedValue)="autoSave($event)" /> 
+                </div>
+                <div class="col-md-2">
+                  <label class="col-form-label">Redemption Date</label>
+                  <my-date-picker [options]="myDatePickerOptions" formControlName="redemption_date"  (dateChanged)="onDateChanged($event,redDateInput)" #redDateInput placeholder="MM/DD/YYYY"></my-date-picker>
+                </div>
+               
+                                 
+              </div>
+              <!-- one row end -->
+              <div class="form-group row m-b-5">
+              
+              </div>
+             
+
+          <app-common-notes [note_name]="notes_detail.note_name" [noteSetting]="notes_detail" [resetFormSubject]="resetFormSubject.asObservable()"></app-common-notes>
+
+          <!-- <app-common-notes [note_name]="hoa_lien_priorty_detail.note_name" [noteSetting]="hoa_lien_priorty_detail" [resetFormSubject]="resetFormSubject.asObservable()"></app-common-notes>
+
+          <app-common-notes [note_name]="hoa_rental_policy_detail.note_name" [noteSetting]="hoa_rental_policy_detail" [resetFormSubject]="resetFormSubject.asObservable()"></app-common-notes> -->
+
+          <app-defective-notes-detail [property_id]="property_id" [lien_type]="defectiveTaxLine"></app-defective-notes-detail>
+
+
+          <app-document 
+            [document_type_list]="property_document_type_list"
+            [property_id]="property_id" 
+            [document_info]="lienTaxData.mortgage_tax_document" 
+            document_url="mortgage_tax_document" 
+            [mortgage_id]="lienTaxData.mortgage_id" 
+            doc_primary_key="document_mortgage_tax_id" 
+            [doc_count_id]="lien"></app-document>
+
+            <!-- one row start-->       
+          <div class="form-group row m-b-5">
+            <div class="col-md-2">
+              <label class="col-form-label">Property Signature</label>             
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="TaxOwner1" formControlName="prop_sign_owner_1">    
+                <label for="TaxOwner1">Owner 1</label>         
+              </div> 
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="TaxOwner2" formControlName="prop_sign_owner_2" >    
+                <label for="TaxOwner2">Owner 2</label>         
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="TaxOwner3" formControlName="prop_sign_owner_3" >    
+                <label for="TaxOwner3">Owner 3</label>         
+              </div>
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">
+                <input type="checkbox" id="TaxOwner4" formControlName="prop_sign_owner_4" >    
+                <label for="TaxOwner4">Owner 4</label>         
+              </div>
+            </div>                    
+          </div>
+          <!-- one row end -->
+  
+          <!-- one row start-->       
+          <div class="form-group row m-b-5">
+            <!-- <div class="col-md-4">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="TaxCompanyCurr" formControlName="company_not_ct_rcd" >    
+                <label for="TaxCompanyCurr">Company Not Current at time of Recording Deed of Trust</label>         
+              </div>
+            </div> -->
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="TaxDtcFirCheck" formControlName="dtc_first_check" >    
+                <label for="TaxDtcFirCheck">DTC - First Check</label>         
+              </div>
+              <div [innerHTML]="amortization.get_checked_info(lienTaxData.check_by,1)"></div>  
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="TaxDtcSecCheck" formControlName="dca_second_check" >    
+                <label for="TaxDtcSecCheck">DCA - Second Check</label>         
+              </div>
+              <div [innerHTML]="amortization.get_checked_info(lienTaxData.check_by,2)"></div>  
+  
+            </div>
+            <div class="col-md-2">
+              <div class="checkbox checkbox-css">               
+                <input type="checkbox" id="TaxDtcFinCheck" formControlName="dca_final_check" >    
+                <label for="TaxDtcFinCheck">DCA - Final Check</label>         
+              </div>
+              <div [innerHTML]="amortization.get_checked_info(lienTaxData.check_by,3)"></div>  
+            </div>     
+                             
+          </div>
+          <!-- one row end -->
+          
+        
+        </div>
+        <div class="form-group row m-b-5">
+            <div class="col-md-10"></div>
+            <div class="col-md-2" *hideElement="true">
+              <button type="submit" (click)="validateForm(this.mortgageTaxForm)" class="form-control m-b-0 btn btn-sm btn-primary" value="Save"  >Save
+                <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+              </button>
+          </div> 
+        </div>
+      </fieldset>
+  </form>
+</panel>

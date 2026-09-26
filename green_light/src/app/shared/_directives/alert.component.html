@@ -1,0 +1,11 @@
+<div *ngIf="(message && message.type === 'error')" [ngClass]="{ 'alert-messages': message, 'alert-success-messages': message.type === 'success', 'alert-danger-messages': message.type === 'error' }">
+   <div class="text-left" *ngFor="let item of message.text | keyvalue">
+      {{item.value}}
+   </div>
+</div>
+
+<div *ngIf="(message && message.type === 'success')" [ngClass]="{ 'alert-messages': message, 'alert-success-messages': message.type === 'success', 'alert-danger-messages': message.type === 'error' }">
+       <div class="text-center" *ngFor="let item of message.text | keyvalue">
+          {{item.value}}
+       </div>
+</div>

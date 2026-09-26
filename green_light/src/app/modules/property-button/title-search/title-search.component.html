@@ -1,0 +1,16 @@
+<h3>Title Search</h3>
+<div  class="parent-loader">
+  <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <div class="form-group row m-b-40">
+        <div class="col-md-4">
+          <label class="col-form-label">Get A Title Search</label>
+        </div>
+    </div>
+  <mat-dialog-actions align="end">
+      <button mat-button mat-raised-button mat-dialog-close>Close</button>
+      <button mat-button mat-raised-button class="btn-primary" (click)="titleSearch()">
+        Submit
+        <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+      </button>
+  </mat-dialog-actions>
+</div>

@@ -1,0 +1,17 @@
+
+<panel title="Documents" (valueChange)='panelExpand($event)'>
+        <!-- Loader DIV -->
+        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+        <!-- Loader DIV -->
+        <!-- one row start-->
+        
+        <app-document 
+        *ngIf="showPropertyList"
+        [document_type_list]="property_document_type_list" 
+        [property_id]="property_id" 
+        [document_info]="documentResult"
+        document_url="listing_document"
+        [field_option]="field_option"></app-document>
+        <!-- one row end--> 
+</panel>
+      

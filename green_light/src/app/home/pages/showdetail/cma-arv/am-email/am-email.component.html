@@ -1,0 +1,53 @@
+<panel  (valueChange)='panelExpand($event)'  title="AM Email"   >
+<form *ngIf="propErr" [formGroup]="amEmailForm" [appDisableElement]="amEmailForm">
+  <fieldset>
+    <legend>AM Emails</legend>
+    <div formArrayName="am_email_fields">
+      <div  [formGroupName]="i"  *ngFor="let amObj of amEmailForm.get('am_email_fields')['controls']; let i = index;">
+        <div  class="form-group row">
+          <div  class="col-md-1">
+            <label  for="firstName">Email</label>
+          </div>
+          <div  class="col-md-3">
+            <input  class="form-control" formControlName="email" type="text" [ngClass]="{ 'is-invalid': submitted && amObj.controls.email.errors && i==rowCount}" >
+            <div *ngIf="amObj.controls.email.errors && i==rowCount" class="invalid-feedback">
+              <div *ngIf="amObj.controls.email.errors.required">Email is required</div>
+              <div *ngIf="amObj.controls.email.errors.email">Email is not valid</div>
+            </div>
+          </div>
+          <div class="col-md-1">
+              <div class="clr-bth">
+                <button type="button" class="form-control  btn btn-sm btn-primary" (click)="validateAmEmail(amObj,i)" value="Save" >
+                  Save
+                  <i *ngIf="loading && i==rowCount" class="fa fa-spin fa-spinner"></i>
+                  <i *ngIf="!loading" class="fa fa-save"></i>
+                </button>
+              </div>
+          </div>
+          <div class="col-md-1 ">
+              <div class="clr-bth">
+                <button *ngIf="amEmailForm.controls.am_email_fields.length  > 1" type="button"  
+                  class="form-control  btn btn-sm btn-danger" (click)="removeAmEmail(i, amObj.controls.emails_am_id.value)" value="" >Remove
+                  <i class="fa fa-trash"></i>
+                </button>
+              </div>
+          </div>
+          <div class="col-md-5" *ngIf="amEmailForm.controls.am_email_fields.length == (i+1)">
+              <div  class="form-group  pull-right">
+                  <button type="button" class="form-control btn-primary  btn btn-sm" (click)="addAmEmail()" >
+                    Add More
+                  </button>
+              </div>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+  </fieldset>
+</form>
+
+<div class="clearfix"></div>
+  <!-- one row end -->
+</panel>

@@ -1,0 +1,100 @@
+<!-- begin panel -->
+<panel title="Wholesale Buyers" (valueChange)='panelExpand($event)' >
+  <div class="row">
+    <div class="col-lg-12 p-0"></div>
+  </div>
+  <!-- <div class="row">
+    <div class="col-md-10"></div>
+    <div class="col-md-2 pull-right"><button class="form-control btn btn-sm btn-primary" (click)="more_wholesale_add();">Add More</button></div>
+  </div> -->
+  <!-- end panel -->
+  <div *ngIf="propErr">
+    <whole-sale-multi  [whole_sale_buyer_count]=""></whole-sale-multi>
+    <div *ngFor="let wholeSaleBuyer of wholesale_buyer_list; let i = index;">
+      <whole-sale-multi [wholesale]="wholeSaleBuyer" [whole_sale_buyer_count]="i+1" (totalWholeSaleBuyer)="onChangeValue($event)"></whole-sale-multi>
+    </div>
+  </div>
+
+  <form *ngIf="propErr" [formGroup]="homeBuyersFormTotal" class="parent-loader"  [appDisableElement]="homeBuyersFormTotal">
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <fieldset>
+      <legend>Total</legend>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label">Amount</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="est_amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.est_amount.errors}" />
+          <div *ngIf="f.est_amount.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.est_amount.errors.required">Amount is required</div>
+          </div>            
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="act_amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.act_amount.errors}" />            
+          <div *ngIf="f.act_amount.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.act_amount.errors.required">Amount is required</div>
+          </div>   
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label">Total %</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="est_percent" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.est_percent.errors}" />            
+          <div *ngIf="f.est_percent.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.est_percent.errors.required">Total is required</div>
+          </div> 
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="act_percent" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.act_percent.errors}" />            
+          <div *ngIf="f.act_percent.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.act_percent.errors.required">Total is required</div>
+          </div> 
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label">Profit</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="est_profit" class="form-control" [ngClass]="{'text-danger': 0 > estProfileAmount ,'text-success': estProfileAmount >= 0}" [ngClass]="{ 'is-invalid': submitted && f.est_profit.errors}" />            
+          <div *ngIf="f.est_profit.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.est_profit.errors.required">Profit is required</div>
+          </div> 
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="act_profit" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.act_profit.errors}" />            
+          <div *ngIf="f.act_profit.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.act_profit.errors.required">Profit is required</div>
+          </div> 
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-md-2">
+          <label class="col-form-label">Payoff Amount</label>
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="est_payoff_amount" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f.est_payoff_amount.errors}" />            
+          <div *ngIf="f.est_payoff_amount.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.est_payoff_amount.errors.required">Payoff Amount is required</div>
+          </div> 
+        </div>
+        <div class="col-md-2">
+          <input type="text" formControlName="act_payoff_amount" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.act_payoff_amount.errors}" />            
+          <div *ngIf="f.act_payoff_amount.errors" class="invalid-feedback clr-bth">
+              <div *ngIf="f.act_payoff_amount.errors.required">Payoff Amount is required</div>
+          </div> 
+        </div>
+        <div class="col-md-4"></div>
+        <!-- <div class="col-md-2">
+          <button  (click)="validateForm(this.homeBuyersFormTotal)" class="form-control m-b-0 btn btn-sm btn-primary">
+              Save <i *ngIf="loading" class="fa fa-spin fa-spinner"></i>
+          </button>
+        </div> -->
+      </div>
+      <div class="clearfix"></div>
+    </fieldset>
+  </form>
+  
+</panel>

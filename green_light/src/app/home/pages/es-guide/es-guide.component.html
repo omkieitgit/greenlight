@@ -1,0 +1,43 @@
+
+
+  <app-attention-warning></app-attention-warning>
+  <div class="row">
+    <div class="card w-100">
+        <div class="card-body">
+            <ng-container outsideBody>
+              <div class="table-responsive">
+                <ngx-datatable
+                  class="bootstrap fullscreen"
+                  [rows]="rows"
+                  [columnMode]="scrollBarHorizontal?'standard':'force'"
+                  [headerHeight]="50"
+                  [footerHeight]="0"
+                  rowHeight="auto"
+                  [scrollbarH]="scrollBarHorizontal"
+                  (activate)="onCellClick($event)"
+                >
+                  <ngx-datatable-column  *ngFor="let col of columns; let i=index" name="{{col.title}}" prop="{{col.name}}">
+                    <ng-template let-value="value" ngx-datatable-cell-template>
+                      <span [innerHTML]="value"></span>
+                    </ng-template>
+                  </ngx-datatable-column>
+                </ngx-datatable>
+             
+              </div>
+            </ng-container>
+            <ng-container footer>
+              <!-- <ngb-pagination *ngIf="config.paging" 
+                class="d-flex justify-content-center" 
+                [(page)]="page" 
+                [maxSize]="maxSize" 
+                [boundaryLinks]="true" 
+                [collectionSize]="length" 
+                [rotate]="false" 
+                (pageChange)="onChangeTable(config, $event)" 
+                (numPages)="numPages = $event">
+              </ngb-pagination> -->
+            </ng-container>
+        </div>
+    </div>
+    
+  </div>

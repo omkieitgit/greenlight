@@ -1,0 +1,158 @@
+
+<form [formGroup]="propertySearchForm">
+  <div class="card card-body" >
+      <fieldset>
+        <legend>Property Description</legend>
+      <!--  <div class="alert alert-dark fade show m-b-5 m-t-5 semi-bold text-black">Owner Information</div> -->
+        <!-- one row start-->
+        <!-- (selected)='selectEvent($event)' -->
+        <div class="form-group row m-b-0">
+          <div class="col-md-2 _navbar_search">
+            <label class="col-form-label">Property Address</label>
+              <mat-form-field appearance="outline">
+                <input type="text" matInput  formControlName="property_address" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions" [value]="option">
+                    {{option}}
+                  </mat-option>
+                  <mat-option *ngIf="loadingSearch">
+                    <mat-spinner diameter="30" value="100"></mat-spinner>
+                  </mat-option>
+                  <mat-option *ngIf="noResult && !loadingSearch">
+                    No Result Found
+                  </mat-option>
+                </mat-autocomplete>
+                <mat-icon matSuffix color="primary" class="search-property md-18">
+                  <i class="fa fa-search"></i>
+                </mat-icon>
+              </mat-form-field>
+              <!-- <ng-autocomplete 
+                [data]="searchProAddress"
+                (inputChanged)='onChangeSearch($event)'
+                (selected)='selectEvent($event)'
+                [itemTemplate]="itemTemplate"
+                [notFoundTemplate]="notFoundTemplate">                                 
+              </ng-autocomplete>
+                
+              <ng-template #itemTemplate let-item>
+                <a [innerHTML]="item"></a>
+              </ng-template>
+                
+              <ng-template #notFoundTemplate let-notFound>
+                <div [innerHTML]="notFound"></div>
+              </ng-template> -->
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">City</label>
+            <input type="text" formControlName="city" class="form-control m-b-0"  />          
+          </div>
+    
+          <div class="col-md-2">
+            <label class="col-form-label">State</label>
+            <select class="form-control" formControlName="state" (change)="getCountyList($event.target.value)" >
+              <option value="">Select State</option>
+              <option [value]="state.key" *ngFor="let state of states | keyvalue">{{state.value}}</option>
+            </select>  
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">County</label>
+            <select class="form-control" formControlName="county" [ngClass]="{ 'is-invalid': submitted && f.county.errors }" >
+              <option value="">Select County</option>
+              <option [value]="country" *ngFor="let country of countries">{{country}}</option>
+            </select>
+              <div *ngIf="f.county.errors" class="invalid-feedback">
+                <div *ngIf="f.county.errors.required">County is required</div>
+              </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Zip Code</label>
+            <input type="text" class="form-control m-b-0" formControlName="zip_code" />
+          </div>
+                  
+          <div class="col-md-2">
+            <label class="col-form-label">Sale Type</label>
+            <select formControlName="sale_type"  class="form-control m-b-0" >
+              <option value="">Select Sale Type</option>
+              <option [value]="saleType.key" *ngFor="let saleType of sale_type | keyvalue">
+              {{saleType.value}}
+              </option>
+            </select> 
+          </div>
+        </div>
+        <!-- one row end -->
+        
+        <div class="form-group row m-b-0">
+            <div class="col-md-2">
+              <label class="col-form-label">Property Type</label>
+              <select class="form-control" formControlName="filter_type">
+                <option value="">Select Property Type</option>
+                <option [value]="request.value" *ngFor="let request of request_type">{{request.item}}</option>
+              </select>  
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">Equity</label>
+              <input type="text" name="equity"  class="form-control m-b-0"  formControlName="equity" />            
+            </div>
+            <div class="col-md-4">
+                <label class="col-form-label">Sale Date</label>
+                <div class="input-group date_range">
+                    <my-date-picker name="sale_date_from" class="form-control"  [options]="myDatePickerOptions" formControlName="sale_date_from" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                    <span class="input-group-addon">to</span>
+                    <my-date-picker name="sale_date_to" class="form-control"  [options]="myDatePickerOptions" formControlName="sale_date_to" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                </div>
+            </div>
+            <div class="col-md-4">
+              <label class="col-form-label">Close Date</label>
+              <div class="input-group date_range">
+                  <my-date-picker name="close_date_from" class="form-control"  [options]="myDatePickerOptions" formControlName="sale_date_from" [ngClass]="{ 'is-invalid': submitted && f.sale_date_from.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                  <span class="input-group-addon">to</span>
+                  <my-date-picker name="close_date_to" class="form-control" [options]="myDatePickerOptions" formControlName="sale_date_to" [ngClass]="{ 'is-invalid': submitted && f.close_date_to.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row m-b-0 pt-2 pb-2">
+            <div class="col-md-4">
+              <label class="col-form-label">Year Built</label>
+              <div class="input-group date_range">
+                  <my-date-picker name="build_year_from" class="form-control" [options]="myYearPickerOptions" formControlName="build_year_from" [ngClass]="{ 'is-invalid': submitted && f.build_year_from.errors }" (dateChanged)="onYearChanged($event)" ></my-date-picker>
+                  <span class="input-group-addon">to</span>
+                  <my-date-picker name="build_year_to" class="form-control" [options]="myYearPickerOptions" formControlName="build_year_to" [ngClass]="{ 'is-invalid': submitted && f.build_year_to.errors }" (dateChanged)="onYearChanged($event)" ></my-date-picker>
+                </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-form-label">DISPLAY ROW</label>
+              <select class="form-control m-b-0" formControlName="limit" (change)="changeLimit($event)">
+                  <option value="100">100</option>
+                  <option value="200">200</option>
+                  <option value="500">500</option>
+                  <option value="1000">1000</option>
+              </select>
+          </div>
+          <div class="col-md-4">
+            <label class="col-form-label">Redemption Expiration Date</label>
+            <div class="input-group date_range">
+              <my-date-picker name="redemption_expires_from" class="form-control"  [options]="myDatePickerOptions" formControlName="redemption_expires_from" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+              <span class="input-group-addon">to</span>
+              <my-date-picker name="redemption_expires_to" class="form-control"  [options]="myDatePickerOptions" formControlName="redemption_expires_to" [ngClass]="{ 'is-invalid': submitted && f.start.errors }" (dateChanged)="onDateChanged($event)" ></my-date-picker>
+          </div>
+          </div>
+          <div class="col-md-2">
+            <label class="col-form-label">Case Number</label>
+            <input type="text" name="case_number"  class="form-control m-b-0"  formControlName="case_number" />            
+          </div>
+            <!-- <div class="col-md-4">&nbsp;</div> -->
+            
+        </div>
+        <div class="form-group row m-b-0 pt-2 pb-2">
+          <div class="col-md-10"></div>
+          <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button class="form-control m-b-0 btn btn-primary btn-sm" (click)="seachProperty(this.propertySearchForm)">SEARCH
+                <i *ngIf="!loading" class="fa fa-spinner fa-spin"></i>
+            </button>
+          </div>
+        </div>
+      </fieldset>
+  </div>
+</form>
+      

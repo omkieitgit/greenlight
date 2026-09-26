@@ -1,0 +1,42 @@
+<h3 mat-dialog-title>Alarm Reminder</h3>
+<mat-dialog-content>
+        <div class="table-responsive m-t-10">
+                <table class="table table-bordered table-condensed">
+                        <tbody>
+                          <tr *ngFor="let alarm of alarmList">
+                            <td>
+                                <p>Address:<a [routerLink]="['/home/showdetail/'+alarm.house_id+'/'+(alarm?.house?.address|slugify)]" target="_blank">{{alarm?.house?.address}}</a></p>
+                
+                                <p>County: {{alarm?.house?.county}}</p>
+                                <p>City: {{alarm?.house?.city}}</p>
+                                <p>State: {{alarm?.house?.state}}</p>
+                                <p>Zip: {{alarm?.house?.zip}}</p>
+                                <p>Built Year: {{alarm?.house?.year_built}}</p>
+                           </td>
+                           <td>
+                                   <p>Sale Date: {{alarm?.house?.last_sale_details?.sale_date}}</p>
+                                   <p>Sale time: {{alarm?.house?.last_sale_details?.sale_time}}</p>
+                                   <p>Case Number: {{alarm?.house?.last_sale_details?.opening_bid}}</p>
+                           </td>
+                            <td class="p-5">
+                                    <!-- <a href="javascript:;" (click)="removeTradesmanTracking(tracking.id)">
+                                            <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                    </a> -->
+                                    <a href="javascript:;" (click)="dontReminderAlarm(alarm.alarm_id)">
+                                        <i class="fas fa-fw fa-bell-slash m-l-10"></i>
+                                    </a>
+                            </td>
+
+                          </tr>
+                        </tbody>
+                </table>
+        </div>
+                
+
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button  (click)="closeDialog()">Close</button>
+</mat-dialog-actions>
+

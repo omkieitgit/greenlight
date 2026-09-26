@@ -1,0 +1,118 @@
+    
+<fieldset>
+    <legend>Borrower Info</legend>
+    <div class="">
+
+        <form [formGroup]="borrowerInfoForm">     
+            <!-- one row start-->
+            <div class="form-group row">
+                <div class="col-md-4">
+                <div class="checkbox checkbox-css">
+                    <input type="checkbox" id="borrowerFullName"  formControlName="is_borrower_same_owner_name" value="1" (change)="borrowerNameChk($event)" >
+                    <label for="borrowerFullName">Check if borrower full name is same as owner full name.</label>
+                </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="checkbox checkbox-css">
+                        <input type="checkbox" id="borrowerAddr"  formControlName="is_borrower_same_owner_address" value="1" (change)="borrowerAddChk($event)">
+                        <label for="borrowerAddr">Check if borrower address is same with owner address.</label>
+                    </div>
+                </div>
+                <div class="col-md-4"></div>
+            </div>
+            <div formArrayName="borrow_info_data">
+                <div   [appDisableElement]="borrow" [formGroupName]="i"  *ngFor="let borrow of borrowerInfoForm.get('borrow_info_data')['controls']; let i = index">
+                    <!-- one row start-->
+                    <div class="form-group row parent-loader" id="{{i}}">
+                        <app-loader [loading]="loading" *ngIf="currentIndex ==i"></app-loader> 
+                        <div class="col-md-2">
+                            <input type="hidden" formControlName="id" [ngModel]="this.ownerData.Borrow && this.ownerData.Borrow[i]?.id"   />
+                            <label class="col-form-label">Borrower</label>
+                            <input type="text" placeholder="FirstName, MN, LastName" formControlName="full_name" [ngClass]="{ 'is-invalid': submittedBorrower && borrow.controls.full_name.errors && i==validRow }" class="form-control"  [ngModel]="this.ownerData.Borrow && this.ownerData.Borrow[i]?.full_name"  appOnBlurSave (updatedValue)="autoSave($event)" />
+                            <div *ngIf="borrow.controls.full_name.errors && i==validRow" class="invalid-feedback">
+                                <div *ngIf="borrow.controls.full_name.errors.required">Borrower is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Borrower Address</label>
+                            <input type="text" formControlName="full_address" [ngClass]="{ 'is-invalid': submittedBorrower && borrow.controls.full_address.errors && i==validRow }" class="form-control" [ngModel]="this.ownerData.Borrow && this.ownerData.Borrow[i]?.full_address" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                            <div *ngIf="borrow.controls.full_address.errors && i==validRow" class="invalid-feedback">
+                                <div *ngIf="borrow.controls.full_address.errors.required">Borrower Address is required</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Borrower Email</label>
+                            <input type="text" formControlName="email" [ngClass]="{ 'is-invalid': submittedBorrower && borrow.controls.email.errors && i==validRow }" class="form-control"  [ngModel]="this.ownerData.Borrow && this.ownerData.Borrow[i]?.email" appOnBlurSave (updatedValue)="autoSave($event)"/>
+                            <div *ngIf="borrow.controls.email.errors && i==validRow" class="invalid-feedback">
+                                <div *ngIf="borrow.controls.email.errors.required">Borrower Email is required</div>
+                                <div *ngIf="borrow.controls.email.errors.email">Email is invalid</div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-form-label">Borrower Phone 1</label>
+                            <input type="text" formControlName="phone" [ngClass]="{ 'is-invalid': submittedBorrower && borrow.controls.phone.errors && i==validRow }" class="form-control"  [ngModel]="this.ownerData.Borrow && this.ownerData.Borrow[i]?.phone" appOnBlurSave (updatedValue)="autoSave($event)" />
+                            <div *ngIf="borrow.controls.phone.errors && i==validRow" class="invalid-feedback">
+                                <div *ngIf="borrow.controls.phone.errors.required">Borrower Phone 1 is required</div>
+                            </div>
+                        </div>
+                       
+                        
+                        <div  *hideElement="true" class="col-md-2" >
+                            <div class="col-form-label  flt-l">&nbsp;</div>
+                            <div class="clr-bth">
+                                <a  href="javascript:;" (click)="validateBorrowerForm(borrow,i)" class="m-r-10 btn-primary">
+                                    <i *ngIf="!loadingRow" class="fas fa-lg fa-save"></i>
+                                </a> 
+
+                                <a *ngIf="borrowerInfoForm.controls.borrow_info_data.length > 1" href="javascript:;" (click)="removeBorrowInputField(i, borrow.controls.id.value)" class="m-r-10">
+                                    <i *ngIf="!loadingRow" class="fas fa-lg fa-times-circle text-danger"></i>
+                                </a>
+                                <a *ngIf="borrowerInfoForm.get('borrow_info_data')['controls'].length ==(i+1)" href="javascript:;" (click)="addBorrowInputField()" class="m-r-5">
+                                            <i *ngIf="!loadingRow" class="fas fa-lg fa-plus-circle"></i>
+                                </a> 
+                            </div>
+                        </div>
+
+                        <!-- <div class="col-md-1 " *hideElement="true">
+                            <div class="col-form-label  flt-l">&nbsp;</div>
+                            <div class="clr-bth">
+                                <button type="button" *ngIf="borrowerInfoForm.controls.borrow_info_data.length > 1" class="form-control btn btn-sm btn-danger" (click)="removeBorrowInputField(i, borrow.controls.id.value)" value="Remove" >
+                                Remove <i class="fa fa-trash"></i>
+                            </button>
+                            </div>
+                        </div> -->
+                        <!-- <ng-container *ngIf="borrowerInfoForm.get('borrow_info_data')['controls'].length ==(i+1)">
+                            <div class="col-md-1 ">&nbsp;</div>
+                            <div *hideElement="true"  class="col-md-1 ">
+                                <div class="col-form-label flt-l">&nbsp;</div>
+                                <button class="form-control btn btn-sm btn-primary" (click)="addBorrowInputField()">
+                                    Add More
+                                </button>
+                            </div>
+                        </ng-container> -->
+                    </div>
+                    <!-- one row end -->
+                </div>
+            </div>
+            <!-- one row start-->
+            <div class="form-group row m-t-40">
+                <div class="col-md-12">
+                    <app-common-notes [note_name]="borrower_notes"></app-common-notes>    
+                </div>
+            </div>
+            <!-- <app-document 
+                [document_type_list]="property_document_type_list"
+                [property_id]="property_id" 
+                [document_info]="document_borrower" 
+                document_url="borrower_document" 
+                doc_primary_key="id" 
+                [doc_count_id]="borrow"></app-document> -->
+        <!-- one row end -->
+        </form>
+        
+       
+        
+    </div>
+    
+</fieldset>  
+

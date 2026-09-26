@@ -1,0 +1,81 @@
+<form [formGroup]="estimatedLatePaymentForm">
+    <fieldset>
+      <legend><strong> Estimated Late Payments and Fees %</strong></legend>
+      <!-- one row start-->       
+      <div class="form-group row m-b-0">
+        <div class="col-md-4">
+          <label class="col-form-label">STR Date</label>
+          <my-date-picker name="_str_date" [options]="myDatePickerOptions" formControlName="_str_date"  (dateChanged)="onDateChanged($event)" placeholder="YYYY-MM-DD"></my-date-picker>                  
+        </div> 
+        <div class="col-md-4">
+          <label class="col-form-label">10 Months Back From STR Date</label>
+          <my-date-picker name="_back_str_date" [options]="myDatePickerOptions" formControlName="_back_str_date"  (dateChanged)="onDateChanged($event)" placeholder="YYYY-MM-DD"></my-date-picker>                  
+        </div>
+        <div class="col-md-4">
+          <label class="col-form-label">Current Date</label>
+          <my-date-picker name="_current_date" [options]="myDatePickerOptions" formControlName="_current_date"  (dateChanged)="onDateChanged($event)" placeholder="YYYY-MM-DD"></my-date-picker>                  
+        </div>
+      </div>
+      <!-- one row end -->
+      <div class="form-group row m-b-0">
+          <div class="col-md-6">
+              <label class="col-form-label">Total Months of Estimated Missed Payments</label>
+              <input type="text" class="form-control m-b-0" formControlName="_total_month_estimated" /> 
+            </div> 
+      </div>
+      <div class="form-group row m-b-0">
+          <div class="col-md-4">
+              <label class="col-form-label">Monthly Payment</label>
+              <input type="text" class="form-control m-b-0" formControlName="_monthly_payment" /> 
+            </div>
+            <div class="col-md-4">
+              <label class="col-form-label">Attorney Fees $</label>
+              <input type="text" class="form-control m-b-0" formControlName="_attorney_fees" /> 
+            </div>
+            <div class="col-md-4">
+                <label class="col-form-label">Estimated Late Payment &amp; Fees</label>
+                <input type="text" class="form-control m-b-0" formControlName="_estimated_late_fee"/> 
+              </div>  
+      </div>
+      
+       <!-- one row start-->       
+       <div class="form-group row m-b-0">
+          
+          <div class="col-md-4">
+            <label class="col-form-label">Estimated Loan Balance</label>
+            <input type="text" class="form-control m-b-0" formControlName="_estimated_loan_balance"/> 
+          </div>
+          <div class="col-md-4">
+            <label class="col-form-label">CMA/ARV Value</label>
+            <input type="text" class="form-control m-b-0" formControlName="_cma_arv_val" /> 
+          </div>
+        </div>
+        <!-- one row end -->
+
+        <div class="form-group row m-b-0">
+            <div class="col-md-6">
+              <label class="col-form-label">Total Estimated Debt w/ Late Payments &amp; Attorney Fees</label>
+              <input type="text" class="form-control m-b-0" formControlName="_total_estimated_debt" /> 
+            </div>
+        </div>
+        <div class="form-group row m-b-0">
+          <div class="col-md-4">
+            <label class="col-form-label">Estimated Equity</label>
+            <input type="text" class="form-control m-b-0" formControlName="_estimated_equity" /> 
+          </div>
+        </div>
+        <!-- one row start-->
+      <div class="form-group row pdb-10">
+          <div class="col-md-8"></div>
+          <div class="col-md-2">
+            <button  class="form-control m-b-0 btn btn-sm btn-primary" (click)="saveInfo()">Save</button>
+          </div>
+          <div class="col-md-2">
+            <button mat-button [mat-dialog-close]="true" class="form-control m-b-0 btn btn-sm btn-primary dialog_close">Cancel</button>
+          </div>
+        </div>
+        <!-- one row end-->
+  
+
+    </fieldset>
+</form>

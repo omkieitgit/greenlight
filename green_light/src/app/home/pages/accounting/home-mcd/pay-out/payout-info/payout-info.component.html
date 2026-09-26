@@ -1,0 +1,41 @@
+<form *ngIf="openPanel" [appDisableElement]="payoutInfoForm" [formGroup]="payoutInfoForm">
+      
+        <div class="form-group row">
+          <div class="col-md-2"> <label class="col-form-label">Close Date A to B</label> </div>
+          <div class="col-md-2">
+              <my-date-picker [options]="myDatePickerOptions" formControlName="close_date_a_to_b" #close_date_a_to_b (inputFieldChanged)="onInputFieldChanged($event)" (dateChanged)="onDateChanged($event,close_date_a_to_b)"  placeholder="MM/DD/YYYY"></my-date-picker>
+          </div>
+          <div class="col-md-2"> <label class="col-form-label">Close Date B to C</label> </div>
+          <div class="col-md-2">
+            <my-date-picker [options]="myDatePickerOptions" formControlName="close_date_b_to_c" #close_date_b_to_c (inputFieldChanged)="onInputFieldChanged($event)" (dateChanged)="onDateChanged($event,close_date_b_to_c)" placeholder="MM/DD/YYYY"></my-date-picker>
+          </div>
+          <div class="col-md-4"> 
+            <label class="col-form-label">Days - Start to Finish</label> 
+            <span class="p-l-10 p-r-10">{{numberdays?numberdays:0}}</span>
+            <label class="col-form-label">Months</label> 
+            <span class="p-l-10 p-r-10">{{(numberOfMonth)?numberOfMonth:0}}</span>
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-md-2"> <label class="col-form-label">Purchase Cost / A to B</label> </div>
+          <div class="col-md-2">Note & DT</div>
+          <div class="col-md-2"> 
+                <label class="col-form-label">Hud A to B</label> 
+                <span [appLink]="payoutInfoForm.controls.hud_a_to_b.value"></span>
+          </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control m-b-0" formControlName="hud_a_to_b" appOnBlurSave (updatedValue)="autoSave($event)" />   
+            
+          </div>
+          <div class="col-md-2"> <label class="col-form-label">Purchase Price</label> </div>
+          <div class="col-md-2">
+            <input type="text" class="form-control m-b-0" formControlName="purchase_price" appOnBlurSave (updatedValue)="autoSave($event)" />   
+          </div>
+        </div>
+        
+        
+          <!-- <div class="col-md-2">
+            <label class="col-form-label">&nbsp;</label>
+            <button (click) ="validateForm(this.payOutForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+          </div> -->
+      </form>

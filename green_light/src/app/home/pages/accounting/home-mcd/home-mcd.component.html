@@ -1,0 +1,273 @@
+<panel (valueChange)='panelExpand($event)' title="Master Closing Documents">
+        <div class="form-group row m-b-5" >
+                <div class="col-md-6">
+                      <app-mcd-other-info 
+                        *ngIf="loadingMcd"
+                        [client_list]="client_list" 
+                        [payers_list]="payers_list" 
+                        [property_id]="property_id"
+                        [property_info]="property_info"
+                        [other_mcd_info]="other_mcd_info">
+                      </app-mcd-other-info>  
+                        
+                </div>
+                <div class="col-md-6">
+                        <div class="table-responsive m-t-10">
+                                <table class="table table-bordered table-condensed">
+                                        <tr>
+                                                <th>From days</th>
+                                                <th>To Days</th>
+                                                <th>Pts</th>
+                                        </tr>
+                                        <tbody>
+                                        <tr *ngFor="let pts of pts_data">
+                                                <td>{{pts?.from_day}}</td>
+                                                <td>{{pts.to_day}}</td>
+                                                <td>{{pts.pts}}</td>
+                                        </tr>
+                                        </tbody>
+                                </table>
+                        </div>
+                    
+                </div>
+        </div>
+        
+        <app-lender [property_id]="property_id" [viewAccessOnly]="viewAccessOnly"  [mcdLenderResult]="mcd_lender" (updateLender)="onUpdateLender($event)"></app-lender>
+        <panel  title="Investments">
+                <div class="parent-loader">
+                        <!-- Loader DIV -->
+                        <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+                        <!-- Loader DIV -->
+                        <form *ngIf="!viewAccessOnly" [formGroup]="homeMcdForm">
+                                <!-- one row start-->
+                        <div class="form-group row m-b-5" >
+                                <div class="col-md-2 _navbar_search">
+                                        <label class="col-form-label">Lender Name</label>
+                                        <mat-form-field appearance="outline" >
+                                                <input type="text" matInput formControlName="lender_name" [matAutocomplete]="auto">
+                                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                                        <mat-option *ngFor="let lender of mcd_lender" [value]="lender">{{lender.lender_name}}</mat-option>
+                                                </mat-autocomplete>
+                                        </mat-form-field>
+                                        <!-- <input type="text" class="form-control m-b-0" formControlName="lender_name" [ngClass]="{ 'is-invalid': submitted && f.lender_name.errors }" />    -->
+                                        <div *ngIf="f.lender_name.errors" class="invalid-feedback">
+                                                <div *ngIf="f.lender_name.errors.required">Lender Name is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Purpose of funds</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="purpose_of_funds" [ngClass]="{ 'is-invalid': submitted && f.purpose_of_funds.errors }"/>
+                                        <div *ngIf="f.purpose_of_funds.errors" class="invalid-feedback">
+                                                <div *ngIf="f.purpose_of_funds.errors.required">Purpose of funds is required</div>
+                                        </div>
+                                </div>
+                                <!-- <div class="col-md-2">                     
+                                        <label class="col-form-label">Document</label>
+                                        <input type="file"  class="form-control m-b-0" #mcdDocument class="form-control btn btn-sm btn-primary" value="Choose File" name="authorization"  multiple (change)="uploadHandler($event)"> 
+                                </div> -->
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Document Url</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="document_url" />   
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">In Date</label>
+                                        <my-date-picker name="in_date" [options]="myDatePickerOptions" formControlName="in_date"  (dateChanged)="onDateChanged($event,outDate,amount)" #inDate placeholder="MM/DD/YYYY"></my-date-picker>
+                                        <div *ngIf="f.in_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                <div *ngIf="f.in_date.errors.required">In Date is required</div>
+                                        </div> 
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Out Date</label>
+                                        <my-date-picker name="out_date" [options]="myDatePickerOptions" formControlName="out_date"  (dateChanged)="onDateChanged($event,inDate,amount)" #outDate placeholder="MM/DD/YYYY"></my-date-picker>
+                                        <div *ngIf="f.out_date.errors && submitted" class="invalid-feedback" style="display: block;">
+                                                <div *ngIf="f.out_date.errors.required">Out Date is required</div>
+                                        </div> 
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Amount</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="amount" #amount [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" (change)="inveterAmount($event.target.value)"/>   
+                                        <div *ngIf="f.amount.errors" class="invalid-feedback">
+                                                <div *ngIf="f.amount.errors.required">Amount is required</div>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="form-group row m-b-5" >
+                                
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Amount Returned</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="returned_amount" />   
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Funded Days</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="funded_days" />   
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Points</label>
+                                        <input type="text" class="form-control m-b-0"  formControlName="pts" />
+                                </div>
+                                <div class="col-md-2 _navbar_search">
+                                        <label class="col-form-label">Interest Type</label>
+                                        <mat-form-field appearance="outline" >
+                                                <input type="text" matInput formControlName="interest_type" [matAutocomplete]="auto1">
+                                                <mat-autocomplete #auto1="matAutocomplete" [displayWith]="displayInterestFn" (optionSelected)="onChangeInterest($event)">
+                                                        <mat-option *ngFor="let interest of interest_type" [value]="interest">{{interest.name}}</mat-option>
+                                                </mat-autocomplete>
+                                        </mat-form-field>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Interest</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="interest" />   
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">Lender Referral</label>
+                                        <input type="text" class="form-control m-b-0" formControlName="lender_referral" />   
+                                </div>
+                        </div>
+                        <div  class="form-group row m-b-5">
+                                <div class="col-md-2 _navbar_search">
+                                        <label class="col-form-label">Lender Referral %</label>
+                                        <mat-form-field appearance="outline" >
+                                                <input type="text" matInput formControlName="lender_referral_pre" [matAutocomplete]="auto2">
+                                                <mat-autocomplete #auto2="matAutocomplete" [displayWith]="displayInterestFn" (optionSelected)="onChangeReferal($event)">
+                                                        <mat-option *ngFor="let referral of lenderReferal" [value]="referral">{{referral.name}}</mat-option>
+                                                </mat-autocomplete>
+                                        </mat-form-field>
+                                        <div *ngIf="f.lender_referral_pre.errors" class="invalid-feedback">
+                                                <div *ngIf="f.lender_referral_pre.errors.required">Lender Referral Per is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2 _navbar_search">
+                                        <label class="col-form-label">Type</label>
+                                        <mat-form-field appearance="outline" >
+                                                <input type="text" matInput formControlName="mcd_type" [matAutocomplete]="auto3">
+                                                <mat-autocomplete #auto3="matAutocomplete" [displayWith]="displayInterestFn">
+                                                        <mat-option *ngFor="let type of investmentType" [value]="type">{{type.name}}</mat-option>
+                                                </mat-autocomplete>
+                                        </mat-form-field>
+                                        <div *ngIf="f.mcd_type.errors" class="invalid-feedback">
+                                                <div *ngIf="f.mcd_type.errors.required">MCD Type is required</div>
+                                        </div>
+                                </div>
+                                <div class="col-md-2">
+                                        <label class="col-form-label">&nbsp;</label>
+                                        <button (click) ="validateForm(this.homeMcdForm)"class="form-control m-b-0 btn btn-sm btn-primary">Save</button>
+                                </div>
+                        </div>
+                        </form> 
+                        
+                        <div  class="table-responsive m-t-10 table-fixed-header">
+                                <table class="table table-bordered table-condensed">
+                                       <thead>
+                                                <tr>
+                                                        <th>Lender Name</th>
+                                                        <th>Purpose of Funds</th>
+                                                        <th>Document</th>
+                                                        <th>Date In</th>
+                                                        <th>Date Out</th>
+                                                        <th>MCD Type</th>
+                                                        <th>Amount In/Out</th>
+                                                        <th>Amount Returned</th>
+                                                        <th>Days Funded</th>
+                                                        <th>Pts</th>
+                                                        <th>Interest</th>
+                                                        <th>Referral Fee</th>
+                                                        <th>Action</th>
+                                                </tr>
+                                       </thead> 
+                                        <tbody>
+                                                <tr *ngFor="let mcd of mcdResult">
+                                                        <td>{{mcd?.mcd_lender?.lender_name}}</td>
+                                                        <td>{{mcd.purpose_of_funds}}</td>
+                                                        <td class="break"><a *ngIf="mcd?.document_url && isValidURL(mcd?.document_url)" href="{{mcd?.document_url}}" target="_blank" [title]="mcd?.document_url">View</a></td>
+                                                        <td class="nowrap">{{mcd.in_date}}</td>
+                                                        <td class="nowrap">{{mcd.out_date}}</td>
+                                                        <td>{{mcd.mcd_type}}</td>
+                                                        <td>{{mcd.amount| currency}}</td>
+                                                        <td>{{mcd.returned_amount| currency}}</td>
+                                                        <td>{{mcd.funded_days}}</td>
+                                                        <td>{{mcd.pts| currency}}</td>
+                                                        <td>{{mcd.interest| currency}}</td>
+                                                        <td>{{mcd.lender_referral| currency}}</td>
+                                                        <td class="p-5">
+                                                                <ng-container  *ngIf="!viewAccessOnly" >
+                                                                        <a href="javascript:;" (click)="removeMcd(mcd.id)">
+                                                                                <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                                                                        </a>
+                                                                        <a href="javascript:;" (click)="editMcd(mcd)">
+                                                                                <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                                                                        </a>
+                                                                </ng-container>
+                                                        </td>
+                                                
+                                                </tr>
+                                                <tr *ngFor="let expenses of clientInoviceExpense">
+                                                        <td colspan="6">{{expenses.lender_name}}</td>
+                                                        <td>{{expenses.bill_total_amount | currency }}</td>
+                                                        <td>{{expenses.total_amount | currency }}</td>
+                                                        <td colspan="7"></td>
+                                                </tr>
+                                        </tbody>
+                                        <tfoot>
+                                                <tr>
+                                                        <td  colspan="6" align="right" ><strong>Total:</strong></td>
+                                                        <td>{{ ((mcdResult|sum:'amount')+calTotalLenderInvoiceAmount('bill_total_amount')*1) | currency}}</td>
+                                                        <td>{{ ((mcdResult|sum:'returned_amount')+calTotalLenderInvoiceAmount('total_amount')*1) | currency }}</td>
+                                                        <td>{{ (mcdResult|sum:'funded_days') }}</td>
+                                                        <td>{{ (mcdResult|sum:'pts') | currency}}</td>
+                                                        <td>{{ (mcdResult|sum:'interest') | currency}} </td>
+                                                        <td>{{ (mcdResult|sum:'lender_referral') | currency }}</td>
+                                                        <td></td>
+                                                </tr>
+                                               
+                                                <tr *ngFor="let bylender of totalByLender">
+                                                        <td colspan="6"><strong>{{bylender?.lender_name}}</strong></td>
+                                                        <td><strong>{{bylender?.amount | currency }}</strong></td>
+                                                        <td><strong>{{bylender?.returned_amount | currency }}</strong></td>
+                                                        <td></td>
+                                                        <td><strong>{{bylender?.pts | currency }}</strong></td>
+                                                        <td><strong>{{bylender?.interest | currency }}</strong></td>
+                                                        <td><strong>{{bylender?.lender_referral | currency }}</strong></td>
+                                                        <td><strong>{{(netProfitInfo*bylender?.percentage)/100 | currency }}</strong></td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="6"><strong>Total</strong></td>
+                                                        <td><strong>{{ (totalByLender|sum:'amount') | currency }}</strong></td>
+                                                        <td><strong>{{ (totalByLender|sum:'returned_amount') | currency}}</strong></td>
+                                                        <td></td>
+                                                        <td><strong>{{ (totalByLender|sum:'pts') | currency }}</strong></td>
+                                                        <td><strong>{{ (totalByLender|sum:'interest')  | currency}}</strong></td>
+                                                        <td><strong>{{ (totalByLender|sum:'lender_referral') | currency }}</strong></td>
+                                                        <td><strong>{{ calTotallenderAmount('percentage')| currency }}</strong></td>
+                                                </tr>
+                                                <tr>
+                                                        <td colspan="6"><strong>Income before finance</strong></td>
+                                                        <td colspan="6"></td>
+                                                        <td><strong>{{ netProfitInfo | currency }}</strong></td>
+                                                </tr>
+                                        </tfoot>
+                                </table>
+                                
+                        </div>
+                </div>
+        </panel>
+
+        <app-client-invoice [property_id]="property_id"></app-client-invoice>
+        <app-client-expenses [property_id]="property_id"></app-client-expenses>
+        <app-reno-inc-carry-costs [property_id]="property_id" [viewAccessOnly]="viewAccessOnly"></app-reno-inc-carry-costs>
+       
+        <pay-out [property_id]="property_id" 
+                [openPanel]="openPanel" 
+                [totalAirBnbAmount]="totalAirBnbAmount" 
+                [payoutDetail]="payoutDetail"
+                [nonHubResult]="nonHubResult"
+                [viewAccessOnly]="viewAccessOnly">
+        </pay-out>
+        <ng-container *ngIf="!viewAccessOnly">
+                <app-trust-ledger [property_id]="property_id"></app-trust-ledger>
+                <app-short-term-rental [property_id]="property_id" (updateShartTermRental)="totalShortTermRental($event)"></app-short-term-rental>
+                <app-deposit-sheet [property_id]="property_id" ></app-deposit-sheet>
+                <app-tradesman-tracking [property_id]="property_id"></app-tradesman-tracking>
+                <app-accounting-tracking [property_id]="property_id"></app-accounting-tracking>        
+        </ng-container>
+        
+</panel>

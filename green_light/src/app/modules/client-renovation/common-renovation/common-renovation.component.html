@@ -1,0 +1,258 @@
+<form *ngIf="!editAccess" [formGroup]="clientRenovationForm" class="parent-loader">
+    <!-- Loader DIV -->
+    <div *ngIf="loading"  class="child-loader"><span class="spinner-small "></span></div>
+    <!-- Loader DIV -->  
+    <!-- one row start-->
+        <fieldset>
+        <legend>Invoice&nbsp;</legend>     
+        <!-- ROw Start -->       
+        <div class="form-group row">
+            <div class="col-md-2">
+                <input type="hidden" formControlName="id"   />
+                <label class="col-form-label">Date of invoice</label>
+                <my-date-picker name="invoice_date" [options]="myDatePickerOptions" formControlName="invoice_date"  (dateChanged)="onDateChanged($event)" class="" placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+            <div class="col-md-2">                     
+                <label class="col-form-label">Amount</label>
+                <input type="text" formControlName="amount"  class="form-control m-b-0" placeholder="Amount"/> 
+            </div>
+            <div class="col-md-2">                     
+                <label class="col-form-label">Paid Date</label>
+                <my-date-picker name="paid_date" [options]="myDatePickerOptions"  formControlName="paid_date"  (dateChanged)="onDateChanged($event)" class="" placeholder="MM/DD/YYYY"></my-date-picker>
+            </div>
+            <div class="col-md-2">                     
+                <label class="col-form-label">Invoice Url</label>
+                <span [appLink]="clientRenovationForm.controls.invoice_url.value"></span>
+                <input type="text" class="form-control m-b-0" formControlName="invoice_url" /> 
+            </div>
+            <div class="col-md-2">                     
+                <label class="col-form-label">Bank Deposit Url</label>
+                <span [appLink]="clientRenovationForm.controls.bank_deposit_url.value"></span>
+                <input type="text" formControlName="bank_deposit_url"  class="form-control m-b-0" placeholder="Bank Deposit Url"/> 
+            </div>
+            <div class="col-md-2">                     
+                <label class="col-form-label">Bank Statement Url</label>
+                <span [appLink]="clientRenovationForm.controls.bank_statement_url.value"></span>
+                <input type="text" formControlName="bank_statement_url"  class="form-control m-b-0" placeholder="Bank Statement Url"/> 
+            </div>
+         
+            
+        </div>
+        <!-- Row End -->
+        <div class="form-group row">
+            <div class="col-md-2 _navbar_search">                     
+                <label class="col-form-label">Funder</label>
+                <mat-form-field appearance="outline" >
+                    <input type="text" matInput formControlName="funder" [matAutocomplete]="auto">
+                    <mat-autocomplete #auto="matAutocomplete"  [displayWith]="displayFunder">
+                        <mat-option *ngFor="let lender of lenderList" [value]="lender">{{lender.lender_name}}</mat-option>
+                    </mat-autocomplete>
+                </mat-form-field>
+            </div>
+            <div class="col-md-2">   
+                <label class="col-form-label">&nbsp;</label>         
+                <div class="checkbox checkbox-css">
+                    <input type="checkbox" formControlName="paid" id="ClientRenovPaid_{{section_type}}" value="1">
+                    <label for="ClientRenovPaid_{{section_type}}">Paid</label>
+                </div>
+            </div>
+            <div *ngIf="section_type=='invoices' && user_roles=='admin'" class="col-md-2">  
+                <label class="col-form-label">&nbsp;</label>         
+                <div class="checkbox checkbox-css">
+                    <input type="checkbox" formControlName="invoice_lock" id="invoice_lock_{{_section_type+'_'+ix}}" value="1">
+                    <label for="invoice_lock_{{_section_type+'_'+ix}}">Invoice Lock</label>
+                </div>                   
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <div class="col-md-2">
+                <button class="form-control m-t-5 btn btn-sm btn-primary" (click)="categoryDialog()">Category</button>                                    
+            </div>
+        </div>
+        <!-- Y -->
+        <div formArrayName="clientRenovationDetail">
+            <div class="form-group row">
+                <div class="col-md-2">
+                    <label class="col-form-label">SUB-CATEGORIES</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="col-form-label">DESCRIPTION</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="col-form-label">AMOUNT</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="col-form-label">CLASSIFICATION</label>
+                </div>
+                <div class="col-md-2">
+                    <label class="col-form-label">RECIPIENT</label>
+                </div>
+                
+            </div>
+            <div *ngFor="let expenseDetail of clientRenovationForm.get('clientRenovationDetail')['controls']; let iy=index">
+                <div [formGroupName]="iy">
+                <div class="form-group row">
+                    <input type="hidden" formControlName="id" /> 
+                    <div class="col-md-2 _navbar_search">
+                        <mat-form-field appearance="outline" >
+                            <input type="text" matInput formControlName="sub_category" [matAutocomplete]="auto2">
+                            <mat-autocomplete #auto2="matAutocomplete"  [displayWith]="displayFn">
+                                <mat-option *ngFor="let sub_cat of  filteredOptions[iy] | async" [value]="sub_cat">{{sub_cat.category_name}}</mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" formControlName="description"  class="form-control m-b-0" placeholder="DESCRIPTION"/> 
+                    </div>
+                    <div class="col-md-2">
+                        <input type="text" formControlName="amount"  class="form-control m-b-0" placeholder="AMOUNT"/> 
+                    </div>
+                    <div class="col-md-2 _navbar_search">
+                        <mat-form-field appearance="outline" >
+                            <input type="text" matInput formControlName="classification" [matAutocomplete]="auto1">
+                            <mat-autocomplete #auto1="matAutocomplete">
+                                <mat-option [value]="'incidental'">Incidental Cost</mat-option>
+                                <mat-option  [value]="'carry'">Carry Cost</mat-option>
+                                <mat-option  [value]="'renovation'">Renovation Cost</mat-option>
+                            </mat-autocomplete>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-md-2">
+                        <select  class="form-control m-b-0"  formControlName="recipients_id">
+                            <option *ngFor="let recipients of recipients_info" value="{{recipients.id}}">{{recipients?.recipients_name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-1 col-form-label">
+                        <a href="javascript:;" class="m-r-5" (click)="clientMscForm(iy)">
+                            <i  class="fas fa-lg fa-file-alt"></i>
+                        </a>
+                    </div>
+                    <ng-container *ngIf="!clientRenovationForm.controls.invoice_lock.value || user_roles=='admin' ">
+                        <div  class="col-md-1" *ngIf="clientRenovationForm['controls'].clientRenovationDetail['controls'].length ==iy+1" >
+                            <button class="pull-right form-control btn btn-sm btn-primary" (click)="clientRenovationDetailMore()">ADD MORE</button>
+                        </div>
+                    </ng-container>
+                </div>
+                </div>
+            </div>
+            <div class="form-group row border-top m-t-5">
+                <div class="col-md-6 m-t-5 text-right font-weight-bold">Total:</div>
+                <div class="col-md-6 m-t-5">{{ clientRenovationForm.controls.totalSubcatAmount.value | currency}}</div>
+            </div>
+        </div>
+        <!-- Y End-->
+        <div class="form-group row" *ngIf="!clientRenovationForm.controls.invoice_lock.value || user_roles=='admin' ">
+            
+            <div class="col-md-10"></div>
+         <!--    <div class="col-md-1">
+                <div class="col-form-label">&nbsp;</div>
+                <div *ngIf="clientRenovationForm.get('client_renovation_data')['controls'].length > 1">
+                    <button class="form-control m-t-5 btn btn-sm btn-danger" (click)="removeClientRenovationField(ix, clientRenovationForm.controls.id.value)">Remove</button>
+                </div>
+            </div>-->
+            <div class="col-md-1">
+                <div class="col-form-label">&nbsp;</div>
+                <button class="form-control m-t-5 btn btn-sm btn-primary" (click)="validateForm(clientRenovationForm,ix)">Save</button>                                    
+            </div>
+        </div> 
+    </fieldset>
+    <!-- one row end -->
+</form>
+<div class="row parent-loader">
+     <!-- Loader DIV -->
+     <div *ngIf="loading_inovice_read"  class="child-loader"><span class="spinner-small "></span></div>
+     <!-- Loader DIV --> 
+     <div class="col-md-2">
+        <button class="form-control m-t-5 btn btn-sm btn-primary" (click)="!exportInvoice && exportRenovation()" >Export Invoices <i *ngIf="exportInvoice" class="fa fa-spin fa-spinner"></i></button>                                    
+    </div>
+    <div class="table-responsive m-t-10 table-fixed-header">
+        <table class="table table-bordered table-condensed">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>#Invoice</th>
+                    <th>Invoice Date 
+                        <span class="sort-btn sort-desc" [ngClass]="{'datatable-icon-down':sortByDsc,'datatable-icon-up':!sortByDsc}" (click)="getInvoice('invoice_date')"></span>
+                    </th>
+                    <th>Invoice Amount</th>
+                    <th>Sub Category
+                        <!-- <span class="sort-btn sort-desc" [ngClass]="{'datatable-icon-down':sortByAmountDsc,'datatable-icon-up':!sortByAmountDsc}" (click)="getInvoice('category')"></span> -->
+                    </th>
+                    <th>Total Amount
+                        <span class="sort-btn sort-desc" [ngClass]="{'datatable-icon-down':sortByAmountDsc,'datatable-icon-up':!sortByAmountDsc}" (click)="getInvoice('amount')"></span>
+                    </th>
+                    <th>Invoice Url</th>
+                    <th>Bank Deposit</th>
+                    <th>Bank Statement</th>
+                    <th>Funder</th>
+                    <th>invoice Lock</th>
+                    <th>Inv Read</th>
+                    <th *ngIf="!editAccess">Action</th>
+                  </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let invoice of renovationResult; let i=index">
+                    <td><input type="checkbox" (click)="addInvoiceHistory(invoice.id)"/></td>
+                    <td>Inv {{invoice.id}}</td>
+                    <td>{{invoice.invoice_date | date:'MM/dd/YYYY'}}</td>
+                    <td>{{invoice.amount |currency }}</td>
+                    <td class="p-0 m-0">
+                        <table width="100%" class="p-0 m-0  b-0">
+                            <tr *ngFor="let detail of invoice?.renovation_detail">
+                                <td class="p-5">{{detail?.category?.category_name }}</td>
+                                <td class="p-5">{{detail?.amount |currency }}</td>
+                              </tr>
+                        </table>
+                    </td>
+                    <td>{{invoice?.total_renovation_amount?.total_amount |currency }}</td>
+                    <td><a *ngIf="invoice.invoice_url" href="{{invoice?.invoice_url}}" target="_blank">View</a> </td>
+                    <td><a *ngIf="invoice.bank_deposit_url" href="{{invoice?.bank_deposit_url}}" target="_blank">View</a> </td>
+                    <td><a *ngIf="invoice.bank_statement_url" href="{{invoice?.bank_statement_url}}" target="_blank">View</a> </td>
+                    <td>{{ invoice?.funder_info?.lender_name }}</td>
+                    <td>{{ invoice?.invoice_lock?'Yes':'No' }}</td>
+                    <td class="nowrap p-5">
+                        <div appMatchHeight="es-read-more" >
+                            <div class="es-read-more"  [ngClass]="{'invoice-read-more':i!=notes_index }"> 
+                              <p  *ngFor="let invHistory of invoice.invoice_history" class="m-b-5">
+                                {{invHistory?.user?.first_name }}
+                                {{invHistory?.created_at|date:'M/d/yy h:mm:ss' }}
+                              </p>
+                            </div>
+                            <a href="javascript:;" class="readmore" *ngIf="i!=notes_index" (click)="toggleList(i)" >More</a>
+                        </div>
+                    </td>
+                    <td *ngIf="!editAccess" class="p-5">
+                            <a href="javascript:;" (click)="removeClientRenovationField(invoice.id)">
+                                    <i class="fas fa-fw fa-trash-alt text-danger"></i>
+                            </a>
+                            <a href="javascript:;" (click)="editRenovationField(invoice)">
+                                <i class="fas fa-fw fa-pencil-alt m-l-10"></i>
+                            </a>
+                    </td>
+    
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="table-responsive m-t-10">
+        <table class="table table-bordered table-condensed">
+          <tr *ngFor="let lenderAmount of lenderByAmount">
+            <td><strong>{{lenderAmount.lender_name}}:</strong></td>
+            <td><strong>Amounts Billed:</strong></td>
+            <td>{{ lenderAmount.bill_total_amount | currency}}</td>
+            <td><strong>Amounts Paid:</strong></td>
+            <td>{{ lenderAmount.total_amount | currency}}</td>
+          </tr>
+          <tr>
+            <td colspan="2" align="right"><strong>Total:</strong></td>
+            <td>{{ (lenderByAmount|sum:'bill_total_amount') | currency}}</td>
+            <td></td>
+            <td>{{ (lenderByAmount|sum:'total_amount') | currency}}</td>
+          </tr>
+        </table>
+      </div>
+</div>

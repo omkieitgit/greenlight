@@ -1,0 +1,274 @@
+<div class="row">
+  <!-- begin col-6 -->
+  <div class="col-lg-12">
+    <!-- begin panel -->
+      <form [formGroup]="advancedsearchForm" (keyup.enter)="seachProperty(this.advancedsearchForm)">
+        <div class="estate_content">
+            <fieldset>
+                <legend>Owner Information</legend>
+              <!--  <div class="alert alert-dark fade show m-b-5 m-t-5 semi-bold text-black">Owner Information</div> -->
+                <!-- one row start-->
+                <div class="form-group row m-b-0">
+                  <div class="col-md-2">
+                    <label class="col-form-label">Owner Name</label>
+                    <input formControlName="as_owner_name" id="as_owner_name" value="" type="text" class="form-control m-b-0" placeholder="Owner Name">            
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Owner Email</label>
+                    <input formControlName="as_owner_email" id="as_owner_email" value="" type="text" class="form-control m-b-0" placeholder="Owner Email">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Owner Phone</label>
+                    <input formControlName="as_owner_phone" id="as_owner_phone" value="" type="text"  class="form-control m-b-0" placeholder="Owner Phone">         
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Owner Address</label>
+                    <input formControlName="as_owner_address" id="as_owner_address" value="" type="text" class="form-control m-b-0" placeholder="Owner Address">         
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Borrower Name</label>
+                    <input formControlName="as_borrower_name" id="as_borrower_name" value="" type="text" class="form-control m-b-0" placeholder="Borrower Name">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="col-form-label">Borrower Phone</label>
+                    <input formControlName="as_borrower_phone" id="as_borrower_phone" value="" type="text" class="form-control m-b-0" placeholder="Borrower Phone">      
+                  </div>
+                </div>
+                <!-- one row end -->
+                
+                <!-- one row start-->
+                <div class="form-group row m-b-0">
+                    <div class="col-md-2">
+                      <label class="col-form-label">Borrower Address</label>
+                      <input formControlName="as_borrower_address" id="as_borrower_address" value="" type="text" class="form-control m-b-0" placeholder="Borrower Address">         
+                    </div>
+                    <div class="col-md-2">
+                      <label class="col-form-label">FB Username</label>
+                      <input formControlName="as_fb_username" id="as_fb_username" value="" type="text"  class="form-control m-b-0" placeholder="FB Username">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="col-form-label">Parcel</label>
+                      <input formControlName="as_parcel" id="as_parcel" value="" type="text" class="form-control m-b-0" placeholder="Parcel">       
+                    </div>
+                    <div class="col-md-2">
+                      <label class="col-form-label">Properties Owned</label>
+                      <select  formControlName="as_properties_owned" id="as_properties_owned" class="form-control">
+                          <option value="">Select</option>
+                          <option value="1" >1</option>
+                          <option value="2" >2</option>
+                          <option value="3" >3</option>
+                          <option value="4" >4</option>
+                          <option value="5" >5</option>
+                          <option value="6" >6</option>
+                          <option value="7" >7</option>
+                          <option value="8" >8</option>
+                          <option value="9" >9</option>
+                          <option value="10" >10</option>
+                          <option value="11" >11</option>
+                          <option value="12" >12</option>
+                          <option value="13" >13</option>
+                          <option value="14" >14</option>
+                          <option value="15" >15</option>
+                          <option value="16" >16</option>
+                          <option value="17" >17</option>
+                          <option value="18" >18</option>
+                          <option value="19" >19</option>
+                          <option value="20" >20</option>
+                      </select>
+                    </div>
+                    <div class="col-md-2">
+                      <label class="col-form-label">FStrategy</label>
+                      <input formControlName="as_strategy" id="as_strategy" value="" type="text"  class="form-control m-b-0" placeholder="FStrategy">
+                    </div>
+                    <div class="col-md-2">
+                      <label class="col-form-label">MLS(starts with)</label>
+                      <input formControlName="as_mls" id="as_mls" value="" type="text" class="form-control m-b-0" placeholder="MLS(starts with)">    
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+              <legend>Agent Information</legend>
+              <!-- one row end -->
+              <!-- <div class="alert alert-dark fade show m-b-5 m-t-10 semi-bold text-black">Agent Information</div> -->
+              <!-- one row start-->
+              <div class="form-group row m-b-0">
+                <div class="col-md-2">
+                  <label class="col-form-label">Agent(starts with)</label>
+                  <input formControlName="as_agent" id="as_agent" value="" type="text" class="form-control m-b-0" placeholder="Agent(starts with)">
+                </div>
+              </div>
+              <!-- one row end --> 
+            </fieldset>
+            <fieldset>
+              <legend>Property Information</legend>
+              <div class="alert alert-dark fade show m-b-5 m-t-10 semi-bold text-black">Property Information</div>
+              <!-- one row start-->
+              <div class="form-group row m-b-0">
+                  <div class="col-md-2">
+                      <label class="col-form-label">Property Address</label>
+                      <input formControlName="as_property_address" id="as_property_address" value="" type="text" class="form-control m-b-0" placeholder="Property Address">
+                  </div> 
+                  <div class="col-md-2">
+                      <label class="col-form-label">State</label>
+                      <select formControlName="as_state" id="as_state" class="form-control">
+                          <option value="" selected="selected">Select State</option>
+                          <option value="AL">Alabama</option>
+                          <option value="AK">Alaska</option>
+                          <option value="AZ">Arizona</option>
+                          <option value="AR">Arkansas</option>
+                          <option value="CA">California</option>
+                          <option value="CO">Colorado</option>
+                          <option value="CT">Connecticut</option>
+                          <option value="DE">Delaware</option>
+                          <option value="DC">District Of Columbia</option>
+                          <option value="FL">Florida</option>
+                          <option value="GA">Georgia</option>
+                          <option value="HI">Hawaii</option>
+                          <option value="ID">Idaho</option>
+                          <option value="IL">Illinois</option>
+                          <option value="IN">Indiana</option>
+                          <option value="IA">Iowa</option>
+                          <option value="KS">Kansas</option>
+                          <option value="KY">Kentucky</option>
+                          <option value="LA">Louisiana</option>
+                          <option value="ME">Maine</option>
+                          <option value="MD">Maryland</option>
+                          <option value="MA">Massachusetts</option>
+                          <option value="MI">Michigan</option>
+                          <option value="MN">Minnesota</option>
+                          <option value="MS">Mississippi</option>
+                          <option value="MO">Missouri</option>
+                          <option value="MT">Montana</option>
+                          <option value="NE">Nebraska</option>
+                          <option value="NV">Nevada</option>
+                          <option value="NH">New Hampshire</option>
+                          <option value="NJ">New Jersey</option>
+                          <option value="NM">New Mexico</option>
+                          <option value="NY">New York</option>
+                          <option value="NC">North Carolina</option>
+                          <option value="ND">North Dakota</option>
+                          <option value="OH">Ohio</option>
+                          <option value="OK">Oklahoma</option>
+                          <option value="OR">Oregon</option>
+                          <option value="PA">Pennsylvania</option>
+                          <option value="RI">Rhode Island</option>
+                          <option value="SC">South Carolina</option>
+                          <option value="SD">South Dakota</option>
+                          <option value="TN">Tennessee</option>
+                          <option value="TX">Texas</option>
+                          <option value="UT">Utah</option>
+                          <option value="VT">Vermont</option>
+                          <option value="VA">Virginia</option>
+                          <option value="WA">Washington</option>
+                          <option value="WV">West Virginia</option>
+                          <option value="WI">Wisconsin</option>
+                          <option value="WY">Wyoming</option>
+                      </select>
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">Late(greater than)</label>
+                      <input formControlName="as_late" id="as_late" value="" type="text" class="form-control m-b-0" placeholder="Late(greater than)">
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">Sale Place</label>
+                      <input formControlName="as_auction_place" id="as_auction_place" value="" type="text" class="form-control m-b-0" placeholder="Sale Place">
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">Before Sale Spread(minimum)</label>
+                      <input formControlName="as_auction_spread" id="as_auction_spread" value="" type="text" class="form-control m-b-0" placeholder="Before Sale Spread(minimum)">
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">Total Living Square Feet(min)</label>
+                      <input formControlName="as_square_feet" id="as_square_feet" value="" type="text" class="form-control m-b-0" placeholder="Total Living Square Feet(min)">
+                  </div>
+              </div>
+              <div class="form-group row m-b-0">
+                  <div class="col-md-2">
+                      <label class="col-form-label">Amenties</label>
+                      <input formControlName="as_amenties_pool" id="as_amenties_pool" value="Y" type="checkbox">
+                      Pool &nbsp;
+                      <input formControlName="as_amenties_spa" id="as_amenties_spa" value="Y" type="checkbox">
+                      Spa &nbsp;
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">Beds(Min)</label>
+                      <input formControlName="as_beds" id="as_beds" value="" type="text" class="form-control m-b-0" placeholder="Beds(Min)">
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">Garages</label>
+                      <select formControlName="as_garages" id="as_garages" class="form-control">
+                          <option value="">Select</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                          <option value="5">5</option>
+                          <option value="6">6</option>
+                          <option value="7">7</option>
+                          <option value="8">8</option>
+                          <option value="9">9</option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                          <option value="18">18</option>
+                          <option value="19">19</option>
+                          <option value="20">20</option>
+                      </select>
+                  </div>
+              </div> 
+              <!-- one row end --> 
+            </fieldset>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+              <div class="_search_btn form-group row m-b-20">
+                  <div class="col-md-2">
+                      <label class="col-form-label">&nbsp;</label>
+                      <button class="form-control m-b-0 btn btn-primary btn-sm" (click)="seachProperty(this.advancedsearchForm)">SEARCH
+                          <i *ngIf="!loading" class="fa fa-spinner fa-spin"></i>
+                      </button>
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">&nbsp;</label>
+                      <button class="form-control m-b-0 btn btn-primary btn-sm" (click)="rest_search()">CLEAR</button>
+                  </div>
+                  <div class="col-md-2 offset-md-1">
+                      <label class="col-form-label">DISPLAY ROW</label>
+                      <select class="form-control m-b-0" formControlName="limit" (change)="changeLimit($event)">
+                          <option value="10" selected>10</option>
+                          <option value="20">20</option>
+                          <option value="50">50</option>
+                          <option value="100">100</option>
+                          <option value="200">200</option>
+                          <option value="100">100</option>
+                          <option value="500">500</option>
+                          <option value="1000">1000</option>
+                          <option value="2000">2000</option>
+                      </select>
+                  </div>
+                  <div class="col-md-2 offset-md-1">
+                      <label class="col-form-label">&nbsp;</label>
+                      <button class="form-control m-b-0 btn btn-primary btn-sm">BACK</button>
+                  </div>
+                  <div class="col-md-2">
+                      <label class="col-form-label">&nbsp;</label>
+                      <button class="form-control m-b-0 btn btn-primary btn-sm" [routerLink]="['/home/quickinput']">QUICK INPUT</button>
+                  </div>
+              </div>
+          </div>
+        </div>
+     
+      </form>
+
+      <app-search-detail [searchResult]="searchResult" [loading]="loading" [totalRecord]="totalRecord" [searchField]="searchField" [limit]="limit"></app-search-detail>
+
+    <!-- end panel -->
+  </div>
+</div>
+  <!-- end col-12 -->
