@@ -1,0 +1,11 @@
+.navbar{
+      box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%) !important;
+      top:0px !important;  
+}
+
+.show_password{
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    cursor: pointer;
+}
